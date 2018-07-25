@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      Ionic Blank
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  The world is your oyster.
+  <p>
+    Cuestionario de Acceso a Medicamentos Controlados
+  </p>
+
+  <form (ngSubmit)="logForm()">
+    
+
+    <ion-label>User</ion-label>
+    <ion-item>
+      <ion-input type="text" [(ngModel)]="user.user" name="user"></ion-input>
+    </ion-item>
+
+    <ion-label>Password</ion-label>
+    <ion-item>
+      <ion-input type="password" [(ngModel)]="user.password" name="password"></ion-input>
+    </ion-item>
+
+
+    <button ion-button type="submit" block>Ingresar</button>
+  </form>
+</ion-content>

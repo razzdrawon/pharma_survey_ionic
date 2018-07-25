@@ -1,0 +1,7 @@
+{
+  "name": "pharma_survey",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular"
+}
