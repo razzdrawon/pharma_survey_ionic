@@ -1,0 +1,45 @@
+<!--
+  Generated template for the HomePage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Home</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+    <ion-item>
+      
+      <ion-select [(ngModel)]="os" submitText="Okay" cancelText="Cancelar" placeholder="Seleccione Establecimiento">
+        <ion-option value="dos">DOS</ion-option>
+        <ion-option value="lunix">Linux</ion-option>
+        <ion-option value="mac7">Mac OS 7</ion-option>
+        <ion-option value="mac8">Mac OS 8</ion-option>
+        <ion-option value="win3.1">Windows 3.1</ion-option>
+        <ion-option value="win95">Windows 95</ion-option>
+        <ion-option value="win98">Windows 98</ion-option>
+      </ion-select>
+    </ion-item>
+
+
+    <button ion-button block>Iniciar Cuestionario</button>
+
+    <p>
+      Usted ha capturado 03 cuestionarios
+    </p>
+    <p>
+      Usted ha sincronizado 02 cuestionatios
+    </p>
+
+    <p>
+      Cuestionatios a sincronizar: 01
+    </p>
+
+</ion-content>
