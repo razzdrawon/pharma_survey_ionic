@@ -1,7 +1,7 @@
 import { HomePage } from './../home/home';
 import { Component } from '@angular/core';
 import { NavController, AlertController } from 'ionic-angular';
-import { DBServiceProvider } from './../../providers/db-service/db-service';
+import { UsersDBService } from './../../providers/db-services/users-service';
 
 @Component({
   selector: 'page-login',
@@ -11,7 +11,7 @@ export class LoginPage {
 
   users: any[] = [];
 
-  constructor(public navCtrl: NavController, public dbService: DBServiceProvider, public alertCtrl: AlertController,) {
+  constructor(public navCtrl: NavController, public dbService: UsersDBService, public alertCtrl: AlertController) {
 
   }
 
@@ -22,20 +22,16 @@ export class LoginPage {
   user1 = {user: 'user1', password: 'password1'}
   
   logForm() {
-    
-    console.log(this.user1);
-    // this.navCtrl.push(HomePage)
-    // .then(() => {
-    //   const startIndex = this.navCtrl.getActive().index - 1;
-    //   this.navCtrl.remove(startIndex, 1);
-    // });
-
     this.navCtrl.setRoot(HomePage);
     this.navCtrl.popToRoot();
   }
 
+  syncInfo() {
+
+  }
+
   getAllUsers(){
-    this.dbService.getAll()
+    this.dbService.getAllUsers()
     .then(users => {
       this.users = users;
     })
@@ -69,7 +65,7 @@ export class LoginPage {
           text: 'Crear',
           handler: (data)=>{ 
             data.completed = false;
-            this.dbService.create(data)
+            this.dbService.createUser(data)
             .then(response => {
               this.users.unshift( data );
             })
@@ -86,7 +82,7 @@ export class LoginPage {
   updateUser(user, index){
     user = Object.assign({}, user);
     user.password = !user.password;
-    this.dbService.update(user)
+    this.dbService.updateUser(user)
     .then( response => {
       this.users[index] = user;
     })
@@ -96,7 +92,7 @@ export class LoginPage {
   }
 
   deleteUser(user: any, index){
-    this.dbService.delete(user)
+    this.dbService.deleteUser(user)
     .then(response => {
       console.log( response );
       this.users.splice(index, 1);
