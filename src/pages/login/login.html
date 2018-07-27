@@ -24,12 +24,12 @@
 
     <ion-label>User</ion-label>
     <ion-item>
-      <ion-input type="text" [(ngModel)]="user1.user" name="user1"></ion-input>
+      <ion-input type="text" [(ngModel)]="userLogin.username" name="userLogin"></ion-input>
     </ion-item>
 
     <ion-label>Password</ion-label>
     <ion-item>
-      <ion-input type="password" [(ngModel)]="user1.password" name="password"></ion-input>
+      <ion-input type="password" [(ngModel)]="userLogin.password" name="password"></ion-input>
     </ion-item>
 
 
@@ -42,12 +42,12 @@
 
 
   <ion-list>
-    <ion-item *ngIf="users.length == 0"> 
+    <ion-item *ngIf="allUsers.length == 0"> 
       Empty
     </ion-item>
-   <ion-item-sliding *ngFor="let user of users; let i = index">
+   <ion-item-sliding *ngFor="let user of allUsers; let i = index">
      <ion-item >
-       <ion-label>{{ user.username }}</ion-label>
+       <ion-label>{{ user.username }} {{ user.password }}</ion-label>
        <ion-checkbox (ionChange)="updateUser( user, i )" [checked]="user.completed"></ion-checkbox>
      </ion-item>
      <ion-item-options side="right" icon-left>

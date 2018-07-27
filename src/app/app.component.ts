@@ -12,14 +12,14 @@ import { LoginPage } from '../pages/login/login';
   templateUrl: 'app.html'
 })
 export class MyApp {
-  rootPage:any = LoginPage;
+  rootPage:any = null;
 
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, public sqlite: SQLite, public dbService: UsersDBService) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
-      statusBar.styleDefault();
-      splashScreen.hide();
+      
+      this.statusBar.styleDefault();
       this.createDatabase();
     });
   }
@@ -31,12 +31,12 @@ export class MyApp {
     })
     .then((db) => {
       this.dbService.setDatabase(db);
-      this.dbService.dropTable();
+      //this.dbService.dropTable();
       return this.dbService.createUsersTable();
     })
     .then(() =>{
       this.splashScreen.hide();
-      this.rootPage = 'HomePage';
+      this.rootPage = LoginPage;
     })
     .catch(error =>{
       console.error(error);

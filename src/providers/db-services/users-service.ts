@@ -44,6 +44,22 @@ export class UsersDBService {
     .catch(error => Promise.reject(error));
   }
 
+  getUserLogin(user: any){
+    console.log('user sent to the query: ' + user.username + ' ' + user.username);
+    let sql = 'SELECT * FROM users WHERE username=? AND password=?';
+    return this.db.executeSql(sql, [user.username, user.password])
+    .then(response => {
+      console.log('db response: ' + response);
+      let users = [];
+      for (let index = 0; index < response.rows.length; index++) {
+        users.push( response.rows.item(index) );
+      }
+      console.log('db users: ' + users);
+      return Promise.resolve( users );
+    })
+    .catch(error => Promise.reject(error));
+  }
+
   createUser(user: any){
     let sql = 'INSERT INTO users(username, password, completed) VALUES(?,?,?)';
     return this.db.executeSql(sql, [user.username, user.password, user.completed]);

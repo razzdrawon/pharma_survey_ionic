@@ -2,6 +2,7 @@ import { HomePage } from './../home/home';
 import { Component } from '@angular/core';
 import { NavController, AlertController } from 'ionic-angular';
 import { UsersDBService } from './../../providers/db-services/users-service';
+import { UsersHttpService } from '../../providers/http-services/users-service';
 
 @Component({
   selector: 'page-login',
@@ -9,31 +10,63 @@ import { UsersDBService } from './../../providers/db-services/users-service';
 })
 export class LoginPage {
 
-  users: any[] = [];
+  allUsers: any[] = [];
+  usersAsync: any[] = [];
+  userLogin: { username: string; password: string;} = { username: '', password: ''};
 
-  constructor(public navCtrl: NavController, public dbService: UsersDBService, public alertCtrl: AlertController) {
-
+  constructor(public navCtrl: NavController, public usersDBService: UsersDBService, public usersHttpService: UsersHttpService, public alertCtrl: AlertController) {
   }
 
   ionViewDidLoad(){
     this.getAllUsers();
   }
-  
-  user1 = {user: 'user1', password: 'password1'}
-  
+
   logForm() {
-    this.navCtrl.setRoot(HomePage);
-    this.navCtrl.popToRoot();
+    this.validateLogin();
+  }
+
+  validateLogin() {
+    this.usersDBService.getUserLogin(this.userLogin)
+    .then(users => {
+      if(users.length > 0) {
+        this.navCtrl.setRoot(HomePage);
+        this.navCtrl.popToRoot();
+      }
+      else{
+        let alert = this.alertCtrl.create({
+          title: 'Credenciales Invalidas',
+          message: 'Su usuario y/o contraseña son incorrectos.',
+          buttons: [
+            {
+              text: 'Aceptar',
+              handler: () => {
+                this.userLogin = { username: '', password: ''};
+              }
+            }
+          ]
+        });
+        alert.present();
+      }
+    })
+    .catch( error => {
+      console.error( error );
+    });
   }
 
   syncInfo() {
-
+    this.usersHttpService.getUsers()
+    .then(users => {
+      console.log(users);
+      //this.allUsers = users;
+    }).catch( error => {
+      console.error( error );
+    });
   }
 
   getAllUsers(){
-    this.dbService.getAllUsers()
+    this.usersDBService.getAllUsers()
     .then(users => {
-      this.users = users;
+      this.allUsers = users;
     })
     .catch( error => {
       console.error( error );
@@ -65,9 +98,9 @@ export class LoginPage {
           text: 'Crear',
           handler: (data)=>{ 
             data.completed = false;
-            this.dbService.createUser(data)
+            this.usersDBService.createUser(data)
             .then(response => {
-              this.users.unshift( data );
+              this.allUsers.unshift( data );
             })
             .catch( error => {
               console.error( error );
@@ -82,9 +115,9 @@ export class LoginPage {
   updateUser(user, index){
     user = Object.assign({}, user);
     user.password = !user.password;
-    this.dbService.updateUser(user)
+    this.usersDBService.updateUser(user)
     .then( response => {
-      this.users[index] = user;
+      this.allUsers[index] = user;
     })
     .catch( error => {
       console.error( error );
@@ -92,10 +125,10 @@ export class LoginPage {
   }
 
   deleteUser(user: any, index){
-    this.dbService.deleteUser(user)
+    this.usersDBService.deleteUser(user)
     .then(response => {
       console.log( response );
-      this.users.splice(index, 1);
+      this.allUsers.splice(index, 1);
     })
     .catch( error => {
       console.error( error );
