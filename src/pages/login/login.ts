@@ -54,13 +54,8 @@ export class LoginPage {
   }
 
   syncInfo() {
-    this.usersHttpService.getUsers()
-    .then(users => {
-      console.log(users);
-      //this.allUsers = users;
-    }).catch( error => {
-      console.error( error );
-    });
+    this.usersHttpService.getUsers();
+    
   }
 
   getAllUsers(){

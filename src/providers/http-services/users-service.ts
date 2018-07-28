@@ -9,29 +9,39 @@ export class UsersHttpService {
     private http: HttpClient
   ) {}
 
-  apiUrl = 'https://jsonplaceholder.typicode.com';
+  apiUrl = 'http://216.154.221.48/getCUsuario';
+
+  // getUsers() {
+  //   return new Promise((resolve, reject) => {
+  //     // this.http.get('../assets/raw/users.json')
+  //     this.http.get(this.apiUrl)
+  //     .subscribe((res: Response) => {        
+  //       let users = res.headers;
+  //       console.log('res: ' + users);
+  //       resolve(users);
+  //     }, err => {
+  //       console.log('error: ' + err.status);
+  //       reject(err);
+  //     });
+  //   });
+  // }
 
   getUsers() {
-    return new Promise((resolve, reject) => {
-      this.http.get('../assets/raw/users.json')
-      .subscribe(response => {
-        let users = response as any[];
+    this.http.get('../assets/raw/users.json')
+    .map(res => res)
+    .subscribe(
+      (data: any[]) => {
+        let users = data;
+        console.log(users);
         users.forEach(element => {
           console.log(element.username);
           console.log(element.password);
         });
-        
-        resolve(users);
-      }, err => {
+      },
+      err => {
         console.log(err);
-        reject(err);
-      });
-    });
+      }
+    );
   }
-
-  // getUsers() {
-  //   return this.http.get('../assets/raw/users.json')
-  //   .map(res => res);
-  // }
   
 }

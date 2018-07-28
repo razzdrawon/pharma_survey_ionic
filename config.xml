@@ -3,7 +3,7 @@
     <name>pharma_survey</name>
     <description>An awesome Ionic/Cordova app.</description>
     <author email="hi@ionicframework" href="http://ionicframework.com/">Ionic Framework Team</author>
-    <content src="index.html" />
+    <content original-src="index.html" src="http://192.168.100.4:8100" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -86,6 +86,7 @@
     <plugin name="cordova-plugin-themeablebrowser" spec="^0.2.17" />
     <allow-navigation href="http://10.138.176.99:8100" />
     <allow-navigation href="http://192.168.14.121:8100" />
+    <allow-navigation href="http://192.168.100.4:8100" />
     <engine name="ios" spec="4.5.4" />
     <engine name="android" spec="7.0.0" />
 </widget>
