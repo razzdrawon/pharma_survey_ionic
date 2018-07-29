@@ -5,41 +5,46 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 
 import { SQLite } from '@ionic-native/sqlite';
+import { IonicStorageModule } from '@ionic/storage';
 import { HttpClientModule } from '@angular/common/http';
 
 import { MyApp } from './app.component';
 import { LoginPage } from '../pages/login/login';
 import { HomePage } from './../pages/home/home';
+import { SurveyPage } from './../pages/survey/survey';
 
-import { UsersDBService } from '../providers/db-services/users-service';
-import { SurveysDBService } from '../providers/db-services/surveys-service';
+//import { UsersDBService } from '../providers/db-services/users-service';
+//import { SurveysDBService } from '../providers/db-services/surveys-service';
 
-import { UsersHttpService } from '../providers/http-services/users-service';
+import { SyncHttpService } from '../providers/http-services/sync-service';
 
 @NgModule({
   declarations: [
     MyApp,
     LoginPage,
-    HomePage
+    HomePage,
+    SurveyPage
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
     LoginPage,
-    HomePage
+    HomePage,
+    SurveyPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
     SQLite,
-    UsersDBService,
-    SurveysDBService,
-    UsersHttpService,
+//    UsersDBService,
+//    SurveysDBService,
+    SyncHttpService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/map';
 
 @Injectable()
-export class UsersHttpService {
+export class SyncHttpService {
 
   constructor(
     private http: HttpClient
@@ -27,21 +27,27 @@ export class UsersHttpService {
   // }
 
   getUsers() {
-    this.http.get('../assets/raw/users.json')
-    .map(res => res)
-    .subscribe(
-      (data: any[]) => {
-        let users = data;
-        console.log(users);
-        users.forEach(element => {
-          console.log(element.username);
-          console.log(element.password);
-        });
-      },
-      err => {
-        console.log(err);
-      }
-    );
+    return this.http.get('../assets/raw/usuarios.json')
+    .map((res: any[]) => res);
   }
-  
+
+  getEstablishments() {
+    return this.http.get('../assets/raw/establecimientos.json')
+    .map((res: any[]) => res);
+  }
+
+  getHospitalSurvey() {
+    return this.http.get('../assets/raw/questionarioHospital.json')
+    .map((res: any[]) => res);
+  }
+
+  getMedicines() {
+    return this.http.get('../assets/raw/medicamentos.json')
+    .map((res: any[]) => res);
+  }
+
+  getSubtypes() {
+    return this.http.get('../assets/raw/subtipos.json')
+    .map((res: any[]) => res);
+  }
 }

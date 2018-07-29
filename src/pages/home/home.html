@@ -7,7 +7,14 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Home</ion-title>
+    <ion-title>{{loggedUser.nombre}}</ion-title>
+
+    <ion-buttons end>
+      <button ion-button icon-only (click)="salir()">
+        <ion-icon name="log-out"></ion-icon>
+      </button>
+    </ion-buttons>
+
   </ion-navbar>
 
 </ion-header>
@@ -15,31 +22,39 @@
 
 <ion-content padding>
 
+  <ion-list>
+
     <ion-item>
-      
-      <ion-select [(ngModel)]="os" submitText="Okay" cancelText="Cancelar" placeholder="Seleccione Establecimiento">
-        <ion-option value="dos">DOS</ion-option>
-        <ion-option value="lunix">Linux</ion-option>
-        <ion-option value="mac7">Mac OS 7</ion-option>
-        <ion-option value="mac8">Mac OS 8</ion-option>
-        <ion-option value="win3.1">Windows 3.1</ion-option>
-        <ion-option value="win95">Windows 95</ion-option>
-        <ion-option value="win98">Windows 98</ion-option>
+      <ion-label>Seleccione Establecimiento</ion-label>
+      <ion-select [(ngModel)]="establishmentSelected" cancelText="Cancel" okText="Okay" (ionChange)="optionChanged()">
+        <ion-option *ngFor="let est of establishments" [value]="est">{{est.nombre}}</ion-option>
       </ion-select>
     </ion-item>
 
+    <ion-item *ngIf="establishmentSelected.tipo_establecimiento_id == 1">
+      <ion-label>Seleccione Subtipo</ion-label>
+      <ion-select [(ngModel)]="subtypeSelected" cancelText="Cancel" okText="Okay" (ionChange)="subtypeChanged()">
+        <ion-option *ngFor="let sub of subtypes" [value]="sub">{{sub.descripcion}}</ion-option>
+      </ion-select>
+    </ion-item>
 
-    <button ion-button block>Iniciar Cuestionario</button>
+  </ion-list>
 
-    <p>
-      Usted ha capturado 03 cuestionarios
-    </p>
-    <p>
-      Usted ha sincronizado 02 cuestionatios
-    </p>
 
-    <p>
-      Cuestionatios a sincronizar: 01
-    </p>
+
+
+
+  <button ion-button block (click)="startSurvey()">Iniciar Cuestionario</button>
+
+  <p>
+    Usted ha capturado 03 cuestionarios
+  </p>
+  <p>
+    Usted ha sincronizado 02 cuestionatios
+  </p>
+
+  <p>
+    Cuestionatios a sincronizar: 01
+  </p>
 
 </ion-content>

@@ -19,9 +19,8 @@
     Cuestionario de Acceso a Medicamentos Controlados
   </p>
 
-  <form (ngSubmit)="logForm()">
+  <form (ngSubmit)="runLogin()">
     
-
     <ion-label>User</ion-label>
     <ion-item>
       <ion-input type="text" [(ngModel)]="userLogin.username" name="userLogin"></ion-input>
@@ -47,15 +46,15 @@
     </ion-item>
    <ion-item-sliding *ngFor="let user of allUsers; let i = index">
      <ion-item >
-       <ion-label>{{ user.username }} {{ user.password }}</ion-label>
-       <ion-checkbox (ionChange)="updateUser( user, i )" [checked]="user.completed"></ion-checkbox>
+       <ion-label>{{ user.usuario }} {{ user.nombre }}</ion-label>
+       <!-- <ion-checkbox (ionChange)="updateUser( user, i )" [checked]="user.completed"></ion-checkbox> -->
      </ion-item>
-     <ion-item-options side="right" icon-left>
+     <!-- <ion-item-options side="right" icon-left>
        <button ion-button color="danger" (click)="deleteUser(user, i)">
          <ion-icon name="trash"></ion-icon>
          Delete
        </button>
-     </ion-item-options>
+     </ion-item-options> -->
    </ion-item-sliding>
  </ion-list>
 
