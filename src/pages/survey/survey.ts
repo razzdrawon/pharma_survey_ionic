@@ -18,6 +18,11 @@ export class SurveyPage {
 
   public questions: any[] = [];
   public question: any = {};
+  public buttonEnable: boolean = false;
+
+  public answers: any[];
+
+  public answer: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public syncHttpService: SyncHttpService, private storage: Storage) {
   }
@@ -44,29 +49,49 @@ export class SurveyPage {
     );
   }
 
-  nestQuestion() {
-    //let index = 0;
-    // if(index < this.questions.length){
-    //   this.question = this.questions[index+1];  
-    // }
+  nextQuestion() {
 
+    debugger;
     let nextSection = this.question.siguiente_seccion;
     let nextQuestion = this.question.siguiente_prgunta;
     let isFinal = this.question.final_seccion;
 
-    if(isFinal == 1) {
-      nextSection = this.question.seccion + 1;
-      nextQuestion = 1;
-    }
-    else {
-      if(nextQuestion == null) {
-        nextQuestion = this.question.seccion_pregunta_id + 1;
+    switch(this.question.tipo_pregunta) {
+
+      case 1: {
+        if(isFinal == 1) {
+          nextSection = this.question.seccion + 1;
+          nextQuestion = 1;
+        }
+        else{
+          nextSection = this.question.seccion;
+          nextQuestion = this.question.seccion_pregunta_id + 1;
+        }
+        break;
+      }
+      case 2: {
+        nextSection = this.answer.siguiente_seccion;
+        nextQuestion = this.answer.siguiente_pregunta;
+
+        if(nextSection == 1 && nextQuestion == null) {
+          nextSection = this.question.seccion;
+          nextQuestion = this.question.seccion_pregunta_id + 1;
+        }
+        break;
       }
     }
+
     
     console.log('next section: ' + nextSection + ' next question: ' + nextQuestion);
     this.question = this.questions.find(question => (question.seccion == nextSection) && (question.seccion_pregunta_id == nextQuestion));
+
+    this.answer = null;
     
+  }
+
+  radioOptionChanged() {
+    console.log('listener')
+    console.log(this.answer);
   }
 
 }

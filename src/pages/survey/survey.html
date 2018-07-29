@@ -34,21 +34,19 @@
     <!-- texto number -->
     <ion-item *ngSwitchCase=1>
       <ion-label floating>Escriba su respuesta</ion-label>
-      <ion-input type="number"></ion-input>
+      <ion-input type="number" [(ngModel)]="answer"></ion-input>
     </ion-item>
 
     <!-- radio button  -->
-    <ion-list *ngSwitchCase=2 radio-group [(ngModel)]="question.valor">
-
+    <ion-list *ngSwitchCase=2 radio-group [(ngModel)]="answer" (ionChange)="radioOptionChanged();">
       <ion-item *ngFor="let opt of question.respuestas" >
         <ion-label>{{opt.enunciado}}</ion-label>
-        <ion-radio value="cord"></ion-radio>
+        <ion-radio [value]="opt"></ion-radio>
       </ion-item>
-
     </ion-list>
 
     <!-- combo box  -->
-    <ion-list *ngSwitchCase=3 radio-group [(ngModel)]="question.valor">
+    <ion-list *ngSwitchCase=3 radio-group [(ngModel)]="answer">
 
         <ion-item *ngFor="let opt of question.respuestas" >
           <ion-label>{{opt.enunciado}}</ion-label>
@@ -58,7 +56,7 @@
 
 
       <!-- texto abierto -->
-      <ion-list *ngSwitchCase=3 radio-group [(ngModel)]="question.valor">
+      <ion-list *ngSwitchCase=4 radio-group [(ngModel)]="answer">
 
           <ion-item *ngFor="let opt of question.respuestas" >
             <ion-label>{{opt.enunciado}}</ion-label>
@@ -68,7 +66,7 @@
       </ion-list>
 
       <!-- opcion multiple con pondereaciones -->
-      <ion-list *ngSwitchCase=3 radio-group [(ngModel)]="question.valor">
+      <ion-list *ngSwitchCase=5 radio-group [(ngModel)]="answer">
 
           <ion-item *ngFor="let opt of question.respuestas" >
             <ion-label>{{opt.enunciado}}</ion-label>
@@ -81,6 +79,6 @@
 
   </div>
 
-  <button ion-button block (click)="nestQuestion()">Siguiente</button>
+  <button ion-button block (click)="nextQuestion()" *ngIf="answer != null">Siguiente</button>
 
 </ion-content>
