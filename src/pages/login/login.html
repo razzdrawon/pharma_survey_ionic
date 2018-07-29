@@ -22,31 +22,29 @@
 
   <form (ngSubmit)="runLogin()">
     
-      <ion-item>
+    <ion-item class="input-text">
           <ion-label floating>Username</ion-label>
       <ion-input type="text" [(ngModel)]="userLogin.username" name="userLogin"></ion-input>
     </ion-item>
-    <p class="pTitle" style="color:transparent;">
-        c
-      </p>    
-    <ion-item>
+   
+    <ion-item class="input-text">
       <ion-label floating>Password</ion-label>
       <ion-input type="password" [(ngModel)]="userLogin.password" name="password"></ion-input>
     </ion-item>
 
 
-    <button ion-button type="submit" block>Ingresar</button>
+    <button ion-button class="submit" type="submit" block>Ingresar</button>
 
   </form>
 
 
-  <button ion-button block (click)="syncInfo()">Sincronizar</button>
+  <button ion-button class="submit" block (click)="syncInfo()">Sincronizar</button>
 
 
   <ion-list>
-    <ion-item *ngIf="allUsers.length == 0"> 
+    <!--ion-item *ngIf="allUsers.length == 0"> 
       Empty
-    </ion-item>
+    </ion-item-->
    <ion-item-sliding *ngFor="let user of allUsers; let i = index">
      <ion-item >
        <ion-label>{{ user.usuario }} {{ user.nombre }}</ion-label>

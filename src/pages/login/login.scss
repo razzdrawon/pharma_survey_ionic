@@ -4,9 +4,21 @@ page-login {
         background-color: #bce6ff;
     }
     .pTitle{
-        color: #84d1ff;
+        color: #54AFFF;
         padding-left: 10%;
         font-size: 15px;
         font-weight: bold;
+    }
+    .input-text{
+        background-color:#bce6ff;
+    }
+    .text-input{
+        background-color: white;
+        height:120%;
+        border-color: royalblue;
+        border: 10px 2px 2px 2px;
+    }
+    .submit{
+        margin-top: 30px;
     }
 }
