@@ -1,1 +1,9 @@
-[{"usuario":"usertest","nombre":"Daniel Correa Vázquez","hashed_password":"81f9c7295d25bfbd91f1d753ff92a682","rol":1,"activo":1}]
+[
+    {
+        "usuario": "usertest",
+        "nombre": "Daniel Correa Vázquez",
+        "hashed_password": "81f9c7295d25bfbd91f1d753ff92a682",
+        "rol": 1,
+        "activo": 1
+    }
+]

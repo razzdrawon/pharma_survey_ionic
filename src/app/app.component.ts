@@ -1,11 +1,13 @@
+import { LoginPage } from './../pages/login/login';
+import { HomePage } from './../pages/home/home';
 import { Component } from '@angular/core';
 import { Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { SQLite } from '@ionic-native/sqlite';
-import { UsersDBService } from '../providers/db-services/users-service';
+//import { UsersDBService } from '../providers/db-services/users-service';
 
-import { LoginPage } from '../pages/login/login';
+//import { LoginPage } from '../pages/login/login';
 
 
 @Component({
@@ -14,34 +16,38 @@ import { LoginPage } from '../pages/login/login';
 export class MyApp {
   rootPage:any = null;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, public sqlite: SQLite, public dbService: UsersDBService) {
+  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, public sqlite: SQLite, 
+//    public dbService: UsersDBService
+  ) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       
       this.statusBar.styleDefault();
-      this.createDatabase();
+      // this.createDatabase();
+      this.splashScreen.hide();
+      this.rootPage = LoginPage;
     });
   }
 
-  private createDatabase(){
-    this.sqlite.create({
-      name: 'data.db',
-      location: 'default' // the location field is required
-    })
-    .then((db) => {
-      this.dbService.setDatabase(db);
-      //this.dbService.dropTable();
-      return this.dbService.createUsersTable();
-    })
-    .then(() =>{
-      this.splashScreen.hide();
-      this.rootPage = LoginPage;
-    })
-    .catch(error =>{
-      console.error(error);
-    });
-  }
+  // private createDatabase(){
+  //   this.sqlite.create({
+  //     name: 'data.db',
+  //     location: 'default' // the location field is required
+  //   })
+  //   .then((db) => {
+  //     this.dbService.setDatabase(db);
+  //     //this.dbService.dropTable();
+  //     return this.dbService.createUsersTable();
+  //   })
+  //   .then(() =>{
+  //     this.splashScreen.hide();
+  //     this.rootPage = HomePage;
+  //   })
+  //   .catch(error =>{
+  //     console.error(error);
+  //   });
+  // }
 
   
 }
