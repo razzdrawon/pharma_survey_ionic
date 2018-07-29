@@ -18,7 +18,7 @@
 
   <div>
     <p>
-      {{question.indice}} 
+      <!-- {{question.indice}}  -->
       {{question.enunciado}}
     </p>
   </div>
@@ -30,7 +30,6 @@
 
   <div [ngSwitch]="question.tipo_pregunta">
 
-
     <!-- texto number -->
     <ion-item *ngSwitchCase=1>
       <ion-label floating>Escriba su respuesta</ion-label>
@@ -39,43 +38,72 @@
 
     <!-- radio button  -->
     <ion-list *ngSwitchCase=2 radio-group [(ngModel)]="answer" (ionChange)="radioOptionChanged();">
-      <ion-item *ngFor="let opt of question.respuestas" >
+      <ion-item *ngFor="let opt of question.respuestas">
         <ion-label>{{opt.enunciado}}</ion-label>
         <ion-radio [value]="opt"></ion-radio>
       </ion-item>
     </ion-list>
 
     <!-- combo box  -->
-    <ion-list *ngSwitchCase=3 radio-group [(ngModel)]="answer">
+    <ion-list *ngSwitchCase=3>
+      <ion-item *ngFor="let opt of question.respuestas">
+        <ion-label>{{opt.enunciado}}</ion-label>
+        <ion-checkbox></ion-checkbox>
+      </ion-item>
+    </ion-list>
 
-        <ion-item *ngFor="let opt of question.respuestas" >
-          <ion-label>{{opt.enunciado}}</ion-label>
-          <ion-checkbox value="cord"></ion-checkbox>
+    <!-- texto abierto -->
+    <ion-item *ngSwitchCase=4>
+      <ion-label floating>Escriba su respuesta</ion-label>
+      <ion-input type="text" [(ngModel)]="answer"></ion-input>
+    </ion-item>
+
+    <!-- opcion multiple con pondereaciones -->
+    <ion-list *ngSwitchCase=5>
+
+      <!-- <ion-item-group>
+        <ion-item>
+          <ion-input name="plane" item-end color="danger"></ion-input>
+          <ion-label>Airplane Mode</ion-label>
+          <ion-checkbox color="secondary"></ion-checkbox>
         </ion-item>
-      </ion-list>
+
+        <button ion-item>
+          <ion-icon name="wifi" item-start color="primary"></ion-icon>
+          <ion-label>Wi-Fi</ion-label>
+          <ion-note item-end>The Interwebz</ion-note>
+        </button>
+
+        <button ion-item>
+          <ion-icon name="bluetooth" item-start color="primary"></ion-icon>
+          <ion-label>Bluetooth</ion-label>
+          <ion-note item-end>Off</ion-note>
+        </button>
+      </ion-item-group> -->
 
 
-      <!-- texto abierto -->
-      <ion-list *ngSwitchCase=4 radio-group [(ngModel)]="answer">
-
-          <ion-item *ngFor="let opt of question.respuestas" >
+      <div *ngFor="let opt of question.respuestas">
+        <ion-item-group>
+          <ion-item>
+            <ion-checkbox item-start [(ngModel)]="opt.checked"></ion-checkbox>
             <ion-label>{{opt.enunciado}}</ion-label>
-            <ion-checkbox value="cord"></ion-checkbox>
           </ion-item>
-    
-      </ion-list>
-
-      <!-- opcion multiple con pondereaciones -->
-      <ion-list *ngSwitchCase=5 radio-group [(ngModel)]="answer">
-
-          <ion-item *ngFor="let opt of question.respuestas" >
-            <ion-label>{{opt.enunciado}}</ion-label>
-            <ion-checkbox value="cord"></ion-checkbox>
+          <ion-item *ngIf="opt.checked" >
+            <ion-label floating>Ingrese Cantidad</ion-label>
+            <ion-input item-end [(ngModel)]="opt.value"></ion-input>
           </ion-item>
-    
-      </ion-list>
+
+          
+            <!-- <ion-input item-start placeholder="Ingrese 1"></ion-input> -->
+            
+            <!-- <ion-input item-end placeholder="Ingrese 2"></ion-input> -->
+        
 
 
+        </ion-item-group>
+      </div>
+
+    </ion-list>
 
   </div>
 
