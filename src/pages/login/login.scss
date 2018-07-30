@@ -1,7 +1,12 @@
 page-login {
+    .banner{
+        z-index: 2;
+        background-color: white;
+    }
     .scroll-content{
-        background: url('assets/imgs/background.jpeg');
-        background-color: #bce6ff;
+        background: url('assets/imgs/back.jpg');
+        background-size:100%;
+       /* background-color: #bce6ff;*/
     }
     .pTitle{
         color: #54AFFF;
@@ -10,7 +15,8 @@ page-login {
         text-align: center;
     }
     .input-text{
-        background-color:#bce6ff;
+      /*  background-color:#bce6ff;*/
+        background-color: transparent;
         font-size:90%;
     }
     .text-input{
@@ -26,8 +32,8 @@ page-login {
     }
     .ingresar{
         margin-top: 50px;
-        width: 30%;
-        margin-left:70%;
+        width: 40%;
+        margin-left:60%;
     }
     .image{
         margin-left: 10px;
