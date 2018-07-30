@@ -22,6 +22,7 @@ export class SurveyPage {
 
   public answers: any[];
 
+
   public answer: any = {};
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public syncHttpService: SyncHttpService, private storage: Storage) {
@@ -51,14 +52,20 @@ export class SurveyPage {
 
   nextQuestion() {
 
+
+    console.log(this.answer);
+
     debugger;
+
+
+
     let nextSection = this.question.siguiente_seccion;
     let nextQuestion = this.question.siguiente_prgunta;
     let isFinal = this.question.final_seccion;
 
     switch(this.question.tipo_pregunta) {
 
-      case 1: {
+      case 1: { // question type 1 (Open answer)
         if(isFinal == 1) {
           nextSection = this.question.seccion + 1;
           nextQuestion = 1;
@@ -69,9 +76,9 @@ export class SurveyPage {
         }
         break;
       }
-      case 2: {
-        nextSection = this.answer.option.siguiente_seccion;
-        nextQuestion = this.answer.option.siguiente_pregunta;
+      case 2: { // question type 2 (Radio Button)
+        nextSection = this.answer.opt.siguiente_seccion;
+        nextQuestion = this.answer.opt.siguiente_pregunta;
 
         if(nextSection == 1 && nextQuestion == null) {
           nextSection = this.question.seccion;
@@ -80,18 +87,7 @@ export class SurveyPage {
         break;
       }
 
-      case 3: {
-        nextSection = this.answer.option.siguiente_seccion;
-        nextQuestion = this.answer.option.siguiente_pregunta;
-
-        if(nextSection == 1 && nextQuestion == null) {
-          nextSection = this.question.seccion;
-          nextQuestion = this.question.seccion_pregunta_id + 1;
-        }
-        break;
-      }
-
-      case 4: {
+      case 3: { // question type 3 (Combo Box)
         if(isFinal == 1) {
           nextSection = this.question.seccion + 1;
           nextQuestion = 1;
@@ -103,11 +99,24 @@ export class SurveyPage {
         break;
       }
 
-      case 5: {
-        nextSection = this.answer.option.siguiente_seccion;
-        nextQuestion = this.answer.option.siguiente_pregunta;
+      case 4: { // question type 4 (Text Area)
+        if(isFinal == 1) {
+          nextSection = this.question.seccion + 1;
+          nextQuestion = 1;
+        }
+        else{
+          nextSection = this.question.seccion;
+          nextQuestion = this.question.seccion_pregunta_id + 1;
+        }
+        break;
+      }
 
-        if(nextSection == 1 && nextQuestion == null) {
+      case 5: { // question type 5 (Text Area)
+        if(isFinal == 1) {
+          nextSection = this.question.seccion + 1;
+          nextQuestion = 1;
+        }
+        else{
           nextSection = this.question.seccion;
           nextQuestion = this.question.seccion_pregunta_id + 1;
         }
@@ -120,23 +129,12 @@ export class SurveyPage {
     console.log('next section: ' + nextSection + ' next question: ' + nextQuestion);
     this.question = this.questions.find(question => (question.seccion == nextSection) && (question.seccion_pregunta_id == nextQuestion));
     
-    
+
     this.answer = {};
-
-    // if(this.question.tipo_pregunta == 5) {
-    //   this.answer.options = [];
-    // }
-
-    
     
   }
 
   radioOptionChanged() {
-    console.log('listener')
-    console.log(this.answer);
-  }
-
-  checkChecked() {
     console.log('listener')
     console.log(this.answer);
   }
