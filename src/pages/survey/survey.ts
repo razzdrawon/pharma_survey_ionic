@@ -22,7 +22,7 @@ export class SurveyPage {
 
   public answers: any[];
 
-  public answer: any;
+  public answer: any = {};
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public syncHttpService: SyncHttpService, private storage: Storage) {
   }
@@ -70,8 +70,8 @@ export class SurveyPage {
         break;
       }
       case 2: {
-        nextSection = this.answer.siguiente_seccion;
-        nextQuestion = this.answer.siguiente_pregunta;
+        nextSection = this.answer.option.siguiente_seccion;
+        nextQuestion = this.answer.option.siguiente_pregunta;
 
         if(nextSection == 1 && nextQuestion == null) {
           nextSection = this.question.seccion;
@@ -79,17 +79,64 @@ export class SurveyPage {
         }
         break;
       }
+
+      case 3: {
+        nextSection = this.answer.option.siguiente_seccion;
+        nextQuestion = this.answer.option.siguiente_pregunta;
+
+        if(nextSection == 1 && nextQuestion == null) {
+          nextSection = this.question.seccion;
+          nextQuestion = this.question.seccion_pregunta_id + 1;
+        }
+        break;
+      }
+
+      case 4: {
+        if(isFinal == 1) {
+          nextSection = this.question.seccion + 1;
+          nextQuestion = 1;
+        }
+        else{
+          nextSection = this.question.seccion;
+          nextQuestion = this.question.seccion_pregunta_id + 1;
+        }
+        break;
+      }
+
+      case 5: {
+        nextSection = this.answer.option.siguiente_seccion;
+        nextQuestion = this.answer.option.siguiente_pregunta;
+
+        if(nextSection == 1 && nextQuestion == null) {
+          nextSection = this.question.seccion;
+          nextQuestion = this.question.seccion_pregunta_id + 1;
+        }
+        break;
+      }
+
     }
 
     
     console.log('next section: ' + nextSection + ' next question: ' + nextQuestion);
     this.question = this.questions.find(question => (question.seccion == nextSection) && (question.seccion_pregunta_id == nextQuestion));
+    
+    
+    this.answer = {};
 
-    this.answer = null;
+    // if(this.question.tipo_pregunta == 5) {
+    //   this.answer.options = [];
+    // }
+
+    
     
   }
 
   radioOptionChanged() {
+    console.log('listener')
+    console.log(this.answer);
+  }
+
+  checkChecked() {
     console.log('listener')
     console.log(this.answer);
   }

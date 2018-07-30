@@ -17,7 +17,7 @@
 
   <div>
     <p>
-      <!-- {{question.indice}}  -->
+      {{question.indice}} 
       {{question.enunciado}}
     </p>
   </div>
@@ -27,11 +27,11 @@
     <!-- texto number -->
     <ion-item *ngSwitchCase=1>
       <ion-label floating>Escriba su respuesta</ion-label>
-      <ion-input type="number" [(ngModel)]="answer"></ion-input>
+      <ion-input type="number" [(ngModel)]="answer.text"></ion-input>
     </ion-item>
 
     <!-- radio button  -->
-    <ion-list *ngSwitchCase=2 radio-group [(ngModel)]="answer" (ionChange)="radioOptionChanged();">
+    <ion-list *ngSwitchCase=2 radio-group [(ngModel)]="answer.option" (ionChange)="radioOptionChanged();">
       <ion-item *ngFor="let opt of question.respuestas">
         <ion-label>{{opt.enunciado}}</ion-label>
         <ion-radio [value]="opt"></ion-radio>
@@ -49,7 +49,7 @@
     <!-- texto abierto -->
     <ion-item *ngSwitchCase=4>
       <ion-label floating>Escriba su respuesta</ion-label>
-      <ion-input type="text" [(ngModel)]="answer"></ion-input>
+      <ion-textarea elastic type="text" [(ngModel)]="answer.text"></ion-textarea>
     </ion-item>
 
     <!-- opcion multiple con pondereaciones -->
@@ -58,12 +58,12 @@
         <ion-col>
           <ion-item>
             <ion-label>{{opt.enunciado}}</ion-label>
-            <ion-checkbox item-start [(ngModel)]="opt.checked"></ion-checkbox>
+            <ion-checkbox item-start></ion-checkbox>
           </ion-item>
         </ion-col>
         <ion-col>
           <div>
-            <ion-input [(ngModel)]="opt.value" placeholder="0"></ion-input>
+            <ion-input placeholder="0"></ion-input>
           </div>
         </ion-col>
       </ion-row>
