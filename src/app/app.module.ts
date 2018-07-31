@@ -17,13 +17,15 @@ import { SurveyPage } from './../pages/survey/survey';
 //import { SurveysDBService } from '../providers/db-services/surveys-service';
 
 import { SyncHttpService } from '../providers/http-services/sync-service';
+import { ElasticDirective } from '../directives/elastic/elastic';
 
 @NgModule({
   declarations: [
     MyApp,
     LoginPage,
     HomePage,
-    SurveyPage
+    SurveyPage,
+    ElasticDirective
   ],
   imports: [
     BrowserModule,
