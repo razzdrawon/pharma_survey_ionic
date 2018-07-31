@@ -52,11 +52,11 @@ export class SurveyPage {
 
   nextQuestion() {
 
-
+    this.answer.id = this.question.id;
+    this.answer.tipo_pregunta = this.question.tipo_pregunta;
+    this.answer.indice = this.question.indice;
+    this.answer.nivel = this.question.nivel;
     console.log(this.answer);
-
-    debugger;
-
 
 
     let nextSection = this.question.siguiente_seccion;
