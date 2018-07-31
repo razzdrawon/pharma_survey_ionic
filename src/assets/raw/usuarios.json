@@ -5,5 +5,12 @@
         "hashed_password": "81f9c7295d25bfbd91f1d753ff92a682",
         "rol": 1,
         "activo": 1
+    },
+    {
+        "usuario": "usertest1",
+        "nombre": "Ricardo Padilla",
+        "hashed_password": "81f9c7295d25bfbd91f1d753ff92a682",
+        "rol": 1,
+        "activo": 1
     }
 ]

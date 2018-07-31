@@ -17,28 +17,28 @@
 
   <div>
     <p class="sentence">
-      <!-- {{question.indice}}  -->
-      {{question.enunciado}}
+      {{question.indice}} 
+      {{question['enunciado']}}
     </p>
   </div>
 
   <div [ngSwitch]="question.tipo_pregunta">
 
-    <!-- texto number -->
+    <!-- 1.- texto number -->
     <ion-item *ngSwitchCase=1>
       <ion-label floating>Escriba su respuesta</ion-label>
-      <ion-input type="number" [(ngModel)]="answer"></ion-input>
+      <ion-input type="number" [(ngModel)]="answer.int"></ion-input>
     </ion-item>
 
-    <!-- radio button  -->
-    <ion-list *ngSwitchCase=2 radio-group [(ngModel)]="answer" (ionChange)="radioOptionChanged();">
+    <!-- 2.- radio button  -->
+    <ion-list *ngSwitchCase=2 radio-group [(ngModel)]="answer.opt" (ionChange)="radioOptionChanged();">
       <ion-item *ngFor="let opt of question.respuestas">
         <ion-label class="sentence">{{opt.enunciado}}</ion-label>
         <ion-radio [value]="opt"></ion-radio>
       </ion-item>
     </ion-list>
 
-    <!-- combo box  -->
+    <!-- 3.- combo box  -->
     <ion-list *ngSwitchCase=3>
       <ion-item *ngFor="let opt of question.respuestas">
         <ion-label class="sentence">{{opt.enunciado}}</ion-label>
@@ -46,24 +46,23 @@
       </ion-item>
     </ion-list>
 
-    <!-- texto abierto -->
+    <!-- 4.- texto abierto -->
     <ion-item *ngSwitchCase=4>
       <ion-label floating>Escriba su respuesta</ion-label>
-      <ion-input type="text" [(ngModel)]="answer"></ion-input>
+      <ion-textarea elastic type="text" [(ngModel)]="answer.txt"></ion-textarea>
     </ion-item>
 
-    <!-- opcion multiple con pondereaciones -->
+    <!-- 5.- opcion multiple con pondereaciones -->
     <ion-grid *ngSwitchCase=5>
-      <ion-row *ngFor="let opt of question.respuestas">
+      <ion-row *ngFor="let opt of question.respuestas; let i = index">
         <ion-col>
           <ion-item>
             <ion-label class="sentence">{{opt.enunciado}}</ion-label>
-            <ion-checkbox item-start [(ngModel)]="opt.checked"></ion-checkbox>
           </ion-item>
         </ion-col>
         <ion-col>
           <div>
-            <ion-input [(ngModel)]="opt.value" placeholder="0"></ion-input>
+            <ion-input placeholder="0" [(ngModel)]="answer[opt.enunciado]" ></ion-input>
           </div>
         </ion-col>
       </ion-row>

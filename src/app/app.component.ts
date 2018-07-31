@@ -1,5 +1,4 @@
 import { LoginPage } from './../pages/login/login';
-import { HomePage } from './../pages/home/home';
 import { Component } from '@angular/core';
 import { Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
