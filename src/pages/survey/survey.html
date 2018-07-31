@@ -31,7 +31,7 @@
     </ion-item>
 
     <!-- 2.- radio button  -->
-    <ion-list *ngSwitchCase=2 radio-group [(ngModel)]="answer.opt" (ionChange)="radioOptionChanged();">
+    <ion-list *ngSwitchCase=2 radio-group [(ngModel)]="answer.opt" (ionChange)="radioOptionChanged()">
       <ion-item *ngFor="let opt of question.respuestas">
         <ion-label class="sentence">{{opt.enunciado}}</ion-label>
         <ion-radio [value]="opt"></ion-radio>
@@ -54,7 +54,7 @@
 
     <!-- 5.- opcion multiple con pondereaciones -->
     <ion-grid *ngSwitchCase=5>
-      <ion-row *ngFor="let opt of question.respuestas; let i = index">
+      <ion-row *ngFor="let opt of question.respuestas">
         <ion-col>
           <ion-item>
             <ion-label class="sentence">{{opt.enunciado}}</ion-label>
@@ -62,11 +62,18 @@
         </ion-col>
         <ion-col>
           <div>
-            <ion-input placeholder="0" [(ngModel)]="answer[opt.enunciado]" ></ion-input>
+            <ion-input placeholder="0" [(ngModel)]="answer[opt.id]" ></ion-input>
           </div>
         </ion-col>
       </ion-row>
     </ion-grid>
+
+    <!-- <ion-list *ngSwitchCase=5 >
+      <ion-item *ngFor="let opt of question.respuestas">
+        <ion-label item-start>{{opt.enunciado}}</ion-label>
+        <ion-input item-end placeholder="0" [(ngModel)]="answer[opt.enunciado]"></ion-input>
+      </ion-item>
+    </ion-list> -->
 
   </div>
 
