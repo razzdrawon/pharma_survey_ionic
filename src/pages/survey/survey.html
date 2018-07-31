@@ -16,7 +16,7 @@
 <ion-content padding>
 
   <div>
-    <p>
+    <p class="sentence">
       <!-- {{question.indice}}  -->
       {{question.enunciado}}
     </p>
@@ -33,7 +33,7 @@
     <!-- radio button  -->
     <ion-list *ngSwitchCase=2 radio-group [(ngModel)]="answer" (ionChange)="radioOptionChanged();">
       <ion-item *ngFor="let opt of question.respuestas">
-        <ion-label>{{opt.enunciado}}</ion-label>
+        <ion-label class="sentence">{{opt.enunciado}}</ion-label>
         <ion-radio [value]="opt"></ion-radio>
       </ion-item>
     </ion-list>
@@ -41,7 +41,7 @@
     <!-- combo box  -->
     <ion-list *ngSwitchCase=3>
       <ion-item *ngFor="let opt of question.respuestas">
-        <ion-label>{{opt.enunciado}}</ion-label>
+        <ion-label class="sentence">{{opt.enunciado}}</ion-label>
         <ion-checkbox></ion-checkbox>
       </ion-item>
     </ion-list>
@@ -57,7 +57,7 @@
       <ion-row *ngFor="let opt of question.respuestas">
         <ion-col>
           <ion-item>
-            <ion-label>{{opt.enunciado}}</ion-label>
+            <ion-label class="sentence">{{opt.enunciado}}</ion-label>
             <ion-checkbox item-start [(ngModel)]="opt.checked"></ion-checkbox>
           </ion-item>
         </ion-col>
@@ -71,6 +71,6 @@
 
   </div>
 
-  <button ion-button block (click)="nextQuestion()" *ngIf="answer != null">Siguiente</button>
+  <button class="siguiente" ion-button block (click)="nextQuestion()" *ngIf="answer != null">Siguiente</button>
 
 </ion-content>
