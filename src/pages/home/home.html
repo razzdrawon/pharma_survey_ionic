@@ -6,7 +6,7 @@
 -->
 <ion-header>
 
-  <ion-navbar>
+  <ion-navbar style="background-color:royalblue;">
     <ion-title>{{loggedUser.nombre}}</ion-title>
 
     <ion-buttons end>
@@ -44,16 +44,16 @@
 
 
 
-  <button ion-button block (click)="startSurvey()">Iniciar Cuestionario</button>
+  <button style="margin-top:30px;" ion-button block (click)="startSurvey()">Iniciar Cuestionario</button>
 
-  <p>
+  <p class="comment">
     Usted ha capturado 03 cuestionarios
   </p>
-  <p>
+  <p class="comment">
     Usted ha sincronizado 02 cuestionatios
   </p>
 
-  <p>
+  <p class="comment">
     Cuestionatios a sincronizar: 01
   </p>
 

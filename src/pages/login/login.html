@@ -2,25 +2,25 @@
     <ion-grid class="banner" >
         <ion-row wrap align-items-center style="height: 100%; ">
           <ion-col style="justify-content: center; display: flex!important;">
-              <img src="assets/imgs/unodc.png">
+              <img style="width:90%; height:100%;" src="assets/imgs/unodc.png">
           </ion-col>
           <ion-col class="image" style="justify-content: center; display: flex!important;">
-              <img src="assets/imgs/cofepris.png">
+              <img style="width:90%; height:100%;" src="assets/imgs/cofepris.png">
             </ion-col>
           <ion-col style=" width:60%;justify-content: center; display: flex!important;">
-              <img src="assets/imgs/funsalud.png" style="width:60%;">
+              <img style="width:60%; height:100%;" src="assets/imgs/funsalud.png">
           </ion-col>
         </ion-row>
       </ion-grid>
 </ion-header>
 
-<ion-content padding class="login-content">
+<ion-content padding class="login-content" style="background: url('assets/imgs/back.jpg'); margin-top=50%; background-size:100%;">
   
   <p class="pTitle">
     Cuestionario de Acceso a Medicamentos Controlados
   </p>
 
-  <form (ngSubmit)="runLogin()">
+  <form (ngSubmit)="runLogin()" class="form-login">
     
     <ion-item class="input-text">
           <ion-label floating>Username</ion-label>
@@ -33,12 +33,12 @@
     </ion-item>
 
 
-    <button ion-button class="submit" type="submit" block>Ingresar</button>
+    <button ion-button class="submit ingresar" type="submit" block>Ingresar</button>
 
   </form>
 
 
-  <button ion-button class="submit" block (click)="syncInfo()">Sincronizar</button>
+  <button ion-button class="submit sincronizar" block (click)="syncInfo()">Sincronizar</button>
 
 
   <ion-list>

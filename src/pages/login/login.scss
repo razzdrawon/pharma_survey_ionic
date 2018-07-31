@@ -1,27 +1,48 @@
 page-login {
+    .banner{
+        z-index: 2;
+        background-color: white;
+    }
     .scroll-content{
-        background: url('assets/imgs/background.jpeg');
-        background-color: #bce6ff;
+        background: url('assets/imgs/back.jpg');
+        background-size:100%;
+       /* background-color: #bce6ff;*/
     }
     .pTitle{
-        color: #54AFFF;
-        padding-left: 10%;
-        font-size: 15px;
+        color: rgb(84, 130, 255);
+        font-size: 200%;
         font-weight: bold;
+        text-align: center;
     }
     .input-text{
-        background-color:#bce6ff;
+      /*  background-color:#bce6ff;*/
+        background-color: transparent;
+        font-size:90%;
     }
     .text-input{
         background-color: white;
-        height:120%;
+        height:150%;
         border-color: royalblue;
         border: 10px 2px 2px 2px;
     }
-    .submit{
-        margin-top: 30px;
+    .sincronizar{
+        margin-top: 120px;
+        width: 80%;
+        margin-left: 10%;
+    }
+    .ingresar{
+        margin-top: 50px;
+        width: 40%;
+        margin-left:60%;
     }
     .image{
         margin-left: 10px;
     }
+    .form-login{
+        width: 70%;
+        align-self: center;
+        margin-left:15%;
+        font-size: 30px;
+    }
+
 }
