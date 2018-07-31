@@ -1,32 +1,32 @@
 <ion-header>
-    <ion-grid class="banner" >
-        <ion-row wrap align-items-center style="height: 100%; ">
-          <ion-col style="justify-content: center; display: flex!important;">
-              <img style="width:90%; height:100%;" src="assets/imgs/unodc.png">
-          </ion-col>
-          <ion-col class="image" style="justify-content: center; display: flex!important;">
-              <img style="width:90%; height:100%;" src="assets/imgs/cofepris.png">
-            </ion-col>
-          <ion-col style=" width:60%;justify-content: center; display: flex!important;">
-              <img style="width:60%; height:100%;" src="assets/imgs/funsalud.png">
-          </ion-col>
-        </ion-row>
-      </ion-grid>
+  <ion-grid class="banner" >
+    <ion-row wrap align-items-center style="height: 100%; ">
+      <ion-col style="justify-content: center; display: flex!important;">
+        <img style="width:90%; height:100%;" src="assets/imgs/unodc.png">
+      </ion-col>
+      <ion-col class="image" style="justify-content: center; display: flex!important;">
+        <img style="width:90%; height:100%;" src="assets/imgs/cofepris.png">
+      </ion-col>
+      <ion-col style=" width:60%;justify-content: center; display: flex!important;">
+        <img style="width:60%; height:100%;" src="assets/imgs/funsalud.png">
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-header>
 
 <ion-content padding class="login-content" style="background: url('assets/imgs/back.jpg'); margin-top=50%; background-size:100%;">
-  
+
   <p class="pTitle">
     Cuestionario de Acceso a Medicamentos Controlados
   </p>
 
   <form (ngSubmit)="runLogin()" class="form-login">
-    
+
     <ion-item class="input-text">
-          <ion-label floating>Username</ion-label>
+      <ion-label floating>Username</ion-label>
       <ion-input type="text" [(ngModel)]="userLogin.username" name="userLogin"></ion-input>
     </ion-item>
-   
+
     <ion-item class="input-text">
       <ion-label floating>Password</ion-label>
       <ion-input type="password" [(ngModel)]="userLogin.password" name="password"></ion-input>
@@ -41,23 +41,13 @@
   <button ion-button class="submit sincronizar" block (click)="syncInfo()">Sincronizar</button>
 
 
-  <ion-list>
-    <!--ion-item *ngIf="allUsers.length == 0"> 
-      Empty
-    </ion-item-->
-   <ion-item-sliding *ngFor="let user of allUsers; let i = index">
-     <ion-item >
-       <ion-label>{{ user.usuario }} {{ user.nombre }}</ion-label>
-       <!-- <ion-checkbox (ionChange)="updateUser( user, i )" [checked]="user.completed"></ion-checkbox> -->
-     </ion-item>
-     <!-- <ion-item-options side="right" icon-left>
-       <button ion-button color="danger" (click)="deleteUser(user, i)">
-         <ion-icon name="trash"></ion-icon>
-         Delete
-       </button>
-     </ion-item-options> -->
-   </ion-item-sliding>
- </ion-list>
+  <!-- <ion-list>
+    <ion-item-sliding *ngFor="let user of allUsers; let i = index">
+      <ion-item>
+        <ion-label>{{ user.usuario }} {{ user.nombre }}</ion-label>
+      </ion-item>
+    </ion-item-sliding>
+  </ion-list> -->
 
 
 
