@@ -58,10 +58,10 @@
                 <ion-radio [value]="opt"></ion-radio>
               </ion-item>
               <ion-row *ngIf="hasChilds">
-                <ion-list radio-group>
-                    <ion-item *ngFor="let resp of opt.respuestas">
-                      <ion-label class="sentence">{{resp.enunciado}}</ion-label>
-                      <ion-radio [value]=""></ion-radio>
+                <ion-list radio-group [(ngModel)]="answer.optChild" (ionChange)="radioChildOptionChanged()">
+                    <ion-item *ngFor="let optChild of opt.respuestas">
+                      <ion-label class="sentence">{{optChild.enunciado}}</ion-label>
+                      <ion-radio [value]="optChild"></ion-radio>
                     </ion-item>
                 </ion-list>
               </ion-row>
