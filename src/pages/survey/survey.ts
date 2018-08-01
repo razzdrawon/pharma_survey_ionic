@@ -23,6 +23,7 @@ export class SurveyPage {
   public answer: any = {};
 
   public hasChilds: boolean = false;
+  public isAnswered: boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public syncHttpService: SyncHttpService, private storage: Storage) {
   }
@@ -32,8 +33,7 @@ export class SurveyPage {
     console.log('ionViewDidLoad SurveyPage');
 
     this.loadSurvey();
-    
-    
+
   }
 
   loadSurvey() {
@@ -62,14 +62,14 @@ export class SurveyPage {
     let nextQuestion = this.question.siguiente_prgunta;
     let isFinal = this.question.final_seccion;
 
-    switch(this.question.tipo_pregunta) {
+    switch (this.question.tipo_pregunta) {
 
       case 1: { // question type 1 (Open answer)
-        if(isFinal == 1) {
+        if (isFinal == 1) {
           nextSection = this.question.seccion + 1;
           nextQuestion = 1;
         }
-        else{
+        else {
           nextSection = this.question.seccion;
           nextQuestion = this.question.seccion_pregunta_id + 1;
         }
@@ -79,7 +79,7 @@ export class SurveyPage {
         nextSection = this.answer.opt.siguiente_seccion;
         nextQuestion = this.answer.opt.siguiente_pregunta;
 
-        if(nextSection == 1 && nextQuestion == null) {
+        if (nextSection == 1 && nextQuestion == null) {
           nextSection = this.question.seccion;
           nextQuestion = this.question.seccion_pregunta_id + 1;
         }
@@ -87,11 +87,11 @@ export class SurveyPage {
       }
 
       case 3: { // question type 3 (Combo Box)
-        if(isFinal == 1) {
+        if (isFinal == 1) {
           nextSection = this.question.seccion + 1;
           nextQuestion = 1;
         }
-        else{
+        else {
           nextSection = this.question.seccion;
           nextQuestion = this.question.seccion_pregunta_id + 1;
         }
@@ -99,11 +99,11 @@ export class SurveyPage {
       }
 
       case 4: { // question type 4 (Text Area)
-        if(isFinal == 1) {
+        if (isFinal == 1) {
           nextSection = this.question.seccion + 1;
           nextQuestion = 1;
         }
-        else{
+        else {
           nextSection = this.question.seccion;
           nextQuestion = this.question.seccion_pregunta_id + 1;
         }
@@ -111,11 +111,11 @@ export class SurveyPage {
       }
 
       case 5: { // question type 5 (Text Area)
-        if(isFinal == 1) {
+        if (isFinal == 1) {
           nextSection = this.question.seccion + 1;
           nextQuestion = 1;
         }
-        else{
+        else {
           nextSection = this.question.seccion;
           nextQuestion = this.question.seccion_pregunta_id + 1;
         }
@@ -124,32 +124,38 @@ export class SurveyPage {
 
     }
 
-    
     console.log('next section: ' + nextSection + ' next question: ' + nextQuestion);
     this.question = this.questions.find(question => (question.seccion == nextSection) && (question.seccion_pregunta_id == nextQuestion));
-    if(this.question.tipo_pregunta == 2){
+    if (this.question.tipo_pregunta == 2) {
       this.answer = {};
       this.answer.opt = {};
     }
-    else{
+    else {
       this.answer = {};
     }
 
-    
-    
   }
 
   radioOptionChanged() {
-    console.log('listener')
+
     console.log(this.answer);
-    if(this.answer.opt.respuestas != null){
+
+    if (this.answer.opt.respuestas != null) {
       this.hasChilds = true;
     }
-    else{
+    else {
       this.hasChilds = false;
+      this.answer.optChild = null;
     }
+
   }
 
-  
+  radioChildOptionChanged() {
+
+    console.log(this.answer);
+    // this.answer.opt = {};
+    // this.answer.opt.respuestas = item;
+    // console.log(this.answer);
+  }
 
 }
