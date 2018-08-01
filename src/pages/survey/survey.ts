@@ -18,12 +18,11 @@ export class SurveyPage {
 
   public questions: any[] = [];
   public question: any = {};
-  public buttonEnable: boolean = false;
 
   public answers: any[];
-
-
   public answer: any = {};
+
+  public hasChilds: boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public syncHttpService: SyncHttpService, private storage: Storage) {
   }
@@ -128,15 +127,29 @@ export class SurveyPage {
     
     console.log('next section: ' + nextSection + ' next question: ' + nextQuestion);
     this.question = this.questions.find(question => (question.seccion == nextSection) && (question.seccion_pregunta_id == nextQuestion));
-    
+    if(this.question.tipo_pregunta == 2){
+      this.answer = {};
+      this.answer.opt = {};
+    }
+    else{
+      this.answer = {};
+    }
 
-    this.answer = {};
+    
     
   }
 
   radioOptionChanged() {
     console.log('listener')
     console.log(this.answer);
+    if(this.answer.opt.respuestas != null){
+      this.hasChilds = true;
+    }
+    else{
+      this.hasChilds = false;
+    }
   }
+
+  
 
 }

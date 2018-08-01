@@ -6,7 +6,7 @@
 -->
 <ion-header>
 
-  <ion-navbar>
+  <ion-navbar color="primary">
     <ion-title>Survey</ion-title>
   </ion-navbar>
 
@@ -17,8 +17,7 @@
 
   <div>
     <p class="sentence">
-      {{question.indice}} 
-      {{question['enunciado']}}
+      {{question.indice}} {{question['enunciado']}}
     </p>
   </div>
 
@@ -31,12 +30,46 @@
     </ion-item>
 
     <!-- 2.- radio button  -->
-    <ion-list *ngSwitchCase=2 radio-group [(ngModel)]="answer.opt" (ionChange)="radioOptionChanged()">
-      <ion-item *ngFor="let opt of question.respuestas">
-        <ion-label class="sentence">{{opt.enunciado}}</ion-label>
-        <ion-radio [value]="opt"></ion-radio>
-      </ion-item>
-    </ion-list>
+    <!-- <ion-list *ngSwitchCase=2 radio-group [(ngModel)]="answer.opt" (ionChange)="radioOptionChanged()">
+      <div *ngFor="let opt of question.respuestas">
+        <ion-item>childAnswer
+          <ion-label class="sentence">{{opt.enunciado}}</ion-label>
+          <ion-radio [value]="opt"></ion-radio>
+        </ion-item>
+        
+        <ion-list  radio-group >
+        <ion-item *ngFor="let resp of opt.respuestas" >
+            <ion-label class="sentence">{{resp.enunciado}}</ion-label>
+            <ion-radio [value]="resp"></ion-radio>
+        </ion-item>
+        </ion-list>
+        
+      </div>
+    </ion-list> -->
+
+    <!-- 2.- radio button  -->
+    <ion-grid *ngSwitchCase=2>
+      <ion-row *ngFor="let opt of question.respuestas">
+        <ion-col>
+          <ion-list radio-group [(ngModel)]="answer.opt" (ionChange)="radioOptionChanged()">
+            <ion-item-group>
+              <ion-item>
+                <ion-label class="sentence">{{opt.enunciado}}</ion-label>
+                <ion-radio [value]="opt"></ion-radio>
+              </ion-item>
+              <ion-row *ngIf="hasChilds">
+                <ion-list radio-group>
+                    <ion-item *ngFor="let resp of opt.respuestas">
+                      <ion-label class="sentence">{{resp.enunciado}}</ion-label>
+                      <ion-radio [value]=""></ion-radio>
+                    </ion-item>
+                </ion-list>
+              </ion-row>
+            </ion-item-group>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
 
     <!-- 3.- combo box  -->
     <ion-list *ngSwitchCase=3>
@@ -62,7 +95,7 @@
         </ion-col>
         <ion-col>
           <div>
-            <ion-input placeholder="0" [(ngModel)]="answer[opt.id]" ></ion-input>
+            <ion-input placeholder="0" [(ngModel)]="answer[opt.id]"></ion-input>
           </div>
         </ion-col>
       </ion-row>
@@ -75,8 +108,25 @@
       </ion-item>
     </ion-list> -->
 
+    <!-- opcion multiple con pondereaciones -->
+    <!-- <ion-grid *ngSwitchCase=5>
+      <ion-row *ngFor="let opt of question.respuestas">
+        <ion-col>
+          <ion-item>
+            <ion-label>{{opt.enunciado}}</ion-label>
+            <ion-checkbox item-start [(ngModel)]="opt.checked"></ion-checkbox>
+          </ion-item>
+        </ion-col>
+        <ion-col>
+          <div>
+            <ion-input [(ngModel)]="opt.value" placeholder="0"></ion-input>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid> -->
+
   </div>
 
-  <button class="siguiente" ion-button block (click)="nextQuestion()" *ngIf="answer != null">Siguiente</button>
+  <button class="siguiente" ion-button block (click)="nextQuestion()" *ngIf="(answer | json) != '{}'">Siguiente</button>
 
 </ion-content>
