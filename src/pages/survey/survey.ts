@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { SyncHttpService } from '../../providers/http-services/sync-service';
 import { Storage } from '@ionic/storage';
-import { Camera, CameraOptions } from '@ionic-native/camera';
+//import { Camera, CameraOptions } from '@ionic-native/camera';
 
 /**
  * Generated class for the SurveyPage page.
@@ -29,18 +29,34 @@ export class SurveyPage {
 
   public image: string = null;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public syncHttpService: SyncHttpService, private storage: Storage, private camera: Camera) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public syncHttpService: SyncHttpService, private storage: Storage) {
   }
 
   ionViewDidLoad() {
 
     console.log('ionViewDidLoad SurveyPage');
-
-    this.loadSurvey();
+    console.log(this.navParams);
+    this.loadSurvey(this.navParams.data);
 
   }
 
-  loadSurvey() {
+  loadSurvey(navParams) {
+    console.log(navParams['tipo_establecimiento_id']);
+    if(navParams["tipo_establecimiento_id"]==3 || navParams["descripcion"]=='Farmacia Intrahospitalaria'){
+      console.log('pharma');
+      this.storage.get('pharmaSurvey').then(
+      (data) => {
+        //console.log(data);
+        this.questions = JSON.parse(data);
+        this.question = this.questions[0];
+        console.log(this.question);
+      },
+      err => {
+        console.log(err);
+      }
+    );
+  } else {
+    console.log('hospital');
     this.storage.get('hospitalSurvey').then(
       (data) => {
         //console.log(data);
@@ -50,7 +66,8 @@ export class SurveyPage {
       err => {
         console.log(err);
       }
-    );
+    );    
+  }
   }
 
   
@@ -77,7 +94,7 @@ export class SurveyPage {
     // console.log(this.answer);
   }
 
-  getPicture(){
+/*  getPicture(){
     let options: CameraOptions = {
       destinationType: this.camera.DestinationType.DATA_URL,
       targetWidth: 1000,
@@ -93,7 +110,7 @@ export class SurveyPage {
     .catch(error =>{
       console.error( error );
     });
-  }
+  }*/
 
 
   nextQuestion() {

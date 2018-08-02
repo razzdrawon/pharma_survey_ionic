@@ -78,20 +78,22 @@ export class HomePage {
 
   optionChanged() {
 
-    console.log(this.establishmentSelected.establecimiento_id);
+    console.log(this.establishmentSelected);
 
   }
 
   subtypeChanged() {
 
+
+   // let item = this.establishmentSelected; // Just did this in order to avoid changing the next lines of code :P
     console.log(this.subtypeSelected);
-
-    // let item = this.establishmentSelected; // Just did this in order to avoid changing the next lines of code :P
-
   }
 
   startSurvey() {
-    this.navCtrl.push(SurveyPage);
+
+    let params = Object.assign({}, this.subtypeSelected,this.establishmentSelected) ;
+    console.log(params);
+    this.navCtrl.push(SurveyPage, params );
   }
 
   salir() {
