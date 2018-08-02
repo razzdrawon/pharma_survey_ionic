@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { SyncHttpService } from '../../providers/http-services/sync-service';
 import { Storage } from '@ionic/storage';
+import { Camera, CameraOptions } from '@ionic-native/camera';
 
 /**
  * Generated class for the SurveyPage page.
@@ -17,15 +18,18 @@ import { Storage } from '@ionic/storage';
 export class SurveyPage {
 
   public questions: any[] = [];
-  public question: any = {};
+  public question: any = {}; // current question (displayed in screen)
 
-  public answers: any[];
+  public answers: any[] = [];
   public answer: any = {};
 
   public hasChilds: boolean = false;
+
   public isAnswered: boolean = false;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public syncHttpService: SyncHttpService, private storage: Storage) {
+  public image: string = null;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, public syncHttpService: SyncHttpService, private storage: Storage, private camera: Camera) {
   }
 
   ionViewDidLoad() {
@@ -49,15 +53,71 @@ export class SurveyPage {
     );
   }
 
+  
+
+  radioOptionChanged() {
+
+    console.log(this.answer);
+
+    if (this.answer.opt.respuestas != null) {
+      this.hasChilds = true;
+    }
+    else {
+      this.hasChilds = false;
+      this.answer.optChild = null;
+    }
+
+  }
+
+  radioChildOptionChanged() {
+
+    console.log(this.answer);
+    // this.answer.opt = {};
+    // this.answer.opt.respuestas = item;
+    // console.log(this.answer);
+  }
+
+  getPicture(){
+    let options: CameraOptions = {
+      destinationType: this.camera.DestinationType.DATA_URL,
+      targetWidth: 1000,
+      targetHeight: 1000,
+      quality: 100
+    }
+    this.camera.getPicture( options )
+    .then(imageData => {
+      this.image = `data:image/jpeg;base64,${imageData}`;
+      console.log(this.image);
+      this.answer.image = this.image;
+    })
+    .catch(error =>{
+      console.error( error );
+    });
+  }
+
+
   nextQuestion() {
 
+    this.fillAnswerAndPush();
+    
+    this.defineNextSectionAndQuestion();
+
+  }
+
+  fillAnswerAndPush() {
+    
+    // fill with useful question info in the answer
     this.answer.id = this.question.id;
     this.answer.tipo_pregunta = this.question.tipo_pregunta;
     this.answer.indice = this.question.indice;
     this.answer.nivel = this.question.nivel;
     console.log(this.answer);
 
+    // push answer to answers array (saving answer temporary and not in storage yet)
+    this.answers.push(this.answer);
+  }
 
+  defineNextSectionAndQuestion(){
     let nextSection = this.question.siguiente_seccion;
     let nextQuestion = this.question.siguiente_prgunta;
     let isFinal = this.question.final_seccion;
@@ -121,7 +181,6 @@ export class SurveyPage {
         }
         break;
       }
-
     }
 
     console.log('next section: ' + nextSection + ' next question: ' + nextQuestion);
@@ -133,29 +192,6 @@ export class SurveyPage {
     else {
       this.answer = {};
     }
-
-  }
-
-  radioOptionChanged() {
-
-    console.log(this.answer);
-
-    if (this.answer.opt.respuestas != null) {
-      this.hasChilds = true;
-    }
-    else {
-      this.hasChilds = false;
-      this.answer.optChild = null;
-    }
-
-  }
-
-  radioChildOptionChanged() {
-
-    console.log(this.answer);
-    // this.answer.opt = {};
-    // this.answer.opt.respuestas = item;
-    // console.log(this.answer);
   }
 
 }

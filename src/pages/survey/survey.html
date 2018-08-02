@@ -59,15 +59,19 @@
               </ion-item>
               <ion-row *ngIf="hasChilds">
                 <ion-list radio-group ngDefaultControl [(ngModel)]="answer.optChild" (ionChange)="radioChildOptionChanged()">
-                    <ion-item *ngFor="let optChild of opt.respuestas">
-                      <ion-label class="sentence">{{optChild.enunciado}}</ion-label>
-                      <ion-radio [value]="optChild"></ion-radio>
-                    </ion-item>
+                  <ion-item *ngFor="let optChild of opt.respuestas">
+                    <ion-label class="sentence">{{optChild.enunciado}}</ion-label>
+                    <ion-radio [value]="optChild"></ion-radio>
+                  </ion-item>
                 </ion-list>
               </ion-row>
             </ion-item-group>
           </ion-list>
         </ion-col>
+      </ion-row>
+      <ion-row >
+        <button class="siguiente" ion-button block (click)="getPicture()">Tomar Foto</button>
+        <img [src]="image" *ngIf="image" />
       </ion-row>
     </ion-grid>
 
@@ -128,5 +132,11 @@
   </div>
 
   <button class="siguiente" ion-button block (click)="nextQuestion()" *ngIf="(answer | json) != '{}'">Siguiente</button>
+
+  <!-- <div *ngIf="question.tipo_pregunta == 2" >
+    
+  </div> -->
+
+
 
 </ion-content>
