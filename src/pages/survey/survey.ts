@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { SyncHttpService } from '../../providers/http-services/sync-service';
 import { Storage } from '@ionic/storage';
+import { Camera, CameraOptions } from '@ionic-native/camera';
 
 /**
  * Generated class for the SurveyPage page.
@@ -25,7 +26,9 @@ export class SurveyPage {
   public hasChilds: boolean = false;
   public isAnswered: boolean = false;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public syncHttpService: SyncHttpService, private storage: Storage) {
+  public image: string = null;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, public syncHttpService: SyncHttpService, private storage: Storage, private camera: Camera) {
   }
 
   ionViewDidLoad() {
@@ -156,6 +159,24 @@ export class SurveyPage {
     // this.answer.opt = {};
     // this.answer.opt.respuestas = item;
     // console.log(this.answer);
+  }
+
+  getPicture(){
+    let options: CameraOptions = {
+      destinationType: this.camera.DestinationType.DATA_URL,
+      targetWidth: 1000,
+      targetHeight: 1000,
+      quality: 100
+    }
+    this.camera.getPicture( options )
+    .then(imageData => {
+      this.image = `data:image/jpeg;base64,${imageData}`;
+      console.log(this.image);
+      this.answer.image = this.image;
+    })
+    .catch(error =>{
+      console.error( error );
+    });
   }
 
 }

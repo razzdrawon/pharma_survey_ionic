@@ -129,4 +129,9 @@
 
   <button class="siguiente" ion-button block (click)="nextQuestion()" *ngIf="(answer | json) != '{}'">Siguiente</button>
 
+  <button class="siguiente" ion-button block (click)="getPicture()" >Tomar Foto</button>
+  <img [src]="image" *ngIf="image" />
+
+
+
 </ion-content>

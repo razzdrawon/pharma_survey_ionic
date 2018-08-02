@@ -141,7 +141,7 @@
                 "enunciado": "d) Servicio Interconsultantes -> Pase a la Sección III-",
                 "texto_anterior": "",
                 "indice": "d)",
-                "siguiente_seccion": null,
+                "siguiente_seccion": 3,
                 "siguiente_pregunta": 1,
                 "tipo_pregunta": null,
                 "tipo_respuesta": 2,
