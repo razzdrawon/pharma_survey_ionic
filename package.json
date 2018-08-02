@@ -34,7 +34,7 @@
     "cordova-plugin-device": "^2.0.2",
     "cordova-plugin-ionic": "^5.0.0",
     "cordova-plugin-ionic-keyboard": "^2.1.2",
-    "cordova-plugin-ionic-webview": "^2.0.1",
+    "cordova-plugin-ionic-webview": "^2.0.2",
     "cordova-plugin-splashscreen": "^5.0.2",
     "cordova-plugin-statusbar": "^2.4.2",
     "cordova-plugin-themeablebrowser": "^0.2.17",
