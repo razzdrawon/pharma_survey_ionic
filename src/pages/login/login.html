@@ -14,7 +14,7 @@
   </ion-grid>
 </ion-header>
 
-<ion-content padding class="login-content" style="background: url('assets/imgs/back.jpg'); margin-top:50%; background-size:100%;">
+<ion-content padding class="login-content" style="background: url('assets/imgs/back.jpg'); margin-top:10%; background-size:100%;">
 
   <p class="pTitle">
     Cuestionario de Acceso a Medicamentos Controlados
@@ -22,11 +22,10 @@
 
   <form (ngSubmit)="runLogin()" class="form-login">
 
-    <ion-item class="input-text">
+    <ion-item class="input-text" >
       <ion-label floating>Username</ion-label>
       <ion-input type="text" [(ngModel)]="userLogin.username" name="userLogin"></ion-input>
     </ion-item>
-
     <ion-item class="input-text">
       <ion-label floating>Password</ion-label>
       <ion-input type="password" [(ngModel)]="userLogin.password" name="password"></ion-input>

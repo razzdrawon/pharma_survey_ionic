@@ -5,9 +5,13 @@ page-login {
     }
     .scroll-content{
         background: url('assets/imgs/back.jpg');
-        background-size:100%;
        /* background-color: #bce6ff;*/
     }
+    .input-wrapper {
+        border-bottom-color: transparent !important;
+     } 
+     .item-md.item-input .item-inner { border-bottom-color: transparent !important; box-shadow: none !important; } .list-md .item-input:last-child { border-bottom-color: transparent !important; box-shadow: none !important; }
+
     .pTitle{
         color: rgb(84, 130, 255);
         font-size: 200%;
@@ -18,10 +22,11 @@ page-login {
       /*  background-color:#bce6ff;*/
         background-color: transparent;
         font-size:90%;
+        border-bottom-color: transparent !important;
     }
     .text-input{
         background-color: white;
-        height:150%;
+        height:90%;
         border-color: royalblue;
         border: 10px 2px 2px 2px;
     }
