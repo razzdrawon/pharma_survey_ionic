@@ -34,14 +34,15 @@
 
 
     <button ion-button class="submit ingresar" type="submit" block>Ingresar</button>
-
+<ion-label floating>{{pass_hashed}}</ion-label>
   </form>
 
 
   <button ion-button class="submit sincronizar" block (click)="syncInfo()">Sincronizar</button>
 
 
-  <!-- <ion-list>
+<!-- <ion-label floating>{{Md5.hashStr(this.userLogin.password)]]</ion-label>
+  <ion-list>
     <ion-item-sliding *ngFor="let user of allUsers; let i = index">
       <ion-item>
         <ion-label>{{ user.usuario }} {{ user.nombre }}</ion-label>
