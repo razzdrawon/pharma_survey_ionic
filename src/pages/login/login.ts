@@ -202,6 +202,22 @@ export class LoginPage {
         }
     );
 
+    this.syncHttpService.getPharmaSurvey()
+      .subscribe(
+        (data: any[]) => {
+          console.log(data);
+          this.storage.remove('pharmaSurvey');
+          // set a key/value
+          this.storage.set('pharmaSurvey', JSON.stringify(data));
+          console.log('pharmaSurvey syncronized');
+          console.log('storage: ' + this.storage.get('pharmaSurvey'));
+
+        },
+        err => {
+          console.log(err);
+        }
+    );
+
   }
 
   

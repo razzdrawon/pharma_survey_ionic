@@ -41,6 +41,11 @@ export class SyncHttpService {
     .map((res: any[]) => res);
   }
 
+  getPharmaSurvey() {
+    return this.http.get('../assets/raw/questionarioFarmacias.json')
+    .map((res: any[]) => res);
+  }
+
   getMedicines() {
     return this.http.get('../assets/raw/medicamentos.json')
     .map((res: any[]) => res);
