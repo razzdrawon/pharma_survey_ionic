@@ -1,6 +1,6 @@
 import { LoginPage } from './../login/login';
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { SurveyPage } from '../survey/survey';
 import { Storage } from '@ionic/storage';
 
@@ -18,7 +18,7 @@ export class HomePage {
   public establishmentSelected: any = {};
   public subtypeSelected: any = {};
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage, public alertCtrl: AlertController) {
 
   }
 
@@ -84,16 +84,35 @@ export class HomePage {
 
   subtypeChanged() {
 
-
    // let item = this.establishmentSelected; // Just did this in order to avoid changing the next lines of code :P
     console.log(this.subtypeSelected);
   }
 
   startSurvey() {
 
-    let params = Object.assign({}, this.subtypeSelected,this.establishmentSelected) ;
-    console.log(params);
-    this.navCtrl.push(SurveyPage, params );
+    if( JSON.stringify(this.establishmentSelected) == '{}' )  {
+      let alert = this.alertCtrl.create({
+        title: 'Ingrese los campos requeridos',
+        subTitle: 'Aseguresé de que ha introducido un establecimiento',
+        buttons: ['Ok']
+      });
+      alert.present();
+    }
+
+    else if( JSON.stringify(this.establishmentSelected) != '{}' && JSON.stringify(this.subtypeSelected) == '{}') {
+      let alert = this.alertCtrl.create({
+        title: 'Ingrese los campos requeridos',
+        subTitle: 'Aseguresé de que ha introducido un subtipo',
+        buttons: ['Ok']
+      });
+      alert.present();
+    }
+
+    else{
+      let params = Object.assign({}, this.subtypeSelected,this.establishmentSelected) ;
+      console.log(params);
+      this.navCtrl.push(SurveyPage, params );
+    }
   }
 
   salir() {

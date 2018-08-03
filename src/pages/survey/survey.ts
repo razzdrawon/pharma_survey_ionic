@@ -41,6 +41,10 @@ export class SurveyPage {
   }
 
   loadSurvey(navParams) {
+
+    this.answer = {};
+    this.answer.opt = {};
+
     console.log(navParams['tipo_establecimiento_id']);
     if(navParams["tipo_establecimiento_id"]==3 || navParams["descripcion"]=='Farmacia Intrahospitalaria'){
       console.log('pharma');
@@ -62,6 +66,7 @@ export class SurveyPage {
         //console.log(data);
         this.questions = JSON.parse(data);
         this.question = this.questions[0];
+        console.log(this.question);
       },
       err => {
         console.log(err);
@@ -76,7 +81,7 @@ export class SurveyPage {
 
     console.log(this.answer);
 
-    if (this.answer.opt.respuestas != null) {
+    if (this.answer.opt.respuestas != null || this.answer.opt.tipo_pregunta != null) {
       this.hasChilds = true;
     }
     else {
@@ -156,7 +161,7 @@ export class SurveyPage {
         nextSection = this.answer.opt.siguiente_seccion;
         nextQuestion = this.answer.opt.siguiente_pregunta;
 
-        if (nextSection == 1 && nextQuestion == null) {
+        if (nextSection == null && nextQuestion == null) {
           nextSection = this.question.seccion;
           nextQuestion = this.question.seccion_pregunta_id + 1;
         }
