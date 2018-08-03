@@ -105,6 +105,14 @@
       </ion-row>
     </ion-grid>
 
+    <!-- 3.- combo box  -->
+    <ion-list *ngSwitchCase=3>
+      <ion-item *ngFor="let opt of question.respuestas">
+        <ion-label class="sentence">{{opt.enunciado}}</ion-label>
+        <ion-checkbox></ion-checkbox>
+      </ion-item>
+    </ion-list>
+
     <!-- 4.- texto abierto -->
     <ion-item *ngSwitchCase=4>
       <ion-label floating>Escriba su respuesta (Texto)</ion-label>
