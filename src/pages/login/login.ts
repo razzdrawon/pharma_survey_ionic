@@ -4,6 +4,9 @@ import { NavController, AlertController } from 'ionic-angular';
 //import { UsersDBService } from './../../providers/db-services/users-service';
 import { SyncHttpService } from '../../providers/http-services/sync-service';
 import { Storage } from '@ionic/storage';
+// import { Observable } from 'rxjs/Observable';
+// import 'rxjs/add/observable/forkJoin';
+// import 'rxjs/add/operator/first';
 
 @Component({
   selector: 'page-login',
@@ -15,6 +18,8 @@ export class LoginPage {
   usersAsync: any[] = [];
   userLogin: { username: string; password: string; } = { username: '', password: '' };
   user: any;
+
+  tasks: any[] = [];
 
   constructor(public navCtrl: NavController,
     //public usersDBService: UsersDBService, 
@@ -121,7 +126,7 @@ export class LoginPage {
 
   syncInfo() {
 
-    this.syncHttpService.getUsers()
+    let usersObs = this.syncHttpService.getUsers()
       .subscribe(
         (data: any[]) => {
           console.log(data);
@@ -138,7 +143,7 @@ export class LoginPage {
         }
     );
     
-    this.syncHttpService.getEstablishments()
+    let estabsObs = this.syncHttpService.getEstablishments()
       .subscribe(
         (data: any[]) => {
           console.log(data);
@@ -154,7 +159,7 @@ export class LoginPage {
         }
     );
 
-    this.syncHttpService.getSubtypes()
+    let subsObs = this.syncHttpService.getSubtypes()
       .subscribe(
         (data: any[]) => {
           console.log(data);
@@ -170,7 +175,7 @@ export class LoginPage {
         }
     );
 
-    this.syncHttpService.getMedicines()
+    let medsObs = this.syncHttpService.getMedicines()
       .subscribe(
         (data: any[]) => {
           console.log(data);
@@ -186,7 +191,7 @@ export class LoginPage {
         }
     );
 
-    this.syncHttpService.getHospitalSurvey()
+    let hospitalObs = this.syncHttpService.getHospitalSurvey()
       .subscribe(
         (data: any[]) => {
           console.log(data);
@@ -202,7 +207,7 @@ export class LoginPage {
         }
     );
 
-    this.syncHttpService.getPharmaSurvey()
+    let pharmaObs = this.syncHttpService.getPharmaSurvey()
       .subscribe(
         (data: any[]) => {
           console.log(data);
@@ -217,6 +222,20 @@ export class LoginPage {
           console.log(err);
         }
     );
+
+
+    // this.tasks.push(usersObs);
+    // this.tasks.push(estabsObs);
+    // this.tasks.push(subsObs);
+    // this.tasks.push(medsObs);
+    // this.tasks.push(hospitalObs);
+    // this.tasks.push(pharmaObs);
+
+    // Observable.forkJoin(this.tasks).subscribe(
+    //   results => {
+    //     console.log('done');
+    //   }
+    // )
 
   }
 
