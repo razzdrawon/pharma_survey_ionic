@@ -43,12 +43,18 @@ export class SurveyPage {
 
   loadSurvey(navParams) {
 
-    // this.answer = {};
-    // this.answer.option = {};
+    let tipo=navParams['tipo_establecimiento_id'];
+    let sub_tipo=navParams['subtipo_id'];
+    let isPharma = false;
 
-    console.log(navParams['tipo_establecimiento_id']);
-    if(navParams["tipo_establecimiento_id"]==3 || navParams["descripcion"]=='Farmacia Intrahospitalaria'){
-      console.log('pharma');
+    if(tipo== 3 || tipo==4 || (tipo==1 && sub_tipo==3)){
+      isPharma = true;
+    }
+
+
+
+    if(isPharma){
+
       this.storage.get('pharmaSurvey').then(
       (data) => {
         //console.log(data);
@@ -72,7 +78,7 @@ export class SurveyPage {
       err => {
         console.log(err);
       }
-    );    
+    );
   }
   }
 
@@ -121,7 +127,7 @@ export class SurveyPage {
   nextQuestion() {
 
     this.fillAnswerAndPush();
-    
+
     this.defineNextSectionAndQuestion();
 
   }
@@ -129,9 +135,9 @@ export class SurveyPage {
   fillAnswerAndPush() {
 
     this.answer.question = {id: this.question.id, type: this.question.tipo_pregunta, index: this.question.indice, level: this.question.level};
-    
+
     // fill with useful question info in the answer
-    
+
     console.log(this.answer);
 
     // push answer to answers array (saving answer temporary and not in storage yet)

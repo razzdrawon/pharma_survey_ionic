@@ -54,7 +54,7 @@
     <ion-item *ngIf="establishmentSelected.tipo_establecimiento_id == 1">
       <ion-label>Seleccione Subtipo</ion-label>
       <ion-select [(ngModel)]="subtypeSelected" cancelText="Cancel" okText="Okay" (ionChange)="subtypeChanged()">
-        <ion-option *ngFor="let sub of subtypes" [value]="sub">{{sub.descripcion}}</ion-option>
+        <ion-option *ngFor="let sub of subtypesArray" [value]="sub">{{sub.descripcion}}</ion-option>
       </ion-select>
     </ion-item>
 

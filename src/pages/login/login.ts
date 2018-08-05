@@ -6,10 +6,13 @@ import { SyncHttpService } from '../../providers/http-services/sync-service';
 import { Storage } from '@ionic/storage';
 
 import {Md5} from 'ts-md5/dist/md5';
-=======
-// import { Observable } from 'rxjs/Observable';
-// import 'rxjs/add/observable/forkJoin';
-// import 'rxjs/add/operator/first';
+
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/forkJoin';
+import 'rxjs/add/operator/first';
+
+
+
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html'

@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 /**
  * Generated class for the FinCuestPage page.
@@ -10,18 +9,18 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 
 
-@IonicPage()
+
 @Component({
   selector: 'page-fin-cuest',
   templateUrl: 'finCuest.html',
 })
 export class FinCuestPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor() {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad FinCuestPage');
+  //  console.log('ionViewDidLoad FinCuestPage');
   }
 
   cambiar_pagina() {

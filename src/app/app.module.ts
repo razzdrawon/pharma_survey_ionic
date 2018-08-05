@@ -13,8 +13,7 @@ import { MyApp } from './app.component';
 import { LoginPage } from '../pages/login/login';
 import { HomePage } from '../pages/home/home';
 import { SurveyPage } from '../pages/survey/survey';
-import { HomePage } from '../pages/home/home';
-import { RevisionPage } from '../pages/revision/revision';
+
 import { FinCuestPage } from '../pages/finCuest/finCuest';
 
 
@@ -31,7 +30,7 @@ import { ElasticDirective } from '../directives/elastic/elastic';
     HomePage,
     SurveyPage,
     ElasticDirective,
-    RevisionPage,
+
     FinCuestPage
   ],
   imports: [
@@ -46,7 +45,7 @@ import { ElasticDirective } from '../directives/elastic/elastic';
     LoginPage,
     HomePage,
     SurveyPage,
-    RevisionPage,
+
     FinCuestPage
   ],
   providers: [
