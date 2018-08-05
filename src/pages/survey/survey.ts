@@ -86,7 +86,7 @@ export class SurveyPage {
     }
     else {
       this.hasChilds = false;
-      this.answer.childOpt = null;
+      this.answer.childOption = null;
     }
 
   }
@@ -97,6 +97,12 @@ export class SurveyPage {
     // this.answer.opt = {};
     // this.answer.opt.respuestas = item;
     // console.log(this.answer);
+  }
+
+  optionChanged() {
+
+    console.log(this.answer);
+
   }
 
   getPicture(){
