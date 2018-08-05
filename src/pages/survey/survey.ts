@@ -3,6 +3,7 @@ import { NavController, NavParams } from 'ionic-angular';
 import { SyncHttpService } from '../../providers/http-services/sync-service';
 import { Storage } from '@ionic/storage';
 import { Camera, CameraOptions } from '@ionic-native/camera';
+import { Answer } from '../../models/answer';
 
 /**
  * Generated class for the SurveyPage page.
@@ -21,7 +22,7 @@ export class SurveyPage {
   public question: any = {}; // current question (displayed in screen)
 
   public answers: any[] = [];
-  public answer: any = {};
+  public answer: Answer = new Answer();
 
   public hasChilds: boolean = false;
 
@@ -42,8 +43,8 @@ export class SurveyPage {
 
   loadSurvey(navParams) {
 
-    this.answer = {};
-    this.answer.opt = {};
+    // this.answer = {};
+    // this.answer.option = {};
 
     console.log(navParams['tipo_establecimiento_id']);
     if(navParams["tipo_establecimiento_id"]==3 || navParams["descripcion"]=='Farmacia Intrahospitalaria'){
@@ -75,18 +76,17 @@ export class SurveyPage {
   }
   }
 
-  
-
   radioOptionChanged() {
 
     console.log(this.answer);
+    debugger;
 
-    if (this.answer.opt.respuestas != null || this.answer.opt.tipo_pregunta != null) {
+    if (this.answer.option.respuestas != null || this.answer.option.tipo_pregunta != null) {
       this.hasChilds = true;
     }
     else {
       this.hasChilds = false;
-      this.answer.optChild = null;
+      this.answer.childOpt = null;
     }
 
   }
@@ -127,12 +127,11 @@ export class SurveyPage {
   }
 
   fillAnswerAndPush() {
+
+    this.answer.question = {id: this.question.id, type: this.question.tipo_pregunta, index: this.question.indice, level: this.question.level};
     
     // fill with useful question info in the answer
-    this.answer.id = this.question.id;
-    this.answer.tipo_pregunta = this.question.tipo_pregunta;
-    this.answer.indice = this.question.indice;
-    this.answer.nivel = this.question.nivel;
+    
     console.log(this.answer);
 
     // push answer to answers array (saving answer temporary and not in storage yet)
@@ -158,8 +157,8 @@ export class SurveyPage {
         break;
       }
       case 2: { // question type 2 (Radio Button)
-        nextSection = this.answer.opt.siguiente_seccion;
-        nextQuestion = this.answer.opt.siguiente_pregunta;
+        nextSection = this.answer.option.siguiente_seccion;
+        nextQuestion = this.answer.option.siguiente_pregunta;
 
         if (nextSection == null && nextQuestion == null) {
           nextSection = this.question.seccion;
@@ -208,11 +207,11 @@ export class SurveyPage {
     console.log('next section: ' + nextSection + ' next question: ' + nextQuestion);
     this.question = this.questions.find(question => (question.seccion == nextSection) && (question.seccion_pregunta_id == nextQuestion));
     if (this.question.tipo_pregunta == 2) {
-      this.answer = {};
-      this.answer.opt = {};
+      this.answer = new Answer();
+      this.answer.number = null
     }
     else {
-      this.answer = {};
+      this.answer = new Answer();
     }
   }
 
