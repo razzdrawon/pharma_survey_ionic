@@ -885,7 +885,7 @@
         "denominacion_gen": null,
         "tooltip": "",
         "regex": "",
-        "valida_respuestas_con_pregunta": null,
+        "valida_respuestas_con_pregunta": 31,
         "final_seccion": 0,
         "depende_respuesta": null,
         "tiene_respuestas": null,
@@ -2042,7 +2042,7 @@
         "regex": "",
         "valida_respuestas_con_pregunta": null,
         "final_seccion": 0,
-        "depende_respuesta": null,
+        "depende_respuesta": 75,
         "tiene_respuestas": null,
         "respuestas": [
             {

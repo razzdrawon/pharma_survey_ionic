@@ -6,7 +6,7 @@ export class Answer {
     public text?: string = '';
     public option?: any = {};
     public map?: any = {};
-    public optionss?: Array<any> = new Array<any>();
+    public options?: Array<any> = new Array<any>();
 
     // Childs (level 2)
     public childNumber?: number;
