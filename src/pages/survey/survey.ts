@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { SyncHttpService } from '../../providers/http-services/sync-service';
 import { Storage } from '@ionic/storage';
+import { Camera, CameraOptions } from '@ionic-native/camera';
+import { Answer } from '../../models/answer';
 
 /**
  * Generated class for the SurveyPage page.
@@ -17,47 +19,126 @@ import { Storage } from '@ionic/storage';
 export class SurveyPage {
 
   public questions: any[] = [];
-  public question: any = {};
+  public question: any = {}; // current question (displayed in screen)
 
-  public answers: any[];
-  public answer: any = {};
+  public answers: any[] = [];
+  public answer: Answer = new Answer();
 
   public hasChilds: boolean = false;
+
   public isAnswered: boolean = false;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public syncHttpService: SyncHttpService, private storage: Storage) {
+  public image: string = null;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, public syncHttpService: SyncHttpService, private storage: Storage, private camera: Camera) {
   }
 
   ionViewDidLoad() {
 
     console.log('ionViewDidLoad SurveyPage');
-
-    this.loadSurvey();
+    console.log(this.navParams);
+    this.loadSurvey(this.navParams.data);
 
   }
 
-  loadSurvey() {
-    this.storage.get('hospitalSurvey').then(
+  loadSurvey(navParams) {
+
+    // this.answer = {};
+    // this.answer.option = {};
+
+    console.log(navParams['tipo_establecimiento_id']);
+    if(navParams["tipo_establecimiento_id"]==3 || navParams["descripcion"]=='Farmacia Intrahospitalaria'){
+      console.log('pharma');
+      this.storage.get('pharmaSurvey').then(
       (data) => {
         //console.log(data);
         this.questions = JSON.parse(data);
         this.question = this.questions[0];
+        console.log(this.question);
       },
       err => {
         console.log(err);
       }
     );
+  } else {
+    console.log('hospital');
+    this.storage.get('hospitalSurvey').then(
+      (data) => {
+        //console.log(data);
+        this.questions = JSON.parse(data);
+        this.question = this.questions[0];
+        console.log(this.question);
+      },
+      err => {
+        console.log(err);
+      }
+    );    
   }
+  }
+
+  radioOptionChanged() {
+
+    console.log(this.answer);
+    debugger;
+
+    if (this.answer.option.respuestas != null || this.answer.option.tipo_pregunta != null) {
+      this.hasChilds = true;
+    }
+    else {
+      this.hasChilds = false;
+      this.answer.childOpt = null;
+    }
+
+  }
+
+  radioChildOptionChanged() {
+
+    console.log(this.answer);
+    // this.answer.opt = {};
+    // this.answer.opt.respuestas = item;
+    // console.log(this.answer);
+  }
+
+  getPicture(){
+    let options: CameraOptions = {
+      destinationType: this.camera.DestinationType.DATA_URL,
+      targetWidth: 1000,
+      targetHeight: 1000,
+      quality: 100
+    }
+    this.camera.getPicture( options )
+    .then(imageData => {
+      this.image = `data:image/jpeg;base64,${imageData}`;
+      console.log(this.image);
+      this.answer.image = this.image;
+    })
+    .catch(error =>{
+      console.error( error );
+    });
+  }
+
 
   nextQuestion() {
 
-    this.answer.id = this.question.id;
-    this.answer.tipo_pregunta = this.question.tipo_pregunta;
-    this.answer.indice = this.question.indice;
-    this.answer.nivel = this.question.nivel;
+    this.fillAnswerAndPush();
+    
+    this.defineNextSectionAndQuestion();
+
+  }
+
+  fillAnswerAndPush() {
+
+    this.answer.question = {id: this.question.id, type: this.question.tipo_pregunta, index: this.question.indice, level: this.question.level};
+    
+    // fill with useful question info in the answer
+    
     console.log(this.answer);
 
+    // push answer to answers array (saving answer temporary and not in storage yet)
+    this.answers.push(this.answer);
+  }
 
+  defineNextSectionAndQuestion(){
     let nextSection = this.question.siguiente_seccion;
     let nextQuestion = this.question.siguiente_prgunta;
     let isFinal = this.question.final_seccion;
@@ -76,10 +157,10 @@ export class SurveyPage {
         break;
       }
       case 2: { // question type 2 (Radio Button)
-        nextSection = this.answer.opt.siguiente_seccion;
-        nextQuestion = this.answer.opt.siguiente_pregunta;
+        nextSection = this.answer.option.siguiente_seccion;
+        nextQuestion = this.answer.option.siguiente_pregunta;
 
-        if (nextSection == 1 && nextQuestion == null) {
+        if (nextSection == null && nextQuestion == null) {
           nextSection = this.question.seccion;
           nextQuestion = this.question.seccion_pregunta_id + 1;
         }
@@ -121,41 +202,17 @@ export class SurveyPage {
         }
         break;
       }
-
     }
 
     console.log('next section: ' + nextSection + ' next question: ' + nextQuestion);
     this.question = this.questions.find(question => (question.seccion == nextSection) && (question.seccion_pregunta_id == nextQuestion));
     if (this.question.tipo_pregunta == 2) {
-      this.answer = {};
-      this.answer.opt = {};
+      this.answer = new Answer();
+      this.answer.number = null
     }
     else {
-      this.answer = {};
+      this.answer = new Answer();
     }
-
-  }
-
-  radioOptionChanged() {
-
-    console.log(this.answer);
-
-    if (this.answer.opt.respuestas != null) {
-      this.hasChilds = true;
-    }
-    else {
-      this.hasChilds = false;
-      this.answer.optChild = null;
-    }
-
-  }
-
-  radioChildOptionChanged() {
-
-    console.log(this.answer);
-    // this.answer.opt = {};
-    // this.answer.opt.respuestas = item;
-    // console.log(this.answer);
   }
 
 }
