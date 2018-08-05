@@ -3,7 +3,7 @@
 
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
--->
+
 <ion-header >
 
   <ion-navbar color="primary">
@@ -15,6 +15,25 @@
       </button>
     </ion-buttons>
 
+  </ion-navbar>
+
+</ion-header>
+-->
+<ion-header>
+
+  <ion-navbar hideBackButton>
+  	<ion-buttons left>
+		<button ion-button navPop>
+			<ion-icon name="play"></ion-icon >
+		</button>
+    </ion-buttons>
+
+    <ion-title>{{loggedUser.nombre}}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="salir()">
+        <ion-icon name="log-out"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 
 </ion-header>
@@ -35,7 +54,7 @@
     <ion-item *ngIf="establishmentSelected.tipo_establecimiento_id == 1">
       <ion-label>Seleccione Subtipo</ion-label>
       <ion-select [(ngModel)]="subtypeSelected" cancelText="Cancel" okText="Okay" (ionChange)="subtypeChanged()">
-        <ion-option *ngFor="let sub of subtypes" [value]="sub">{{sub.descripcion}}</ion-option>
+        <ion-option *ngFor="let sub of subtypesArray" [value]="sub">{{sub.descripcion}}</ion-option>
       </ion-select>
     </ion-item>
 
@@ -47,15 +66,6 @@
 
   <button style="margin-top:60px;" ion-button block (click)="startSurvey()">Iniciar Cuestionario</button>
 
-  <p class="comment">
-    Usted ha capturado 03 cuestionarios
-  </p>
-  <p class="comment">
-    Usted ha sincronizado 02 cuestionatios
-  </p>
 
-  <p class="comment">
-    Cuestionatios a sincronizar: 01
-  </p>
 
 </ion-content>

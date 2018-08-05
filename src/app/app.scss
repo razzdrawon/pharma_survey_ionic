@@ -14,15 +14,552 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
-.scroll-content{
-    background: url('assets/imgs/background.jpeg');
+
+body {
+    font-family: Calibri, sans-serif;
+    }
+
+h1{
+    font-size: 1.5em;
 }
-// .toolbar-background {
-//     background-color:  rgb(84, 130, 255);
-//   }
-//   .toolbar-title{
-//       color: white;
-//   }
-//   .back-button{
-//     color: white;
-//   }
+.header_logo:after {
+    display: none;
+}
+
+.header_logo {
+    padding: 28px 0px;
+    border-bottom: solid 1px $azul_default;
+    background-color: #fff;
+        text-align: center;
+}
+
+
+.back_img .fixed-content {
+    background-image: url(../assets/imgs/fondo_blue_salud.png);
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-position: bottom;
+    background-color: $azul_fondo;
+}
+
+.button-md{
+	background-color: $azul_default;
+	 text-transform: capitalize;
+	 color: $azul_fondo;
+
+}
+
+.button-outline-md{
+	background-color: transparent;
+	border: none;
+	color: $azul_obscuro;
+}
+
+.button-md.activated,.button-md:hover:not(.disable-hover){
+	background-color: $azul_obscuro;
+}
+
+.boton_chico{
+    padding: 0px 16px;
+    height: 28px;
+    border-radius: 4px;
+}
+
+.flecha_abajo{
+	height: 28px;
+    border-bottom: 4px solid $azul_obscuro;
+    width: 19px;
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+.flecha_abajo.activated, .flecha_abajo:hover:not(.disable-hover) {
+	background-color: transparent;
+    color: $azul_default;
+    border-bottom: 4px solid $azul_default;
+}
+
+.margen{
+    margin: 0px 10%;
+}
+
+.input_inicio {
+    background-color: #fff;
+    padding: 5px 10px;
+    border: solid 2px $gris_input;
+    border-radius: 4px;
+    position: relative;
+        margin: 17px 0px;
+    label{
+	    position: absolute;
+	    top: -12px;
+	    left: 7px;
+	    background-color: $azul_default;
+	    color: #fff;
+	    padding: 1px 7px;
+	    border-radius: 4px;
+	    font-size: 0.9em;
+	}
+    input{
+	    height: 27px;
+	    border: none;
+	    padding: 0px;
+	    width: 88%;
+	    color: #000;
+	    padding-left: 3px;
+	}
+
+	input[type="password"]{
+	    	    width: 68%;
+	    }
+
+	.button-outline.button-outline-md {
+	    color: $gris_input;
+	    width: 21px;
+	    height: 21px;
+	    border: 2px solid $gris_input;
+	    padding: 0px;
+	    vertical-align: baseline;
+	    margin: 0px;
+	}
+	.button-outline.button-outline-md.laolvide{
+		width: auto;
+		color: $azul_default;
+		font-size: 0.8em;
+		border: none;
+	}
+
+	.button-outline.button-outline-md.laolvide.activated, .button-outline.button-outline-md.laolvide:hover:not(.disable-hover){
+		color: #fff;
+	}
+}
+
+.titulo_cuestionario {
+    color: $azul_default;
+    text-align: center;
+    margin-top: 5% !important;
+    margin-bottom: 14%;
+	h2{
+		font-weight: bold;
+	}
+}
+
+
+.icono_grande {
+    font-size: 12em;
+    text-align: center;
+    margin: auto;
+    width: 100%;
+    color: $azul_default;
+}
+
+.icono_pequeño {
+    font-size: 1.4rem;
+    color: $azul_default;
+}
+
+.titulo{
+	font-weight: bolder;
+}
+
+.subtitulo{
+	font-weight: normal;
+}
+
+
+
+//************************Input-radio
+
+.radios {
+    margin: 0px 11%;
+    padding-top: 21px;
+    position: relative;
+    transition: all ease 0.5s;
+}
+
+.control {
+    font-family: arial;
+    display: block;
+    position: relative;
+    padding-left: 24px;
+    margin-bottom: 23px;
+    padding-top: 1px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.control p {
+    margin: 0px;
+    padding: 0px;
+}
+
+.radios:before {
+    content: "";
+    width: 2px;
+    height: 100%;
+    background-color: $azul_default;
+    position: absolute;
+    top: 0;
+    left: 9px;
+}
+    .control input {
+        position: absolute;
+        z-index: -1;
+        opacity: 0;
+    }
+.control_indicator {
+    position: absolute;
+    top: 0px;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    background: #ffffff;
+    border: 2px solid $azul_default;
+}
+.control-radio .control_indicator {
+    border-radius: 50%;
+}
+
+.control:hover input ~ .control_indicator,
+.control input:focus ~ .control_indicator {
+    background: #ffffff;
+}
+
+.control input:checked ~ .control_indicator {
+    background: #ffffff;
+}
+.control:hover input:not([disabled]):checked ~ .control_indicator,
+.control input:checked:focus ~ .control_indicator {
+    background: #ffffff;
+}
+.control input:disabled ~ p {
+    opacity: 0.5;
+}
+
+.control button:disabled ~ p {
+    opacity: 0.5;
+}
+
+.respuestas{
+transition: all 0.5s ease;
+}
+
+.respuestas li {
+    margin: 10px 0px;
+}
+.control input:disabled ~ .control_indicator {
+    background: #fff;
+    opacity: 1;
+    pointer-events: none;
+    border: 2px solid #3da6d678;
+}
+.control_indicator:after {
+    box-sizing: unset;
+    content: '';
+    position: absolute;
+    display: none;
+}
+.control input:checked ~ .control_indicator:after {
+    display: block;
+}
+.control-radio .control_indicator:after {
+    left: 3px;
+    top: 3px;
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    background: $azul_default;
+}
+.control-radio input:disabled ~ .control_indicator:after {
+    background: #3da6d678;
+}
+
+
+
+//**************************Input -radio
+
+
+
+/**************  Estilo  de diseñador ******************/
+
+
+
+// http://ionicframework.com/docs/theming/
+
+
+// App Global Sass
+// --------------------------------------------------
+// Put style rules here that you want to apply globally. These
+// styles are for the entire app and not just one component.
+// Additionally, this file can be also used as an entry point
+// to import other Sass files to be included in the output CSS.
+//
+// Shared Sass variables, which can be used to adjust Ionic's
+// default Sass variables, belong in "theme/variables.scss".
+//
+// To declare rules for a specific mode, create a child rule
+// for the .md, .ios, or .wp mode classes. The mode class is
+// automatically applied to the <body> element in the app.
+
+body {
+    font-family: Calibri, sans-serif;
+    }
+
+h1{
+    font-size: 1.5em;
+}
+.header_logo:after {
+    display: none;
+}
+
+.header_logo {
+    padding: 28px 0px;
+    border-bottom: solid 1px $azul_default;
+    background-color: #fff;
+        text-align: center;
+}
+
+
+.back_img .fixed-content {
+    background-image: url(../assets/imgs/fondo_blue_salud.png);
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-position: bottom;
+    background-color: $azul_fondo;
+}
+
+.button-md{
+	background-color: $azul_default;
+	 text-transform: capitalize;
+	 color: $azul_fondo;
+
+}
+
+.button-outline-md{
+	background-color: transparent;
+	border: none;
+	color: $azul_obscuro;
+}
+
+.button-md.activated,.button-md:hover:not(.disable-hover){
+	background-color: $azul_obscuro;
+}
+
+.boton_chico{
+    padding: 0px 16px;
+    height: 28px;
+    border-radius: 4px;
+}
+
+.flecha_abajo{
+	height: 28px;
+    border-bottom: 4px solid $azul_obscuro;
+    width: 19px;
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+.flecha_abajo.activated, .flecha_abajo:hover:not(.disable-hover) {
+	background-color: transparent;
+    color: $azul_default;
+    border-bottom: 4px solid $azul_default;
+}
+
+.margen{
+    margin: 0px 10%;
+}
+
+.input_inicio {
+    background-color: #fff;
+    padding: 5px 10px;
+    border: solid 2px $gris_input;
+    border-radius: 4px;
+    position: relative;
+        margin: 17px 0px;
+    label{
+	    position: absolute;
+	    top: -12px;
+	    left: 7px;
+	    background-color: $azul_default;
+	    color: #fff;
+	    padding: 1px 7px;
+	    border-radius: 4px;
+	    font-size: 0.9em;
+	}
+    input{
+	    height: 27px;
+	    border: none;
+	    padding: 0px;
+	    width: 88%;
+	    color: #000;
+	    padding-left: 3px;
+	}
+
+	input[type="password"]{
+	    	    width: 68%;
+	    }
+
+	.button-outline.button-outline-md {
+	    color: $gris_input;
+	    width: 21px;
+	    height: 21px;
+	    border: 2px solid $gris_input;
+	    padding: 0px;
+	    vertical-align: baseline;
+	    margin: 0px;
+	}
+	.button-outline.button-outline-md.laolvide{
+		width: auto;
+		color: $azul_default;
+		font-size: 0.8em;
+		border: none;
+	}
+
+	.button-outline.button-outline-md.laolvide.activated, .button-outline.button-outline-md.laolvide:hover:not(.disable-hover){
+		color: #fff;
+	}
+}
+
+.titulo_cuestionario {
+    color: $azul_default;
+    text-align: center;
+    margin-top: 5% !important;
+    margin-bottom: 14%;
+	h2{
+		font-weight: bold;
+	}
+}
+
+
+.icono_grande {
+    font-size: 12em;
+    text-align: center;
+    margin: auto;
+    width: 100%;
+    color: $azul_default;
+}
+
+.icono_pequeño {
+    font-size: 1.4rem;
+    color: $azul_default;
+}
+
+.titulo{
+	font-weight: bolder;
+}
+
+.subtitulo{
+	font-weight: normal;
+}
+
+
+
+//************************Input-radio
+
+.radios {
+    margin: 0px 11%;
+    padding-top: 21px;
+    position: relative;
+    transition: all ease 0.5s;
+}
+
+.control {
+    font-family: arial;
+    display: block;
+    position: relative;
+    padding-left: 24px;
+    margin-bottom: 23px;
+    padding-top: 1px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.control p {
+    margin: 0px;
+    padding: 0px;
+}
+
+.radios:before {
+    content: "";
+    width: 2px;
+    height: 100%;
+    background-color: $azul_default;
+    position: absolute;
+    top: 0;
+    left: 9px;
+}
+    .control input {
+        position: absolute;
+        z-index: -1;
+        opacity: 0;
+    }
+.control_indicator {
+    position: absolute;
+    top: 0px;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    background: #ffffff;
+    border: 2px solid $azul_default;
+}
+.control-radio .control_indicator {
+    border-radius: 50%;
+}
+
+.control:hover input ~ .control_indicator,
+.control input:focus ~ .control_indicator {
+    background: #ffffff;
+}
+
+.control input:checked ~ .control_indicator {
+    background: #ffffff;
+}
+.control:hover input:not([disabled]):checked ~ .control_indicator,
+.control input:checked:focus ~ .control_indicator {
+    background: #ffffff;
+}
+.control input:disabled ~ p {
+    opacity: 0.5;
+}
+
+.respuestas{
+transition: all 0.5s ease;
+}
+
+.respuestas li {
+    margin: 10px 0px;
+}
+.control input:disabled ~ .control_indicator {
+    background: #fff;
+    opacity: 1;
+    pointer-events: none;
+    border: 2px solid #3da6d678;
+}
+.control_indicator:after {
+    box-sizing: unset;
+    content: '';
+    position: absolute;
+    display: none;
+}
+.control input:checked ~ .control_indicator:after {
+    display: block;
+}
+.control-radio .control_indicator:after {
+    left: 3px;
+    top: 3px;
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    background: $azul_default;
+}
+.control-radio input:disabled ~ .control_indicator:after {
+    background: #3da6d678;
+}
+
+
+
+//**************************Input -radio
+
+
+
+/**************  Estilo  de diseñador ******************/
