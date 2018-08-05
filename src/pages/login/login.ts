@@ -73,6 +73,9 @@ export class LoginPage {
     let validUser = this.allUsers.find(user => user.usuario == this.userLogin.username
        && user.hashed_password == Md5.hashStr(this.userLogin.password)
       );
+
+
+  
     if (validUser != null) {
       this.storage.set('LoggedUser', validUser);
       this.navCtrl.setRoot(HomePage);

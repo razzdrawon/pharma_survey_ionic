@@ -10,8 +10,11 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { MyApp } from './app.component';
 import { LoginPage } from '../pages/login/login';
-import { HomePage } from './../pages/home/home';
-import { SurveyPage } from './../pages/survey/survey';
+import { HomePage } from '../pages/home/home';
+import { SurveyPage } from '../pages/survey/survey';
+import { HomePage } from '../pages/home/home';
+import { RevisionPage } from '../pages/revision/revision';
+import { FinCuestPage } from '../pages/finCuest/finCuest';
 
 
 //import { UsersDBService } from '../providers/db-services/users-service';
@@ -26,7 +29,9 @@ import { ElasticDirective } from '../directives/elastic/elastic';
     LoginPage,
     HomePage,
     SurveyPage,
-    ElasticDirective
+    ElasticDirective,
+    RevisionPage,
+    FinCuestPage
   ],
   imports: [
     BrowserModule,
@@ -39,7 +44,9 @@ import { ElasticDirective } from '../directives/elastic/elastic';
     MyApp,
     LoginPage,
     HomePage,
-    SurveyPage
+    SurveyPage,
+    RevisionPage,
+    FinCuestPage
   ],
   providers: [
     StatusBar,
