@@ -18,4 +18,8 @@ export class Answer {
     // Image
     public imageText?: string;
     public image?: string;
+
+    // Childs (level 3)
+    public secondChildText?: string = '';
+
 }

@@ -25,6 +25,7 @@ export class SurveyPage {
   public answer: Answer = new Answer();
 
   public hasChilds: boolean = false;
+  public hasSecondChilds: boolean = false;
 
   public isAnswered: boolean = false;
 
@@ -84,24 +85,33 @@ export class SurveyPage {
 
   radioOptionChanged() {
 
+    debugger;
     console.log(this.answer);
 
-    if (this.answer.option.respuestas != null || this.answer.option.tipo_pregunta != null) {
+    if (this.answer.option.tipo_pregunta != null) {
       this.hasChilds = true;
     }
     else {
       this.hasChilds = false;
-      this.answer.childOption = null;
+      this.hasSecondChilds = false;
+      this.answer.childText = null;
+      this.answer.childNumber = null;
     }
 
   }
 
   radioChildOptionChanged() {
 
+    debugger;
     console.log(this.answer);
-    // this.answer.opt = {};
-    // this.answer.opt.respuestas = item;
-    // console.log(this.answer);
+    
+    if (this.answer.childOption.tipo_pregunta != null) {
+      this.hasSecondChilds = true;
+    }
+    else {
+      this.hasSecondChilds = false;
+      // this.answer.secondChildText = null;
+    }
   }
 
   optionChanged() {
