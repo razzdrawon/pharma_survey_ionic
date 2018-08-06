@@ -141,7 +141,7 @@ export class SurveyPage {
 
   validateSumAnswer(): any {
     debugger;
-    if (this.question.tipo_pregunta == 5 && this.question.depende_respuesta != null) {
+    if (this.question.tipo_pregunta == 5 && this.question.valida_respuestas_con_pregunta != null) {
 
       let sum = null;
       Object.keys(this.answer.map).forEach(key => {
@@ -151,7 +151,7 @@ export class SurveyPage {
 
       console.log(this.answers);
       let total = null;
-      let answerAux = this.answers.find(answer => answer.question.id == parseInt(this.question.depende_respuesta));
+      let answerAux = this.answers.find(answer => answer.question.id == parseInt(this.question.valida_respuestas_con_pregunta));
       if (answerAux.number != null) {
         total = answerAux.number;
       }
