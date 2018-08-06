@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-
+import { NavController, NavParams, AlertController } from 'ionic-angular';
+import { LoginPage } from '../login/login';
 /**
  * Generated class for the FinCuestPage page.
  *
@@ -16,15 +17,17 @@ import { Component } from '@angular/core';
 })
 export class FinCuestPage {
 
-  constructor() {
+  constructor(public navCtrl: NavController) {
   }
 
   ionViewDidLoad() {
-  //  console.log('ionViewDidLoad FinCuestPage');
+    console.log('ionViewDidLoad FinCuestPage');
   }
 
   cambiar_pagina() {
     //this.navCtrl.setRoot(HomePage);
+    this.navCtrl.setRoot(LoginPage);
+    this.navCtrl.popToRoot();
   }
 
 }

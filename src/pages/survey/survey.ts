@@ -4,6 +4,7 @@ import { SyncHttpService } from '../../providers/http-services/sync-service';
 import { Storage } from '@ionic/storage';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { Answer } from '../../models/answer';
+import { FinCuestPage } from '../finCuest/finCuest';
 
 /**
  * Generated class for the SurveyPage page.
@@ -269,14 +270,27 @@ export class SurveyPage {
 
     console.log('next section: ' + nextSection + ' next question: ' + nextQuestion);
     this.question = this.questions.find(question => (question.seccion == nextSection) && (question.seccion_pregunta_id == nextQuestion));
-    if (this.question.tipo_pregunta == 2) {
-      this.answer = new Answer();
+
+
+
+    
+    if (this.question== undefined) {
+      console.log('entra a final ');
+      this.question={tipo_pregunta:0,tipo_cuestionario_id:0,seccion:0};
+      this.navCtrl.setRoot(FinCuestPage);
+      this.navCtrl.popToRoot();
+    }else{
+
+      if (this.question.tipo_pregunta == 2) {
+        this.answer = new Answer();
+      }else  {
+        this.answer = new Answer();
+        this.answer.number = null;
+        this.answer.text = null;
+      }
+
     }
-    else {
-      this.answer = new Answer();
-      this.answer.number = null;
-      this.answer.text = null;
-    }
+    
   }
 
 }

@@ -44,21 +44,19 @@
 
     <ion-row *ngIf="question.tipo_cuestionario_id == 2">
       <ion-col col-3> </ion-col>
-      <ion-col text-center col-1 [attr.col-2]="question.seccion == 1 ? '' : null">
+      <ion-col text-center col-1 [attr.col-3]="question.seccion == 1 ? '' : null">
         <button ion-button class="boton_chico" [disabled]="question.seccion!=1">I</button>
       </ion-col>
-      <ion-col text-center col-1 [attr.col-2]="question.seccion == 2 ? '' : null">
+      <ion-col text-center col-1 [attr.col-3]="question.seccion == 2 ? '' : null">
         <button ion-button class="boton_chico" [disabled]="question.seccion!=2">II</button>
       </ion-col>
-      <ion-col text-center col-1 [attr.col-2]="question.seccion == 3 ? '' : null">
+      <ion-col text-center col-1 [attr.col-3]="question.seccion == 3 ? '' : null">
         <button ion-button class="boton_chico" [disabled]="question.seccion!=3">III</button>
       </ion-col>
-      <ion-col text-center col-1 [attr.col-2]="question.seccion == 4 ? '' : null">
+      <ion-col text-center col-1 [attr.col-3]="question.seccion == 4 ? '' : null">
         <button ion-button class="boton_chico" [disabled]="question.seccion!=4">IV</button>
       </ion-col>
-      <ion-col text-center col-1 [attr.col-2]="question.seccion == 5 ? '' : null">
-        <button ion-button class="boton_chico" [disabled]="question.seccion!=5">V</button>
-      </ion-col>
+      
       <ion-col col-3> </ion-col>
     </ion-row>
 
