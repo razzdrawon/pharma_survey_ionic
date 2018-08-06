@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { SyncHttpService } from '../../providers/http-services/sync-service';
 import { Storage } from '@ionic/storage';
 import { Camera, CameraOptions } from '@ionic-native/camera';
@@ -30,7 +30,7 @@ export class SurveyPage {
 
   public image: string = null;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public syncHttpService: SyncHttpService, private storage: Storage, private camera: Camera) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public syncHttpService: SyncHttpService, private storage: Storage, private camera: Camera, public alertCtrl: AlertController) {
   }
 
   ionViewDidLoad() {
@@ -85,14 +85,14 @@ export class SurveyPage {
   radioOptionChanged() {
 
     console.log(this.answer);
-    debugger;
+    // debugger;
 
     if (this.answer.option.respuestas != null || this.answer.option.tipo_pregunta != null) {
       this.hasChilds = true;
     }
     else {
       this.hasChilds = false;
-      this.answer.childOpt = null;
+      this.answer.childOption = null;
     }
 
   }
@@ -105,36 +105,86 @@ export class SurveyPage {
     // console.log(this.answer);
   }
 
-  getPicture(){
+  optionChanged() {
+
+    console.log(this.answer);
+
+  }
+
+  getPicture() {
     let options: CameraOptions = {
       destinationType: this.camera.DestinationType.DATA_URL,
       targetWidth: 1000,
       targetHeight: 1000,
       quality: 100
     }
-    this.camera.getPicture( options )
-    .then(imageData => {
-      this.image = `data:image/jpeg;base64,${imageData}`;
-      console.log(this.image);
-      this.answer.image = this.image;
-    })
-    .catch(error =>{
-      console.error( error );
-    });
+    this.camera.getPicture(options)
+      .then(imageData => {
+        this.image = `data:image/jpeg;base64,${imageData}`;
+        console.log(this.image);
+        this.answer.image = this.image;
+      })
+      .catch(error => {
+        console.error(error);
+      });
   }
 
 
   nextQuestion() {
 
-    this.fillAnswerAndPush();
+    if (this.validateSumAnswer()) {
+      this.fillAnswerAndPush();
+      this.defineNextSectionAndQuestion();
+    }
 
-    this.defineNextSectionAndQuestion();
+  }
+
+  validateSumAnswer(): any {
+    debugger;
+    if (this.question.tipo_pregunta == 5 && this.question.valida_respuestas_con_pregunta != null) {
+
+      let sum = null;
+      Object.keys(this.answer.map).forEach(key => {
+        debugger;
+        sum = parseInt(this.answer.map[key]) + sum;
+      });
+
+      console.log(this.answers);
+      let total = null;
+      let answerAux = this.answers.find(answer => answer.question.id == parseInt(this.question.valida_respuestas_con_pregunta));
+      if (answerAux.number != null) {
+        total = answerAux.number;
+      }
+      else {
+        Object.keys(answerAux.map).forEach(key => {
+          total = parseInt(answerAux.map[key]) + total;
+        });
+      }
+
+      debugger;
+      if (sum == total) {
+        return true;
+      }
+      else {
+        let alert = this.alertCtrl.create({
+          title: 'Respuesta Inválida',
+          subTitle: 'Aseguresé de que la suma de los números corresponde con el total de la pregunta: ' + answerAux.question.index + ' el cual fue de: ' + total,
+          buttons: ['Ok']
+        });
+        alert.present();
+        return false;
+      }
+
+    }
+    else {
+      return true;
+    }
 
   }
 
   fillAnswerAndPush() {
 
-    this.answer.question = {id: this.question.id, type: this.question.tipo_pregunta, index: this.question.indice, level: this.question.level};
+    this.answer.question = { id: this.question.id, section: this.question.seccion, section_question: this.question.seccion_pregunta_id, type: this.question.tipo_pregunta, index: this.question.indice, level: this.question.level };
 
     // fill with useful question info in the answer
 
@@ -144,7 +194,7 @@ export class SurveyPage {
     this.answers.push(this.answer);
   }
 
-  defineNextSectionAndQuestion(){
+  defineNextSectionAndQuestion() {
     let nextSection = this.question.siguiente_seccion;
     let nextQuestion = this.question.siguiente_prgunta;
     let isFinal = this.question.final_seccion;
@@ -214,7 +264,7 @@ export class SurveyPage {
     this.question = this.questions.find(question => (question.seccion == nextSection) && (question.seccion_pregunta_id == nextQuestion));
     if (this.question.tipo_pregunta == 2) {
       this.answer = new Answer();
-      this.answer.number = null
+      this.answer.number = null;
     }
     else {
       this.answer = new Answer();
