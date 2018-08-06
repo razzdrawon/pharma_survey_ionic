@@ -4,9 +4,14 @@ import { NavController, AlertController } from 'ionic-angular';
 //import { UsersDBService } from './../../providers/db-services/users-service';
 import { SyncHttpService } from '../../providers/http-services/sync-service';
 import { Storage } from '@ionic/storage';
-// import { Observable } from 'rxjs/Observable';
-// import 'rxjs/add/observable/forkJoin';
-// import 'rxjs/add/operator/first';
+
+import {Md5} from 'ts-md5/dist/md5';
+
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/forkJoin';
+import 'rxjs/add/operator/first';
+
+
 
 @Component({
   selector: 'page-login',
@@ -18,11 +23,11 @@ export class LoginPage {
   usersAsync: any[] = [];
   userLogin: { username: string; password: string; } = { username: '', password: '' };
   user: any;
+  pass_hashed:any;
 
   tasks: any[] = [];
-
   constructor(public navCtrl: NavController,
-    //public usersDBService: UsersDBService, 
+    //public usersDBService: UsersDBService,
     public syncHttpService: SyncHttpService, public alertCtrl: AlertController, private storage: Storage) {
 
       // this.storage.clear();
@@ -31,7 +36,7 @@ export class LoginPage {
   ionViewDidLoad() {
 
     // this.storage.remove('LoggedUser');
-    
+
     this.validateActiveSession();
 
     this.getAllUsers();
@@ -70,9 +75,14 @@ export class LoginPage {
 
   runLogin() {
 
+
+
     let validUser = this.allUsers.find(user => user.usuario == this.userLogin.username
-      // && user.password == this.userLogin.password
+       && user.hashed_password == Md5.hashStr(this.userLogin.password)
       );
+
+
+
     if (validUser != null) {
       this.storage.set('LoggedUser', validUser);
       this.navCtrl.setRoot(HomePage);
@@ -142,7 +152,7 @@ export class LoginPage {
           console.log(err);
         }
     );
-    
+
     let estabsObs = this.syncHttpService.getEstablishments()
       .subscribe(
         (data: any[]) => {
@@ -239,9 +249,9 @@ export class LoginPage {
 
   }
 
-  
 
-  
+
+
 
   // openAlertNewUser(){
   //   let alert = this.alertCtrl.create({
@@ -266,7 +276,7 @@ export class LoginPage {
   //       },
   //       {
   //         text: 'Crear',
-  //         handler: (data)=>{ 
+  //         handler: (data)=>{
   //           data.completed = false;
   //           this.usersDBService.createUser(data)
   //           .then(response => {
@@ -306,4 +316,3 @@ export class LoginPage {
   // }
 
 }
-

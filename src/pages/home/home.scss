@@ -10,4 +10,27 @@ page-home {
       .input-wrapper{
           margin-top: 50px;
       }
+
+      
+      	.toolbar-background {
+      	background-color: $azul_default;
+      	}
+      	.toolbar-title-md,.bar-button-default-md{
+      		color: #fff;
+      		font-size: 1.4em;
+      	}
+      	ion-icon.icon.icon-md.ion-md-play {
+      	transform: rotate(180deg);
+      	font-size: 0.8em;
+      	}
+
+      	ion-buttons.bar-buttons.bar-buttons-md {
+          margin-left: 3%;
+      }
+
+      .bar-button-default-md:hover:not(.disable-hover), .bar-button-clear-md-default:hover:not(.disable-hover), .bar-button-md-default:hover:not(.disable-hover) {
+          color: #2d86af;
+      }
+
+
 }

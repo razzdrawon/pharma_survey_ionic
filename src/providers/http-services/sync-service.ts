@@ -9,7 +9,7 @@ export class SyncHttpService {
     private http: HttpClient
   ) {}
 
-  apiUrl = 'http://216.154.221.48/getCUsuario';
+  apiUrl = 'http://http://www.accesosinexceso.org/getCUsuario';
 
   // getUsers() {
   //   return new Promise((resolve, reject) => {

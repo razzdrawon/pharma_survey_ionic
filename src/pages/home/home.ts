@@ -17,6 +17,7 @@ export class HomePage {
 
   public establishmentSelected: any = {};
   public subtypeSelected: any = {};
+  public subtypesArray: any[] = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage, public alertCtrl: AlertController) {
 
@@ -29,8 +30,8 @@ export class HomePage {
 
     this.loadEstablishments();
 
-    this.loadSubtypes();
-    
+
+
   }
 
   validateLoggedUser() {
@@ -69,6 +70,19 @@ export class HomePage {
       (data) => {
         //console.log(data);
         this.subtypes = JSON.parse(data);
+
+        console.log(this.subtypes);
+        //establishmentSelected.tipo_establecimiento_id
+      
+
+
+         let varType =this.establishmentSelected.tipo_establecimiento_id;
+          var subtypesArray = this.subtypes.filter(function(subtype, i) {
+            return (subtype.tipo_establecimiento_id == varType);
+          })
+          console.log(subtypesArray);
+          this.subtypesArray  = subtypesArray ;
+          console.log(this.subtypesArray);
       },
       err => {
         console.log(err);
@@ -79,7 +93,7 @@ export class HomePage {
   optionChanged() {
 
     console.log(this.establishmentSelected);
-
+    this.loadSubtypes();
   }
 
   subtypeChanged() {
@@ -109,6 +123,10 @@ export class HomePage {
     // }
 
     // else{
+
+    console.log(this.subtypeSelected);
+
+
       let params = Object.assign({}, this.subtypeSelected,this.establishmentSelected) ;
       console.log(params);
       this.navCtrl.push(SurveyPage, params );

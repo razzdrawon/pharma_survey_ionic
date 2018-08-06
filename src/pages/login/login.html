@@ -1,3 +1,70 @@
+
+<!--
+  Generated template for the HomePage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header class="header_logo">
+
+  <img src="assets/imgs/logos_salud.png">
+
+</ion-header>
+
+
+<ion-content class="back_img" padding>
+  <form (ngSubmit)="runLogin()"  >
+	<h1 class="titulo_cuestionario">Cuestionario de Acesso a Medicamentos Controlados</h1>
+
+	<div class="margen">
+		<div class="input_inicio">
+			<label>Usuario</label>
+
+			<input type="text" name="nombre"  [(ngModel)]="userLogin.username" placeholder="ejemplo@gmail.com">
+		</div>
+
+		<div class="input_inicio">
+
+			<input type="password" [(ngModel)]="userLogin.password" name="nombre" placeholder="Contraseña">
+		</div>
+
+		<button ion-button float-right class="boton_chico" type="submit" >Ingresar</button>
+	</div>
+</form>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-4> </ion-col>
+      <ion-col col-4><button ion-button class="submit sincronizar" block (click)="syncInfo()">Sincronizar</button></ion-col>
+      <ion-col col-4></ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-12> </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-12>Usted ha capturado 03 cuestionarios</ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-12>Usted ha sincronizado 02 cuestionatios</ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-12>Cuestionatios a sincronizar: 01</ion-col>
+    </ion-row>
+  </ion-grid>
+
+
+
+
+
+</ion-content>
+
+
+
+
+
+
+
+
+<!--
 <ion-header>
   <ion-grid class="banner" >
     <ion-row wrap align-items-center style="height: 100%; ">
@@ -13,8 +80,7 @@
     </ion-row>
   </ion-grid>
 </ion-header>
-
-<ion-content padding class="login-content" style="background: url('assets/imgs/back.jpg');  background-size:100%;">
+<ion-content padding class="login-content" style="background: url('assets/imgs/back.jpg'); margin-top:20%; background-size:100%;">
 
   <p class="pTitle">
     Cuestionario de Acceso a Medicamentos Controlados
@@ -34,21 +100,21 @@
 
 
     <button ion-button class="submit ingresar" type="submit" block>Ingresar</button>
-
+<ion-label floating>{{pass_hashed}}</ion-label>
   </form>
 
 
   <button ion-button class="submit sincronizar" block (click)="syncInfo()">Sincronizar</button>
 
 
-  <!-- <ion-list>
+<ion-label floating>{{Md5.hashStr(this.userLogin.password)]]</ion-label>
+  <ion-list>
     <ion-item-sliding *ngFor="let user of allUsers; let i = index">
       <ion-item>
         <ion-label>{{ user.usuario }} {{ user.nombre }}</ion-label>
       </ion-item>
     </ion-item-sliding>
-  </ion-list> -->
-
-
+  </ion-list>
 
 </ion-content>
+ -->

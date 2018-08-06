@@ -11,15 +11,17 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { MyApp } from './app.component';
 import { LoginPage } from '../pages/login/login';
-import { HomePage } from './../pages/home/home';
-import { SurveyPage } from './../pages/survey/survey';
+import { HomePage } from '../pages/home/home';
+import { SurveyPage } from '../pages/survey/survey';
+
+import { FinCuestPage } from '../pages/finCuest/finCuest';
 
 
 //import { UsersDBService } from '../providers/db-services/users-service';
 //import { SurveysDBService } from '../providers/db-services/surveys-service';
 
 import { SyncHttpService } from '../providers/http-services/sync-service';
-import { ElasticDirective } from '../directives/elastic/elastic';
+
 
 @NgModule({
   declarations: [
@@ -27,7 +29,9 @@ import { ElasticDirective } from '../directives/elastic/elastic';
     LoginPage,
     HomePage,
     SurveyPage,
-    ElasticDirective
+  
+
+    FinCuestPage
   ],
   imports: [
     BrowserModule,
@@ -40,7 +44,9 @@ import { ElasticDirective } from '../directives/elastic/elastic';
     MyApp,
     LoginPage,
     HomePage,
-    SurveyPage
+    SurveyPage,
+
+    FinCuestPage
   ],
   providers: [
     StatusBar,

@@ -43,37 +43,43 @@ export class SurveyPage {
 
   loadSurvey(navParams) {
 
-    // this.answer = {};
-    // this.answer.option = {};
+    let tipo=navParams['tipo_establecimiento_id'];
+    let sub_tipo=navParams['subtipo_id'];
+    let isPharma = false;
 
-    console.log(navParams['tipo_establecimiento_id']);
-    if (navParams["tipo_establecimiento_id"] == 3 || navParams["descripcion"] == 'Farmacia Intrahospitalaria') {
-      console.log('pharma');
-      this.storage.get('pharmaSurvey').then(
-        (data) => {
-          //console.log(data);
-          this.questions = JSON.parse(data);
-          this.question = this.questions[0];
-          console.log(this.question);
-        },
-        err => {
-          console.log(err);
-        }
-      );
-    } else {
-      console.log('hospital');
-      this.storage.get('hospitalSurvey').then(
-        (data) => {
-          //console.log(data);
-          this.questions = JSON.parse(data);
-          this.question = this.questions[0];
-          console.log(this.question);
-        },
-        err => {
-          console.log(err);
-        }
-      );
+    if(tipo== 3 || tipo==4 || (tipo==1 && sub_tipo==3)){
+      isPharma = true;
     }
+
+
+
+    if(isPharma){
+
+      this.storage.get('pharmaSurvey').then(
+      (data) => {
+        //console.log(data);
+        this.questions = JSON.parse(data);
+        this.question = this.questions[0];
+        console.log(this.question);
+      },
+      err => {
+        console.log(err);
+      }
+    );
+  } else {
+    console.log('hospital');
+    this.storage.get('hospitalSurvey').then(
+      (data) => {
+        //console.log(data);
+        this.questions = JSON.parse(data);
+        this.question = this.questions[0];
+        console.log(this.question);
+      },
+      err => {
+        console.log(err);
+      }
+    );
+  }
   }
 
   radioOptionChanged() {
