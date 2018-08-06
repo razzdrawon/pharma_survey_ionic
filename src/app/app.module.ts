@@ -21,7 +21,7 @@ import { FinCuestPage } from '../pages/finCuest/finCuest';
 //import { SurveysDBService } from '../providers/db-services/surveys-service';
 
 import { SyncHttpService } from '../providers/http-services/sync-service';
-import { ElasticDirective } from '../directives/elastic/elastic';
+
 
 @NgModule({
   declarations: [
@@ -29,7 +29,7 @@ import { ElasticDirective } from '../directives/elastic/elastic';
     LoginPage,
     HomePage,
     SurveyPage,
-    ElasticDirective,
+  
 
     FinCuestPage
   ],

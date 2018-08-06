@@ -73,9 +73,7 @@ export class HomePage {
 
         console.log(this.subtypes);
         //establishmentSelected.tipo_establecimiento_id
-        let subtypesArray = this.subtypes.find(
-        subtype => subtype.tipo_establecimiento_id == this.establishmentSelected.tipo_establecimiento_id
-          );
+      
 
 
          let varType =this.establishmentSelected.tipo_establecimiento_id;
