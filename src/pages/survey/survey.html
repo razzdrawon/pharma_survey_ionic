@@ -116,7 +116,7 @@
                     <!-- 4.- texto abierto -->
                     <ion-item *ngSwitchCase=4>
                       <ion-label floating>Escriba su respuesta (Texto)</ion-label>
-                      <ion-textarea elastic autosize type="text" [(ngModel)]="answer.childText"></ion-textarea>
+                      <ion-textarea  type="text" [(ngModel)]="answer.childText"></ion-textarea>
                     </ion-item>
 
                     <!-- 5.- opcion multiple con pondereaciones -->
@@ -146,7 +146,7 @@
                     <ion-item-group *ngSwitchCase=6>
                       <ion-item>
                         <ion-label floating>Escriba su respuesta (Texto)</ion-label>
-                        <ion-textarea elastic autosize type="text" [(ngModel)]="answer.imageText"></ion-textarea>
+                        <ion-textarea  type="text" [(ngModel)]="answer.imageText"></ion-textarea>
                       </ion-item>
                       <ion-item>
                           <button class="siguiente" ion-button block (click)="getPicture()">Tomar Foto</button>
