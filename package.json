@@ -23,6 +23,7 @@
     "@ionic-native/camera": "^4.11.0",
     "@ionic-native/core": "~4.10.0",
     "@ionic-native/geolocation": "^4.11.0",
+    "@ionic-native/in-app-browser": "^4.11.0",
     "@ionic-native/splash-screen": "~4.10.0",
     "@ionic-native/sqlite": "^4.10.1",
     "@ionic-native/status-bar": "^4.10.1",
@@ -36,6 +37,7 @@
     "cordova-plugin-camera": "^4.0.3",
     "cordova-plugin-device": "^2.0.2",
     "cordova-plugin-geolocation": "^4.0.1",
+    "cordova-plugin-inappbrowser": "^3.0.0",
     "cordova-plugin-ionic": "^5.0.0",
     "cordova-plugin-ionic-keyboard": "^2.1.2",
     "cordova-plugin-ionic-webview": "^2.0.2",
@@ -69,7 +71,8 @@
       "cordova-plugin-camera": {},
       "cordova-plugin-geolocation": {
         "GEOLOCATION_USAGE_DESCRIPTION": "Obtener la geolocalización de los estabecimeintos"
-      }
+      },
+      "cordova-plugin-inappbrowser": {}
     },
     "platforms": [
       "ios",
