@@ -18,23 +18,47 @@
   <ion-grid>
     <ion-row *ngIf="question.tipo_cuestionario_id == 1">
       <ion-col col-2> </ion-col>
-      <ion-col text-center col-1 [attr.col-2]="question.seccion == 1 ? '' : null">  <button ion-button  class="boton_chico"  [disabled]="question.seccion!=1" >I</button></ion-col>
-      <ion-col text-center col-1 [attr.col-2]="question.seccion == 2 ? '' : null">  <button ion-button  class="boton_chico"  [disabled]="question.seccion!=2" >II</button></ion-col>
-      <ion-col text-center col-1 [attr.col-2]="question.seccion == 3 ? '' : null">  <button ion-button  class="boton_chico"  [disabled]="question.seccion!=3" >III</button></ion-col>
-      <ion-col text-center col-1 [attr.col-2]="question.seccion == 4 ? '' : null">  <button ion-button  class="boton_chico"  [disabled]="question.seccion!=4" >IV</button></ion-col>
-      <ion-col text-center col-1 [attr.col-2]="question.seccion == 5 ? '' : null">  <button ion-button  class="boton_chico"  [disabled]="question.seccion!=5" >V</button></ion-col>
-      <ion-col text-center col-1 [attr.col-2]="question.seccion == 6 ? '' : null">  <button ion-button  class="boton_chico"  [disabled]="question.seccion!=6" >VI</button></ion-col>
-      <ion-col text-center col-1 [attr.col-2]="question.seccion == 7 ? '' : null">  <button ion-button  class="boton_chico"  [disabled]="question.seccion!=7" >VII</button></ion-col>
+      <ion-col text-center col-1 [attr.col-2]="question.seccion == 1 ? '' : null">
+        <button ion-button class="boton_chico" [disabled]="question.seccion!=1">I</button>
+      </ion-col>
+      <ion-col text-center col-1 [attr.col-2]="question.seccion == 2 ? '' : null">
+        <button ion-button class="boton_chico" [disabled]="question.seccion!=2">II</button>
+      </ion-col>
+      <ion-col text-center col-1 [attr.col-2]="question.seccion == 3 ? '' : null">
+        <button ion-button class="boton_chico" [disabled]="question.seccion!=3">III</button>
+      </ion-col>
+      <ion-col text-center col-1 [attr.col-2]="question.seccion == 4 ? '' : null">
+        <button ion-button class="boton_chico" [disabled]="question.seccion!=4">IV</button>
+      </ion-col>
+      <ion-col text-center col-1 [attr.col-2]="question.seccion == 5 ? '' : null">
+        <button ion-button class="boton_chico" [disabled]="question.seccion!=5">V</button>
+      </ion-col>
+      <ion-col text-center col-1 [attr.col-2]="question.seccion == 6 ? '' : null">
+        <button ion-button class="boton_chico" [disabled]="question.seccion!=6">VI</button>
+      </ion-col>
+      <ion-col text-center col-1 [attr.col-2]="question.seccion == 7 ? '' : null">
+        <button ion-button class="boton_chico" [disabled]="question.seccion!=7">VII</button>
+      </ion-col>
       <ion-col col-2> </ion-col>
     </ion-row>
 
     <ion-row *ngIf="question.tipo_cuestionario_id == 2">
       <ion-col col-3> </ion-col>
-      <ion-col text-center col-1 [attr.col-2]="question.seccion == 1 ? '' : null">  <button ion-button  class="boton_chico"  [disabled]="question.seccion!=1" >I</button></ion-col>
-      <ion-col text-center col-1 [attr.col-2]="question.seccion == 2 ? '' : null">  <button ion-button  class="boton_chico"  [disabled]="question.seccion!=2" >II</button></ion-col>
-      <ion-col text-center col-1 [attr.col-2]="question.seccion == 3 ? '' : null">  <button ion-button  class="boton_chico"  [disabled]="question.seccion!=3" >III</button></ion-col>
-      <ion-col text-center col-1 [attr.col-2]="question.seccion == 4 ? '' : null">  <button ion-button  class="boton_chico"  [disabled]="question.seccion!=4" >IV</button></ion-col>
-      <ion-col text-center col-1 [attr.col-2]="question.seccion == 5 ? '' : null">  <button ion-button  class="boton_chico"  [disabled]="question.seccion!=5" >V</button></ion-col>
+      <ion-col text-center col-1 [attr.col-2]="question.seccion == 1 ? '' : null">
+        <button ion-button class="boton_chico" [disabled]="question.seccion!=1">I</button>
+      </ion-col>
+      <ion-col text-center col-1 [attr.col-2]="question.seccion == 2 ? '' : null">
+        <button ion-button class="boton_chico" [disabled]="question.seccion!=2">II</button>
+      </ion-col>
+      <ion-col text-center col-1 [attr.col-2]="question.seccion == 3 ? '' : null">
+        <button ion-button class="boton_chico" [disabled]="question.seccion!=3">III</button>
+      </ion-col>
+      <ion-col text-center col-1 [attr.col-2]="question.seccion == 4 ? '' : null">
+        <button ion-button class="boton_chico" [disabled]="question.seccion!=4">IV</button>
+      </ion-col>
+      <ion-col text-center col-1 [attr.col-2]="question.seccion == 5 ? '' : null">
+        <button ion-button class="boton_chico" [disabled]="question.seccion!=5">V</button>
+      </ion-col>
       <ion-col col-3> </ion-col>
     </ion-row>
 
@@ -98,12 +122,38 @@
                     </ion-item>
 
                     <!-- 2.- radio button  -->
-                    <ion-list *ngSwitchCase=2 radio-group ngDefaultControl [(ngModel)]="answer.childOption" (ionChange)="radioChildOptionChanged()">
-                      <ion-item *ngFor="let optChild of opt.respuestas">
-                        <ion-label class="sentence">{{optChild.enunciado}}</ion-label>
-                        <ion-radio [value]="optChild"></ion-radio>
-                      </ion-item>
-                    </ion-list>
+                    <div *ngSwitchCase=2>
+                      <ion-row *ngFor="let optChild of opt.respuestas">
+                        <ion-col>
+                          <ion-list radio-group ngDefaultControl [(ngModel)]="answer.childOption" (ionChange)="radioChildOptionChanged()">
+                            
+                            <ion-item-group>
+                              <ion-item>
+                                <ion-label class="sentence">{{optChild.enunciado}}</ion-label>
+                                <ion-radio [value]="optChild"></ion-radio>
+                              </ion-item>
+
+                              <ion-row *ngIf="hasSecondChilds">
+                                <ion-col>
+                                </ion-col>
+                                <ion-col col-10>
+                                  <div [ngSwitch]="optChild.tipo_pregunta">
+
+                                    <!-- 4.- texto abierto -->
+                                    <ion-item *ngSwitchCase=4>
+                                      <ion-label floating>Escriba su respuesta (Texto)</ion-label>
+                                      <ion-textarea type="text" [(ngModel)]="answer.secondChildText"></ion-textarea>
+                                    </ion-item>
+                                  </div>
+                                </ion-col>
+                              </ion-row>
+                            </ion-item-group>
+
+                          </ion-list>
+                        </ion-col>
+                      </ion-row>
+                    </div>
+
 
                     <!-- 3.- combo box  -->
                     <!-- <ion-list *ngSwitchCase=3>
@@ -123,7 +173,7 @@
                     <!-- 4.- texto abierto -->
                     <ion-item *ngSwitchCase=4>
                       <ion-label floating>Escriba su respuesta (Texto)</ion-label>
-                      <ion-textarea  type="text" [(ngModel)]="answer.childText"></ion-textarea>
+                      <ion-textarea type="text" [(ngModel)]="answer.childText"></ion-textarea>
                     </ion-item>
 
                     <!-- 5.- opcion multiple con pondereaciones -->
@@ -153,7 +203,7 @@
                     <ion-item-group *ngSwitchCase=6>
                       <ion-item>
                         <ion-label floating>Escriba su respuesta (Texto)</ion-label>
-                        <ion-textarea  type="text" [(ngModel)]="answer.imageText"></ion-textarea>
+                        <ion-textarea type="text" [(ngModel)]="answer.imageText"></ion-textarea>
                       </ion-item>
                       <ion-item>
                         <button class="siguiente" ion-button block (click)="getPicture()">Tomar Foto</button>
