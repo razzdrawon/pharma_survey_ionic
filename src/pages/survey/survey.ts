@@ -85,7 +85,6 @@ export class SurveyPage {
   radioOptionChanged() {
 
     console.log(this.answer);
-    // debugger;
 
     if (this.answer.option.respuestas != null || this.answer.option.tipo_pregunta != null) {
       this.hasChilds = true;
@@ -140,12 +139,11 @@ export class SurveyPage {
   }
 
   validateSumAnswer(): any {
-    debugger;
+
     if (this.question.tipo_pregunta == 5 && this.question.valida_respuestas_con_pregunta != null) {
 
       let sum = null;
       Object.keys(this.answer.map).forEach(key => {
-        debugger;
         sum = parseInt(this.answer.map[key]) + sum;
       });
 
@@ -161,7 +159,6 @@ export class SurveyPage {
         });
       }
 
-      debugger;
       if (sum == total) {
         return true;
       }
