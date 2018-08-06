@@ -520,7 +520,7 @@
         "tooltip": "",
         "regex": "",
         "valida_respuestas_con_pregunta": null,
-        "final_seccion": 0,
+        "final_seccion": 1,
         "depende_respuesta": null,
         "tiene_respuestas": null,
         "respuestas": null

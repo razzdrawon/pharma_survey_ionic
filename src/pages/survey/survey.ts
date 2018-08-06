@@ -85,7 +85,6 @@ export class SurveyPage {
   radioOptionChanged() {
 
     console.log(this.answer);
-    // debugger;
 
     if (this.answer.option.respuestas != null || this.answer.option.tipo_pregunta != null) {
       this.hasChilds = true;
@@ -140,12 +139,11 @@ export class SurveyPage {
   }
 
   validateSumAnswer(): any {
-    debugger;
+
     if (this.question.tipo_pregunta == 5 && this.question.valida_respuestas_con_pregunta != null) {
 
       let sum = null;
       Object.keys(this.answer.map).forEach(key => {
-        debugger;
         sum = parseInt(this.answer.map[key]) + sum;
       });
 
@@ -161,7 +159,6 @@ export class SurveyPage {
         });
       }
 
-      debugger;
       if (sum == total) {
         return true;
       }
@@ -264,10 +261,11 @@ export class SurveyPage {
     this.question = this.questions.find(question => (question.seccion == nextSection) && (question.seccion_pregunta_id == nextQuestion));
     if (this.question.tipo_pregunta == 2) {
       this.answer = new Answer();
-      this.answer.number = null;
     }
     else {
       this.answer = new Answer();
+      this.answer.number = null;
+      this.answer.text = null;
     }
   }
 
