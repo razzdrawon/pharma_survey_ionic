@@ -3,7 +3,7 @@ import { Question } from "./question";
 export class Answer {
     public question: Question;
     public number?: number;
-    public text?: string = '';
+    public text?: string;
     public option?: any = {};
     public map?: any = {};
     public options?: Array<any> = new Array<any>();

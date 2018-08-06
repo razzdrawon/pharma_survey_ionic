@@ -261,10 +261,11 @@ export class SurveyPage {
     this.question = this.questions.find(question => (question.seccion == nextSection) && (question.seccion_pregunta_id == nextQuestion));
     if (this.question.tipo_pregunta == 2) {
       this.answer = new Answer();
-      this.answer.number = null;
     }
     else {
       this.answer = new Answer();
+      this.answer.number = null;
+      this.answer.text = null;
     }
   }
 
