@@ -57,7 +57,10 @@ export class HomePage {
      this.establishmentSelected =est;
      this.establishmentsList= [];
      this.establishmentsList.push(est);
-     this.optionChanged();
+     console.log("++++++++++++++++++++++++++++++");    
+     console.log(JSON.stringify(est));
+
+     this.loadSubtypes();
 
   }
   validateLoggedUser() {
@@ -80,19 +83,17 @@ export class HomePage {
   }
 
   loadEstablishments() {
-
-
+    let tasks = [];
     this.db.selectEstablishmentByName(this.findInput).then(response => {
-      let tasks = [];
       
- 
       for (let index = 0; index < response.rows.length; index++) {
         let obj = response.rows.item(index);
         tasks.push({establecimiento_id: obj.id ,nombre: obj.name,tipo_establecimiento_id: obj.type });
       }
+      });
       
       this.establishmentsList=tasks;
-    });
+    
   
 
   }
@@ -100,14 +101,8 @@ export class HomePage {
   loadSubtypes() {
     this.storage.get('subtypes').then(
       (data) => {
-        //console.log(data);
         this.subtypes = JSON.parse(data);
-
-     
-        //establishmentSelected.tipo_establecimiento_id
-      
-
-
+        console.log(this.subtypes);
          let varType =this.establishmentSelected.tipo_establecimiento_id;
           var subtypesArray = this.subtypes.filter(function(subtype, i) {
             return (subtype.tipo_establecimiento_id == varType);
@@ -122,11 +117,7 @@ export class HomePage {
     );
   }
 
-  optionChanged() {
 
- 
-    this.loadSubtypes();
-  }
 
   subtypeChanged() {
 
@@ -136,33 +127,10 @@ export class HomePage {
 
   startSurvey() {
 
-    // if( JSON.stringify(this.establishmentSelected) == '{}'   || this.establishmentSelected.tipo_establecimiento_id == 1)  {
-    //   let alert = this.alertCtrl.create({
-    //     title: 'Ingrese los campos requeridos',
-    //     subTitle: 'Aseguresé de que ha introducido un establecimiento',
-    //     buttons: ['Ok']
-    //   });
-    //   alert.present();
-    // }
-
-    // else if( JSON.stringify(this.establishmentSelected) != '{}' && JSON.stringify(this.subtypeSelected) == '{}') {
-    //   let alert = this.alertCtrl.create({
-    //     title: 'Ingrese los campos requeridos',
-    //     subTitle: 'Aseguresé de que ha introducido un subtipo',
-    //     buttons: ['Ok']
-    //   });
-    //   alert.present();
-    // }
-
-    // else{
-
-    console.log(this.subtypeSelected);
-
-
       let params = Object.assign({}, this.subtypeSelected,this.establishmentSelected) ;
       console.log(params);
       this.navCtrl.push(SurveyPage, params );
-    // }
+
   }
 
   salir() {
