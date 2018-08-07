@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { SQLiteObject } from '@ionic-native/sqlite';
-import { Survey } from '../../models/survey';
-import { SurveySummary } from '../../models/surveySummary';
+//import { Survey } from '../../models/survey';
+//import { SurveySummary } from '../../models/surveySummary';
 import { SQLite } from '@ionic-native/sqlite';
 // /*
 //   Generated class for the DBServiceProvider provider.
@@ -82,7 +82,7 @@ import { SQLite } from '@ionic-native/sqlite';
     return this.query(sql,[] );
   }
 
-
+/*
   selectSurveyStatus(){
     
     return this.query(this.SELECT_SURVEY_STATUS,[] ).then(response => {
@@ -102,14 +102,14 @@ import { SQLite } from '@ionic-native/sqlite';
     
   }
 
-
+*/
 
   insertEstablishment(establishment:any){
     let sql = this.INSERT_ESTABLISHMENT;
     return this.query(sql, [establishment.establecimiento_id,establishment.nombre,establishment.tipo_establecimiento_id]);
   }
 
-  insertSurvey(survey:Survey){
+  insertSurvey(survey:any){
     let sql = this.INSERT_SURVEY;
     return this.query(sql, 
       [

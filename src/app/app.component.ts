@@ -1,6 +1,6 @@
-import { LoginPage } from '../pages/login/login';
+import { LoginPage } from './../pages/login/login';
 import { Component } from '@angular/core';
-import { Platform } from 'ionic-angular/umd';
+import { Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { DBService } from '../providers/db-services/storage-service';
@@ -17,7 +17,7 @@ export class MyApp {
 
   constructor(public platform: Platform, public statusBar: StatusBar, 
     public splashScreen: SplashScreen,
-    public db:DBService
+   public db:DBService
   ) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
@@ -25,7 +25,7 @@ export class MyApp {
       
       this.statusBar.styleDefault();
       
-      console.log('Antes de configurar')
+      //console.log('Antes de configurar')
       this.db.configureDatabase();
       this.splashScreen.hide();
       this.rootPage = LoginPage;

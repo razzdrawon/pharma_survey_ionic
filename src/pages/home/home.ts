@@ -1,6 +1,6 @@
-import { LoginPage } from '../login/login';
+import { LoginPage } from './../login/login';
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController } from 'ionic-angular/umd';
+import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { SurveyPage } from '../survey/survey';
 import { Storage } from '@ionic/storage';
 import { DBService } from '../../providers/db-services/storage-service';
@@ -24,7 +24,8 @@ export class HomePage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, 
     private storage: Storage, public alertCtrl: AlertController,
-  private db:DBService) {
+  private db:DBService
+) {
 
   }
 
@@ -92,6 +93,7 @@ export class HomePage {
       
       this.establishmentsList=tasks;
     });
+  
 
   }
 

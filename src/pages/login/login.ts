@@ -1,17 +1,14 @@
-import { HomePage } from '../home/home';
+import { HomePage } from './../home/home';
 import { Component } from '@angular/core';
-import { NavController, AlertController,LoadingController } from 'ionic-angular/umd';
+import { NavController, AlertController,LoadingController } from 'ionic-angular';
 import { DBService } from '../../providers/db-services/storage-service';
 import { SyncHttpService } from '../../providers/http-services/sync-service';
 import { Storage } from '@ionic/storage';
-import { SurveySummary } from '../../models/surveySummary';
+//import { SurveySummary } from '../../models/surveySummary';
 
 import {Md5} from 'ts-md5';
 
 
-import 'rxjs/add/observable/forkJoin';
-import 'rxjs/add/operator/first';
-//import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 
 
@@ -27,7 +24,7 @@ export class LoginPage {
   user: any;
   pass_hashed:any;
   public loading:any;
-  public summary:SurveySummary;
+  //public summary:SurveySummary;
 
   tasks: any[] = [];
   constructor(public navCtrl: NavController,
@@ -39,19 +36,19 @@ export class LoginPage {
     ) {
 
       // this.storage.clear();
-  }
+    }
 
   ionViewDidLoad() {
 
     // this.storage.remove('LoggedUser');
-    this.db.selectSurveyStatus().then(summary => {
+    /*this.db.selectSurveyStatus().then(summary => {
       if(summary != null) {
         console.log(summary);
        this.summary = summary;
       }
       console.log(summary);
     });
-
+*/
     this.validateActiveSession();
 
     this.getAllUsers();
@@ -161,11 +158,10 @@ export class LoginPage {
     //solo si hay version
         
 
-    let versionObs = this.syncHttpService.getVersionApp( )
+    this.syncHttpService.getVersionApp( )
     .subscribe(
       (data: any[]) => {
         console.log('getVersionApp'+JSON.stringify(data) );
-        //"getVersionApp[{"id":"1.0.1","nombre":"Tercera","fecha":1535050044000,"observaciones":"Tercera","observaciones_int":null,"url":"www.accesosinexceso.org"}]", source: http://localhost:8080/build/main.js (219)
 
         if(data != null &&   data.length>0) {
           let obj = data[0];
@@ -183,7 +179,7 @@ export class LoginPage {
               text: 'Ok',
               handler: data => {
                 
-                //const browser = this.iab.create(obj.url);
+                window.open(obj.url, '_blank', 'location=yes,height=570,width=520,scrollbars=yes,status=yes');
               }
             }
           ]
@@ -211,7 +207,7 @@ export class LoginPage {
       this.loading.dismiss();
       this.showPrompt();
     },10000);
-    let usersObs = this.syncHttpService.getUsers()
+     this.syncHttpService.getUsers()
       .subscribe(
         (data: any[]) => {
           console.log(JSON.stringify(data) );
@@ -229,6 +225,7 @@ export class LoginPage {
         }
     );
 
+    
     let estabsObs = this.syncHttpService.getEstablishments()
       .subscribe(
         (res: any[]) => {
@@ -237,20 +234,14 @@ export class LoginPage {
           this.db.deleteEstablishment().then(data => {
           for(let i=0; res.length>i;i++) {
             let establishment = res[i];
-            console.log(' inserta ' +JSON.stringify(establishment));
+           // console.log(' inserta ' +JSON.stringify(establishment));
            this.db.insertEstablishment(establishment); 
           }
         
         });
 
         
-        /*
-          this.storage.remove('establishments');
-          // set a key/value
-          this.storage.set('establishments', JSON.stringify(data));
-          console.log('establishments syncronized');
-          console.log('storage: ' + this.storage.get('establishments'));
-*/
+
         },
         err => {
           console.log(JSON.stringify(err));

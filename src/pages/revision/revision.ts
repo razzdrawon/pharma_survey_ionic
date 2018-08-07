@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular/umd';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 /**
  * Generated class for the RevisionPage page.
@@ -8,7 +8,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular/umd';
  * Ionic pages and navigation.
  */
  //import { FinCuestPage} from '../index.paginas';
-@IonicPage()
+
 @Component({
   selector: 'page-revision',
   templateUrl: 'revision.html',
