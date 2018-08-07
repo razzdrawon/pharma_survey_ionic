@@ -1,3 +1,4 @@
+import { Survey } from './../../models/survey';
 import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { SyncHttpService } from '../../providers/http-services/sync-service';
@@ -5,6 +6,7 @@ import { Storage } from '@ionic/storage';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { Answer } from '../../models/answer';
 import { FinCuestPage } from '../finCuest/finCuest';
+import { DBService } from '../../providers/db-services/storage-service';
 
 /**
  * Generated class for the SurveyPage page.
@@ -32,36 +34,46 @@ export class SurveyPage {
 
   public image: string = null;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public syncHttpService: SyncHttpService, private storage: Storage, private camera: Camera, public alertCtrl: AlertController) {
+  public survey = new Survey();
+
+  constructor(
+    public navCtrl: NavController, 
+    public navParams: NavParams, 
+    public syncHttpService: SyncHttpService, 
+    private storage: Storage, 
+    private camera: Camera, 
+    public alertCtrl: AlertController,
+    private dbService:DBService) {
   }
 
   ionViewDidLoad() {
 
     console.log('ionViewDidLoad SurveyPage');
     console.log(this.navParams);
-    this.loadSurvey(this.navParams.data);
+    this.loadSurvey();
+    this.survey.start_date = new Date().toISOString();
+    this.survey.establishment_id = this.navParams['tipo_establecimiento_id'];
 
   }
 
-  loadSurvey(navParams) {
+  loadSurvey() {
 
-    let tipo=navParams['tipo_establecimiento_id'];
-    let sub_tipo=navParams['subtipo_id'];
+    let tipo=this.navParams['tipo_establecimiento_id'];
+    let sub_tipo=this.navParams['subtipo_id'];
     let isPharma = false;
 
     if(tipo== 3 || tipo==4 || (tipo==1 && sub_tipo==3)){
       isPharma = true;
     }
 
-
-
     if(isPharma){
-
+      this.survey.type = 2;
       this.storage.get('pharmaSurvey').then(
       (data) => {
         //console.log(data);
         this.questions = JSON.parse(data).cuestionario;
         this.question = this.questions[0];
+        this.survey.version = JSON.parse(data).version;
         console.log(this.question);
       },
       err => {
@@ -69,12 +81,14 @@ export class SurveyPage {
       }
     );
   } else {
+    this.survey.type = 1;
     console.log('hospital');
     this.storage.get('hospitalSurvey').then(
       (data) => {
         //console.log(data);
         this.questions = JSON.parse(data).cuestionario;
         this.question = this.questions[0];
+        this.survey.version = JSON.parse(data).version;
         console.log(this.question);
       },
       err => {
@@ -277,6 +291,9 @@ export class SurveyPage {
     if (this.question== undefined) {
       console.log('entra a final ');
       this.question={tipo_pregunta:0,tipo_cuestionario_id:0,seccion:0};
+
+      this.saveAnswers();
+
       this.navCtrl.setRoot(FinCuestPage);
       this.navCtrl.popToRoot();
     }else{
@@ -290,6 +307,21 @@ export class SurveyPage {
       }
 
     }
+    
+  }
+
+  saveAnswers(): any {
+    this.survey.survey = JSON.stringify(this.answers);
+    this.survey.save_date = new Date().toISOString();
+    this.survey.end_date = new Date().toISOString();
+    this.survey.sync = 0;
+
+    this.dbService.insertSurvey(this.survey);
+
+    this.dbService.getSurveys();
+
+    debugger;
+    console.log(this.dbService.getSurveys());
     
   }
 

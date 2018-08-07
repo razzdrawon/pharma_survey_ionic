@@ -159,7 +159,7 @@ export class HomePage {
     console.log(this.subtypeSelected);
 
 
-      let params = Object.assign({}, this.subtypeSelected,this.establishmentSelected) ;
+      let params = Object.assign({}, this.subtypeSelected,this.establishmentSelected,this.loggedUser);
       console.log(params);
       this.navCtrl.push(SurveyPage, params );
     // }
