@@ -39,17 +39,30 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content class="outer-content" >
+
+    <ion-searchbar [(ngModel)]="findInput"   (ionInput)="setFilteredItems()"></ion-searchbar>
+
+        <ion-list>
+          <ion-list-header>
+            Establecimeintos
+          </ion-list-header>
+      
+          <ion-item *ngFor="let est of establishmentsList">
+            <ion-label>{{est.nombre}}</ion-label>
+            <button ion-button outline item-end (click)="selectEstablishment(est)" >seleccionar</button>
+          </ion-item>
+         
+         
+        </ion-list>
+      
+     
+
+
+
 
   <ion-list>
 
-    <ion-item
-    >
-      <ion-label>Seleccione Establecimiento</ion-label>
-      <ion-select [(ngModel)]="establishmentSelected" cancelText="Cancel" okText="Okay" (ionChange)="optionChanged()">
-        <ion-option *ngFor="let est of establishments" [value]="est">{{est.nombre}}</ion-option>
-      </ion-select>
-    </ion-item>
 
     <ion-item *ngIf="establishmentSelected.tipo_establecimiento_id == 1">
       <ion-label>Seleccione Subtipo</ion-label>

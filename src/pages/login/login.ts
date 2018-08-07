@@ -1,15 +1,14 @@
 import { HomePage } from './../home/home';
 import { Component } from '@angular/core';
-import { NavController, AlertController } from 'ionic-angular';
-//import { UsersDBService } from './../../providers/db-services/users-service';
+import { NavController, AlertController,LoadingController } from 'ionic-angular';
+import { DBService } from '../../providers/db-services/storage-service';
 import { SyncHttpService } from '../../providers/http-services/sync-service';
 import { Storage } from '@ionic/storage';
+//import { SurveySummary } from '../../models/surveySummary';
 
-import {Md5} from 'ts-md5/dist/md5';
+import {Md5} from 'ts-md5';
 
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/forkJoin';
-import 'rxjs/add/operator/first';
+
 
 
 
@@ -24,19 +23,32 @@ export class LoginPage {
   userLogin: { username: string; password: string; } = { username: '', password: '' };
   user: any;
   pass_hashed:any;
+  public loading:any;
+  //public summary:SurveySummary;
 
   tasks: any[] = [];
   constructor(public navCtrl: NavController,
-    //public usersDBService: UsersDBService,
-    public syncHttpService: SyncHttpService, public alertCtrl: AlertController, private storage: Storage) {
+    public db: DBService,
+    public syncHttpService: SyncHttpService, public alertCtrl: AlertController, private storage: Storage,
+     private loadingCtrl: LoadingController,
+    // private iab: InAppBrowser
+    
+    ) {
 
       // this.storage.clear();
-  }
+    }
 
   ionViewDidLoad() {
 
     // this.storage.remove('LoggedUser');
-
+    /*this.db.selectSurveyStatus().then(summary => {
+      if(summary != null) {
+        console.log(summary);
+       this.summary = summary;
+      }
+      console.log(summary);
+    });
+*/
     this.validateActiveSession();
 
     this.getAllUsers();
@@ -51,6 +63,13 @@ export class LoginPage {
       }
       console.log(this.user);
     })
+  }
+
+  private showLoading(mensaje:string) {
+    this.loading = this.loadingCtrl.create({
+      content: mensaje+'...'
+    });
+    this.loading.present();
   }
 
   getAllUsers() {
@@ -134,45 +153,105 @@ export class LoginPage {
 
   }
 
-  syncInfo() {
 
-    let usersObs = this.syncHttpService.getUsers()
+  showPrompt() {
+    //solo si hay version
+        
+
+    this.syncHttpService.getVersionApp( )
+    .subscribe(
+      (data: any[]) => {
+        console.log('getVersionApp'+JSON.stringify(data) );
+
+        if(data != null &&   data.length>0) {
+          let obj = data[0];
+        
+          
+        let prompt = this.alertCtrl.create({
+          title: 'Actualización',
+          message: "Existe una actualización del sistema presione ok para descargarla o cancelar  para hacerlo mas tarde.",
+          
+          buttons: [
+            {
+              text: 'Cancelar',
+            },
+            {
+              text: 'Ok',
+              handler: data => {
+                
+                window.open(obj.url, '_blank', 'location=yes,height=570,width=520,scrollbars=yes,status=yes');
+              }
+            }
+          ]
+        });
+        prompt.present();
+            
+        
+        }
+
+
+          },
+      err => {
+        console.log('getVersionApp'+JSON.stringify(err));
+      }
+  );
+
+
+
+      }
+
+
+  syncInfo() {
+    this.showLoading('Sincronizando información ...');
+    setTimeout(() => {
+      this.loading.dismiss();
+      this.showPrompt();
+    },10000);
+     this.syncHttpService.getUsers()
       .subscribe(
         (data: any[]) => {
-          console.log(data);
+          console.log(JSON.stringify(data) );
           this.storage.remove('users');
           this.allUsers = data;
           // set a key/value
           this.storage.set('users', JSON.stringify(data));
           console.log('users syncronized');
           console.log('storage: ' + this.storage.get('users'));
-
+          
         },
         err => {
-          console.log(err);
+          
+          console.log(JSON.stringify(err));
         }
     );
 
+    
     let estabsObs = this.syncHttpService.getEstablishments()
       .subscribe(
-        (data: any[]) => {
-          console.log(data);
-          this.storage.remove('establishments');
-          // set a key/value
-          this.storage.set('establishments', JSON.stringify(data));
-          console.log('establishments syncronized');
-          console.log('storage: ' + this.storage.get('establishments'));
+        (res: any[]) => {
+          
+          
+          this.db.deleteEstablishment().then(data => {
+          for(let i=0; res.length>i;i++) {
+            let establishment = res[i];
+           // console.log(' inserta ' +JSON.stringify(establishment));
+           this.db.insertEstablishment(establishment); 
+          }
+        
+        });
+
+        
 
         },
         err => {
-          console.log(err);
+          console.log(JSON.stringify(err));
         }
     );
 
     let subsObs = this.syncHttpService.getSubtypes()
       .subscribe(
         (data: any[]) => {
-          console.log(data);
+          console.log(JSON.stringify(data) );
           this.storage.remove('subtypes');
           // set a key/value
           this.storage.set('subtypes', JSON.stringify(data));
@@ -181,14 +260,14 @@ export class LoginPage {
 
         },
         err => {
-          console.log(err);
+          console.log(JSON.stringify(err));
         }
     );
 
     let medsObs = this.syncHttpService.getMedicines()
       .subscribe(
         (data: any[]) => {
-          console.log(data);
+          console.log(JSON.stringify(data) );
           this.storage.remove('medicines');
           // set a key/value
           this.storage.set('medicines', JSON.stringify(data));
@@ -197,14 +276,14 @@ export class LoginPage {
 
         },
         err => {
-          console.log(err);
+          console.log(JSON.stringify(err));
         }
     );
 
     let hospitalObs = this.syncHttpService.getHospitalSurvey()
       .subscribe(
         (data: any[]) => {
-          console.log(data);
+          console.log(JSON.stringify(data) );
           this.storage.remove('hospitalSurvey');
           // set a key/value
           this.storage.set('hospitalSurvey', JSON.stringify(data));
@@ -213,14 +292,14 @@ export class LoginPage {
 
         },
         err => {
-          console.log(err);
+          console.log(JSON.stringify(err));
         }
     );
 
     let pharmaObs = this.syncHttpService.getPharmaSurvey()
       .subscribe(
         (data: any[]) => {
-          console.log(data);
+          console.log(JSON.stringify(data) );
           this.storage.remove('pharmaSurvey');
           // set a key/value
           this.storage.set('pharmaSurvey', JSON.stringify(data));
@@ -229,11 +308,16 @@ export class LoginPage {
 
         },
         err => {
-          console.log(err);
+          console.log(JSON.stringify(err));
         }
     );
 
 
+    
+
+    
+    
+    
     // this.tasks.push(usersObs);
     // this.tasks.push(estabsObs);
     // this.tasks.push(subsObs);
@@ -249,7 +333,7 @@ export class LoginPage {
 
   }
 
-
+ 
 
 
 

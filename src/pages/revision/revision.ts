@@ -8,7 +8,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
  * Ionic pages and navigation.
  */
  //import { FinCuestPage} from '../index.paginas';
-@IonicPage()
+
 @Component({
   selector: 'page-revision',
   templateUrl: 'revision.html',

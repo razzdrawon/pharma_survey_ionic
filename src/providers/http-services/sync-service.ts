@@ -2,29 +2,39 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/map';
 
+
 @Injectable()
 export class SyncHttpService {
 
+
+  public headers: Headers;
+  public getCSubtipo    ="getCSubtipo";
+  public getCUsuario  ="getCUsuario";
+  public getCVersionApp  ="getCVersionApp";
+  public saveDCuestionario  ="saveDCuestionario";
+  public getCMedicamento  ="getCMedicamento";
+  public getCEstablecimiento  ="getCEstablecimiento";
+  public getCCuestionarioHospital  ="getCCuestionarioHospital";
+  public getCCuestionarioFarmacia  ="getCCuestionarioFarmacia";
+
+  
+ 
+
   constructor(
     private http: HttpClient
-  ) {}
+  ) {
 
-  apiUrl = 'http://http://www.accesosinexceso.org/getCUsuario';
+    this.headers = new Headers();
+    this.headers.append('Content-Type', 'application/json');
+    this.headers.append('Accept', 'application/json');
 
-  // getUsers() {
-  //   return new Promise((resolve, reject) => {
-  //     // this.http.get('../assets/raw/users.json')
-  //     this.http.get(this.apiUrl)
-  //     .subscribe((res: Response) => {        
-  //       let users = res.headers;
-  //       console.log('res: ' + users);
-  //       resolve(users);
-  //     }, err => {
-  //       console.log('error: ' + err.status);
-  //       reject(err);
-  //     });
-  //   });
-  // }
+
+
+  }
+
+  public apiUrl  = 'http://www.accesosinexceso.org/';
+
+  public version   ="0.0.1";
 
   getUsers() {
     return this.http.get('../assets/raw/usuarios.json')
@@ -55,4 +65,55 @@ export class SyncHttpService {
     return this.http.get('../assets/raw/subtipos.json')
     .map((res: any[]) => res);
   }
+  
+/*
+
+
+getUsers() {
+  return this.http.get(this.apiUrl + this.getCUsuario )
+  .map((res: any[]) => res);
+}
+
+getEstablishments() {
+  return this.http.get(this.apiUrl + this.getCEstablecimiento )
+  .map((res: any[]) => res);
+}
+
+getHospitalSurvey() {
+  return this.http.get(this.apiUrl + this.getCCuestionarioHospital )
+  .map((res: any[]) => res);
+}
+
+getPharmaSurvey() {
+  return this.http.get(this.apiUrl + this.getCCuestionarioFarmacia)
+  .map((res: any[]) => res);
+}
+
+getMedicines() {
+  return this.http.get(this.apiUrl + this.getCMedicamento)
+  .map((res: any[]) => res);
+}
+
+getSubtypes() {
+  return this.http.get(this.apiUrl + this.getSubtypes) 
+  .map((res: any[]) => res);
+}
+
+
+  getSaveSurvey(cuestionarios:any[]) {
+    return this.http.post(this.apiUrl + this.saveDCuestionario ,cuestionarios,{
+      headers: { 'Content-Type': 'application/json' }
+    })
+    .map((res: any[]) => res);
+  }
+
+  */
+
+  getVersionApp() {
+    let url =this.apiUrl + this.getCVersionApp+"/"+this.version;
+    console.log("URL    ..................."+url);
+    return this.http.get(url) 
+    .map((res: any[]) => res);
+  }
+  
 }

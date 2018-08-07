@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { SurveyPage } from '../survey/survey';
 import { Storage } from '@ionic/storage';
+import { DBService } from '../../providers/db-services/storage-service';
 
 @Component({
   selector: 'page-home',
@@ -13,13 +14,18 @@ export class HomePage {
   public loggedUser: any = {};
 
   public establishments: any[] = [];
+  public establishmentsList: any[] = [];
   public subtypes: any[] = [];
 
   public establishmentSelected: any = {};
   public subtypeSelected: any = {};
   public subtypesArray: any[] = [];
+  public findInput="";
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private storage: Storage, public alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, 
+    private storage: Storage, public alertCtrl: AlertController,
+  private db:DBService
+) {
 
   }
 
@@ -30,10 +36,30 @@ export class HomePage {
 
     this.loadEstablishments();
 
+  }
 
+  setFilteredItems(event){
+
+      if(this.findInput.length>3){
+        this.loadEstablishments();
+
+      }else{
+
+        this.establishmentsList = this.establishments;
+      }
 
   }
 
+
+  selectEstablishment(est){
+    console.log('entra establishment');
+    console.log(est);
+     this.establishmentSelected =est;
+     this.establishmentsList= [];
+     this.establishmentsList.push(est);
+     this.optionChanged();
+
+  }
   validateLoggedUser() {
     this.storage.get('LoggedUser').then(
       (user) => {
@@ -54,15 +80,21 @@ export class HomePage {
   }
 
   loadEstablishments() {
-    this.storage.get('establishments').then(
-      (data) => {
-        //console.log(data);
-        this.establishments = JSON.parse(data);
-      },
-      err => {
-        console.log(err);
+
+
+    this.db.selectEstablishmentByName(this.findInput).then(response => {
+      let tasks = [];
+      
+ 
+      for (let index = 0; index < response.rows.length; index++) {
+        let obj = response.rows.item(index);
+        tasks.push({establecimiento_id: obj.id ,nombre: obj.name,tipo_establecimiento_id: obj.type });
       }
-    );
+      
+      this.establishmentsList=tasks;
+    });
+  
+
   }
 
   loadSubtypes() {
@@ -71,7 +103,7 @@ export class HomePage {
         //console.log(data);
         this.subtypes = JSON.parse(data);
 
-        console.log(this.subtypes);
+     
         //establishmentSelected.tipo_establecimiento_id
       
 
@@ -92,7 +124,7 @@ export class HomePage {
 
   optionChanged() {
 
-    console.log(this.establishmentSelected);
+ 
     this.loadSubtypes();
   }
 
