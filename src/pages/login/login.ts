@@ -282,7 +282,7 @@ export class LoginPage {
 
     let hospitalObs = this.syncHttpService.getHospitalSurvey()
       .subscribe(
-        (data: any[]) => {
+        (data: any) => {
           console.log(JSON.stringify(data) );
           this.storage.remove('hospitalSurvey');
           // set a key/value
@@ -298,7 +298,7 @@ export class LoginPage {
 
     let pharmaObs = this.syncHttpService.getPharmaSurvey()
       .subscribe(
-        (data: any[]) => {
+        (data: any) => {
           console.log(JSON.stringify(data) );
           this.storage.remove('pharmaSurvey');
           // set a key/value

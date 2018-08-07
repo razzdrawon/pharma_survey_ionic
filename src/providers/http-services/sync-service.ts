@@ -48,12 +48,12 @@ export class SyncHttpService {
 
   getHospitalSurvey() {
     return this.http.get('../assets/raw/questionarioHospital.json')
-    .map((res: any[]) => res);
+    .map((res: any) => res);
   }
 
   getPharmaSurvey() {
     return this.http.get('../assets/raw/questionarioFarmacias.json')
-    .map((res: any[]) => res);
+    .map((res: any) => res);
   }
 
   getMedicines() {

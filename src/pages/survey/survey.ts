@@ -60,7 +60,7 @@ export class SurveyPage {
       this.storage.get('pharmaSurvey').then(
       (data) => {
         //console.log(data);
-        this.questions = JSON.parse(data);
+        this.questions = JSON.parse(data).cuestionario;
         this.question = this.questions[0];
         console.log(this.question);
       },
@@ -73,7 +73,7 @@ export class SurveyPage {
     this.storage.get('hospitalSurvey').then(
       (data) => {
         //console.log(data);
-        this.questions = JSON.parse(data);
+        this.questions = JSON.parse(data).cuestionario;
         this.question = this.questions[0];
         console.log(this.question);
       },
