@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController } from 'ionic-angular';
+import { NavController, NavParams, AlertController } from 'ionic-angular/umd';
 import { LoginPage } from '../login/login';
 /**
  * Generated class for the FinCuestPage page.

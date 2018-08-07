@@ -86,7 +86,6 @@
     <allow-navigation href="http://10.138.176.99:8100" />
     <allow-navigation href="http://192.168.14.121:8100" />
     <allow-navigation href="http://192.168.100.4:8100" />
-    <plugin name="cordova-sqlite-storage" spec="^2.3.3" />
     <plugin name="cordova-plugin-camera" spec="^4.0.3" />
     <allow-navigation href="http://192.168.15.6:8100" />
     <allow-navigation href="http://192.168.100.10:8100" />
@@ -94,6 +93,7 @@
         <variable name="GEOLOCATION_USAGE_DESCRIPTION" value="Obtener la geolocalización de los estabecimeintos" />
     </plugin>
     <plugin name="cordova-plugin-inappbrowser" spec="^3.0.0" />
+    <plugin name="cordova-sqlite-storage" spec="^2.3.3" />
     <engine name="ios" spec="^4.5.5" />
     <engine name="android" spec="7.0.0" />
 </widget>

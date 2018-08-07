@@ -1,13 +1,14 @@
-import { HomePage } from './../home/home';
+import { HomePage } from '../home/home';
 import { Component } from '@angular/core';
-import { NavController, AlertController,LoadingController } from 'ionic-angular';
-//import { UsersDBService } from './../../providers/db-services/users-service';
+import { NavController, AlertController,LoadingController } from 'ionic-angular/umd';
+import { DBService } from '../../providers/db-services/storage-service';
 import { SyncHttpService } from '../../providers/http-services/sync-service';
 import { Storage } from '@ionic/storage';
+import { SurveySummary } from '../../models/surveySummary';
 
-import {Md5} from 'ts-md5/dist/md5';
+import {Md5} from 'ts-md5';
 
-import { Observable } from 'rxjs/Observable';
+
 import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/operator/first';
 //import { InAppBrowser } from '@ionic-native/in-app-browser';
@@ -26,11 +27,11 @@ export class LoginPage {
   user: any;
   pass_hashed:any;
   public loading:any;
-  
+  public summary:SurveySummary;
 
   tasks: any[] = [];
   constructor(public navCtrl: NavController,
-    //public usersDBService: UsersDBService,
+    public db: DBService,
     public syncHttpService: SyncHttpService, public alertCtrl: AlertController, private storage: Storage,
      private loadingCtrl: LoadingController,
     // private iab: InAppBrowser
@@ -43,6 +44,13 @@ export class LoginPage {
   ionViewDidLoad() {
 
     // this.storage.remove('LoggedUser');
+    this.db.selectSurveyStatus().then(summary => {
+      if(summary != null) {
+        console.log(summary);
+       this.summary = summary;
+      }
+      console.log(summary);
+    });
 
     this.validateActiveSession();
 
@@ -223,15 +231,26 @@ export class LoginPage {
 
     let estabsObs = this.syncHttpService.getEstablishments()
       .subscribe(
-        (data: any[]) => {
-          console.log(JSON.stringify(data) );
+        (res: any[]) => {
+          
+          
+          this.db.deleteEstablishment().then(data => {
+          for(let i=0; res.length>i;i++) {
+            let establishment = res[i];
+            console.log(' inserta ' +JSON.stringify(establishment));
+           this.db.insertEstablishment(establishment); 
+          }
+        
+        });
 
+        
+        /*
           this.storage.remove('establishments');
           // set a key/value
           this.storage.set('establishments', JSON.stringify(data));
           console.log('establishments syncronized');
           console.log('storage: ' + this.storage.get('establishments'));
-
+*/
         },
         err => {
           console.log(JSON.stringify(err));

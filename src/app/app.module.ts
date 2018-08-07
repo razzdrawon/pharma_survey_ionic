@@ -1,11 +1,12 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
-import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular/umd';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { Camera } from '@ionic-native/camera';
 
 import { SQLite } from '@ionic-native/sqlite';
+
 import { IonicStorageModule } from '@ionic/storage';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -21,6 +22,7 @@ import { FinCuestPage } from '../pages/finCuest/finCuest';
 //import { SurveysDBService } from '../providers/db-services/surveys-service';
 
 import { SyncHttpService } from '../providers/http-services/sync-service';
+import { DBService } from '../providers/db-services/storage-service';
 
 
 @NgModule({
@@ -53,7 +55,7 @@ import { SyncHttpService } from '../providers/http-services/sync-service';
     SplashScreen,
     SQLite,
     Camera,
-//    UsersDBService,
+    DBService,
 //    SurveysDBService,
     SyncHttpService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
