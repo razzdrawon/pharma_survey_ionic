@@ -200,7 +200,7 @@
         </ion-row>
       </ion-grid>
 
-      <button class="siguiente" ion-button block (click)="nextQuestion()" *ngIf="(answer.option | json) != '{}'">Siguiente</button>
+      <button class="siguiente" ion-button block (click)="nextQuestion()" *ngIf="isAnswered">Siguiente</button>
     </div>
 
     <!-- 3.- combo box  -->

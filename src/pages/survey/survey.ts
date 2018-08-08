@@ -100,32 +100,53 @@ export class SurveyPage {
 
   radioOptionChanged() {
 
-    debugger;
-    console.log(this.answer);
+    console.log(this.answer.option);
 
     if (this.answer.option.tipo_pregunta != null) {
+      // Display first level of childs
       this.hasChilds = true;
+      this.isAnswered = false;
+    }
+    else if((JSON.stringify(this.answer.option)) == '{}') {
+      this.hasChilds = false;
+      this.isAnswered = false;
     }
     else {
+
+      // Main question does not have childs... It is ready to be marked as answered
       this.hasChilds = false;
+      this.isAnswered = true;
+
       this.hasSecondChilds = false;
-      this.answer.childText = null;
+      this.answer.childText = '';
       this.answer.childNumber = null;
+      this.answer.childOption = {};
+      this.answer.childOptions = [];
     }
 
   }
 
   radioChildOptionChanged() {
 
-    debugger;
-    console.log(this.answer);
+    console.log(this.answer.childOption);
     
     if (this.answer.childOption.tipo_pregunta != null) {
+      // Display first level of childs
       this.hasSecondChilds = true;
+      this.isAnswered = false;
+    }
+    else if((JSON.stringify(this.answer.option)) == '{}') {
+      this.hasSecondChilds = false;
+      this.isAnswered = false;
     }
     else {
+      // Main question does not have childs... It is ready to be marked as answered
       this.hasSecondChilds = false;
-      // this.answer.secondChildText = null;
+      this.isAnswered = true;
+
+      this.answer.secondChildText = '';
+      this.answer.image = null;
+      this.answer.imageText = null;
     }
   }
 
