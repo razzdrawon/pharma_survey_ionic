@@ -98,6 +98,7 @@ export class SurveyPage {
   }
   }
 
+
   radioOptionChanged() {
 
     console.log(this.answer.option);
@@ -118,12 +119,19 @@ export class SurveyPage {
       this.isAnswered = true;
 
       this.hasSecondChilds = false;
-      this.answer.childText = '';
+      this.answer.childText = null;
       this.answer.childNumber = null;
       this.answer.childOption = {};
       this.answer.childOptions = [];
+      this.answer.childMap = {};
     }
 
+  }
+
+  childNumberChanged() {
+    if(this.answer.childNumber != null) {
+      this.isAnswered = true;
+    }
   }
 
   radioChildOptionChanged() {
@@ -144,16 +152,34 @@ export class SurveyPage {
       this.hasSecondChilds = false;
       this.isAnswered = true;
 
-      this.answer.secondChildText = '';
+      this.answer.secondChildText = null;
       this.answer.image = null;
       this.answer.imageText = null;
     }
   }
 
-  optionChanged() {
+  secondChildTextChanged() {
+    if(this.answer.secondChildText != null) {
+      this.isAnswered = true;
+    }
+  }
 
-    console.log(this.answer);
+  childOptionsChanged() {
+    if(this.answer.childOptions.length > 0) {
+      this.isAnswered = true;
+    }
+  }
 
+  childTextChanged() {
+    if(this.answer.childText != null) {
+      this.isAnswered = true;
+    }
+  }
+
+  childMapChanged() {
+    if(JSON.stringify(this.answer.childMap) != '{}' ) {
+      this.isAnswered = true;
+    }
   }
 
   getPicture() {
