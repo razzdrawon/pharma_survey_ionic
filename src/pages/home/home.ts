@@ -127,7 +127,30 @@ export class HomePage {
 
   startSurvey() {
 
-      let params = Object.assign({}, this.subtypeSelected,this.establishmentSelected) ;
+    // if( JSON.stringify(this.establishmentSelected) == '{}'   || this.establishmentSelected.tipo_establecimiento_id == 1)  {
+    //   let alert = this.alertCtrl.create({
+    //     title: 'Ingrese los campos requeridos',
+    //     subTitle: 'Aseguresé de que ha introducido un establecimiento',
+    //     buttons: ['Ok']
+    //   });
+    //   alert.present();
+    // }
+
+    // else if( JSON.stringify(this.establishmentSelected) != '{}' && JSON.stringify(this.subtypeSelected) == '{}') {
+    //   let alert = this.alertCtrl.create({
+    //     title: 'Ingrese los campos requeridos',
+    //     subTitle: 'Aseguresé de que ha introducido un subtipo',
+    //     buttons: ['Ok']
+    //   });
+    //   alert.present();
+    // }
+
+    // else{
+
+    console.log(this.subtypeSelected);
+
+
+      let params = Object.assign({}, this.subtypeSelected,this.establishmentSelected,this.loggedUser);
       console.log(params);
       this.navCtrl.push(SurveyPage, params );
 

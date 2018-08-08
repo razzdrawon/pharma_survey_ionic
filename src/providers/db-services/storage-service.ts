@@ -3,6 +3,7 @@ import { SQLiteObject } from '@ionic-native/sqlite';
 //import { Survey } from '../../models/survey';
 //import { SurveySummary } from '../../models/surveySummary';
 import { SQLite } from '@ionic-native/sqlite';
+import { Survey } from '../../models/survey';
 // /*
 //   Generated class for the DBServiceProvider provider.
 
@@ -46,20 +47,23 @@ import { SQLite } from '@ionic-native/sqlite';
     +" start_date TEXT,"
     +" end_date TEXT,"
     +" survey TEXT,"
+    +" version TEXT,"
     +" latitude TEXT,"
     +" longitude TEXT,"
     +" evidence TEXT,"
     +" sync INTEGER NULL, "
+    +" response_code INTEGER NULL, "
     +" PRIMARY KEY (establishment_id, type) "
     +");";
 
  
    private DELETE_ESTABLISHMENT=" DELETE FROM establishment  ;";
    private INSERT_ESTABLISHMENT="INSERT INTO establishment (id,name,type)values(?,?,?) ;";
-   private INSERT_SURVEY=" INSERT INTO survey (establishment_id,type,user,save_date,"+ 
-   +" start_date,end_date,survey,latitude,longitude,evidence,sync) "
-   +" values(?,?,?,?,?,?,?,?,?,?,?) ;";
+   private INSERT_SURVEY="INSERT INTO survey (establishment_id,type,user,save_date,"+ 
+   +" start_date,end_date,survey,version,latitude,longitude,evidence,sync,response_code) "
+   +" values(?,?,?,?,?,?,?,?,?,?,?,?,?) ;";
    private SELECT_SURVEY_STATUS=" SELECT COUNT(*) AS tot ,CASE WHEN sync =1 THEN 1 ELSE 0 END AS sync,CASE WHEN sync !=1 THEN 1 ELSE 0 END AS notSync FROM survey ;";
+   private GET_SURVEYS="SELECT * FROM survey";
 
   
 
@@ -109,7 +113,7 @@ import { SQLite } from '@ionic-native/sqlite';
     return this.query(sql, [establishment.establecimiento_id,establishment.nombre,establishment.tipo_establecimiento_id]);
   }
 
-  insertSurvey(survey:any){
+  insertSurvey(survey: Survey){
     let sql = this.INSERT_SURVEY;
     return this.query(sql, 
       [
@@ -120,11 +124,18 @@ import { SQLite } from '@ionic-native/sqlite';
         survey.start_date,
         survey.end_date,
         survey.survey,
+        survey.version,
         survey.latitude,
         survey.longitude,
         survey.evidence,
-        survey.sync
+        survey.sync,
+        survey.response_code
       ]);
+  }
+
+  getSurveys() {
+    let sql = this.GET_SURVEYS;
+    return this.query(sql, []);
   }
 
 

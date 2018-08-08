@@ -9,6 +9,7 @@ export class Survey {
     public start_date?: string;
     public end_date?: string;
     public survey?: string;
+    public version?: string;
     public latitude?: string;
     public longitude?: string;
     public evidence?: string;
