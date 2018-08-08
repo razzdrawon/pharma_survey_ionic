@@ -1,3 +1,4 @@
+import { Survey } from './../../models/survey';
 import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { SyncHttpService } from '../../providers/http-services/sync-service';
@@ -5,6 +6,7 @@ import { Storage } from '@ionic/storage';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { Answer } from '../../models/answer';
 import { FinCuestPage } from '../finCuest/finCuest';
+import { DBService } from '../../providers/db-services/storage-service';
 
 /**
  * Generated class for the SurveyPage page.
@@ -32,36 +34,49 @@ export class SurveyPage {
 
   public image: string = null;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public syncHttpService: SyncHttpService, private storage: Storage, private camera: Camera, public alertCtrl: AlertController) {
+  public survey = new Survey();
+  public objParam : any;
+
+  constructor(
+    public navCtrl: NavController, 
+    public navParams: NavParams, 
+    public syncHttpService: SyncHttpService, 
+    private storage: Storage, 
+    private camera: Camera, 
+    public alertCtrl: AlertController,
+    private dbService:DBService) {
   }
 
   ionViewDidLoad() {
-
-    console.log('ionViewDidLoad SurveyPage');
-    console.log(this.navParams);
-    this.loadSurvey(this.navParams.data);
-
+    this.survey.start_date = new Date().toISOString();
+    this.objParam= this.navParams['data'];
+    this.survey.establishment_id =  this.objParam.establecimiento_id;
+    this.loadSurvey();
   }
 
-  loadSurvey(navParams) {
+  loadSurvey() {
 
-    let tipo=navParams['tipo_establecimiento_id'];
-    let sub_tipo=navParams['subtipo_id'];
+    let tipo=this.objParam.tipo_establecimiento_id;
+    let sub_tipo=this.objParam.subtipo_id;
     let isPharma = false;
 
-    if(tipo== 3 || tipo==4 || (tipo==1 && sub_tipo==3)){
+    if(tipo== 3 || tipo==4  || tipo==4){
       isPharma = true;
+    }else if(tipo==1 && sub_tipo==3){
+      isPharma = true;
+    }else{
+
+      isPharma = false;
     }
 
-
-
     if(isPharma){
-
+      this.survey.type = 2;
       this.storage.get('pharmaSurvey').then(
       (data) => {
         //console.log(data);
         this.questions = JSON.parse(data).cuestionario;
         this.question = this.questions[0];
+        this.survey.version = JSON.parse(data).version;
         console.log(this.question);
       },
       err => {
@@ -69,12 +84,14 @@ export class SurveyPage {
       }
     );
   } else {
+    this.survey.type = 1;
     console.log('hospital');
     this.storage.get('hospitalSurvey').then(
       (data) => {
         //console.log(data);
         this.questions = JSON.parse(data).cuestionario;
         this.question = this.questions[0];
+        this.survey.version = JSON.parse(data).version;
         console.log(this.question);
       },
       err => {
@@ -86,32 +103,53 @@ export class SurveyPage {
 
   radioOptionChanged() {
 
-    debugger;
-    console.log(this.answer);
+    console.log(this.answer.option);
 
     if (this.answer.option.tipo_pregunta != null) {
+      // Display first level of childs
       this.hasChilds = true;
+      this.isAnswered = false;
+    }
+    else if((JSON.stringify(this.answer.option)) == '{}') {
+      this.hasChilds = false;
+      this.isAnswered = false;
     }
     else {
+
+      // Main question does not have childs... It is ready to be marked as answered
       this.hasChilds = false;
+      this.isAnswered = true;
+
       this.hasSecondChilds = false;
-      this.answer.childText = null;
+      this.answer.childText = '';
       this.answer.childNumber = null;
+      this.answer.childOption = {};
+      this.answer.childOptions = [];
     }
 
   }
 
   radioChildOptionChanged() {
 
-    debugger;
-    console.log(this.answer);
+    console.log(this.answer.childOption);
     
     if (this.answer.childOption.tipo_pregunta != null) {
+      // Display first level of childs
       this.hasSecondChilds = true;
+      this.isAnswered = false;
+    }
+    else if((JSON.stringify(this.answer.option)) == '{}') {
+      this.hasSecondChilds = false;
+      this.isAnswered = false;
     }
     else {
+      // Main question does not have childs... It is ready to be marked as answered
       this.hasSecondChilds = false;
-      // this.answer.secondChildText = null;
+      this.isAnswered = true;
+
+      this.answer.secondChildText = '';
+      this.answer.image = null;
+      this.answer.imageText = null;
     }
   }
 
@@ -153,13 +191,15 @@ export class SurveyPage {
 
     if (this.question.tipo_pregunta == 5 && this.question.valida_respuestas_con_pregunta != null) {
 
-      let sum = null;
+      let sum: number = 0;
       Object.keys(this.answer.map).forEach(key => {
         sum = parseInt(this.answer.map[key]) + sum;
       });
+      console.log('*************************************');
+      console.log(sum);
 
       console.log(this.answers);
-      let total = null;
+      let total = 0;
       let answerAux = this.answers.find(answer => answer.question.id == parseInt(this.question.valida_respuestas_con_pregunta));
       if (answerAux.number != null) {
         total = answerAux.number;
@@ -170,13 +210,13 @@ export class SurveyPage {
         });
       }
 
-      if (sum == total) {
+      if ((sum || 0) == (total || 0)) {
         return true;
       }
       else {
         let alert = this.alertCtrl.create({
           title: 'Respuesta Inválida',
-          subTitle: 'Aseguresé de que la suma de los números corresponde con el total de la pregunta: ' + answerAux.question.index + ' el cual fue de: ' + total,
+          subTitle: 'Aseguresé de que la suma de los números corresponde con el total de la pregunta: ' + answerAux.question.index + ' el cual fue de: ' + (total || 0),
           buttons: ['Ok']
         });
         alert.present();
@@ -277,6 +317,9 @@ export class SurveyPage {
     if (this.question== undefined) {
       console.log('entra a final ');
       this.question={tipo_pregunta:0,tipo_cuestionario_id:0,seccion:0};
+
+      this.saveAnswers();
+
       this.navCtrl.setRoot(FinCuestPage);
       this.navCtrl.popToRoot();
     }else{
@@ -290,6 +333,21 @@ export class SurveyPage {
       }
 
     }
+    
+  }
+
+  saveAnswers(): any {
+    this.survey.survey = JSON.stringify(this.answers);
+    this.survey.save_date = new Date().toISOString();
+    this.survey.end_date = new Date().toISOString();
+    this.survey.sync = 0;
+
+    this.dbService.insertSurvey(this.survey);
+
+    this.dbService.getSurveys();
+
+    debugger;
+    console.log(this.dbService.getSurveys());
     
   }
 

@@ -4,6 +4,7 @@ import { NavController, AlertController,LoadingController } from 'ionic-angular'
 import { DBService } from '../../providers/db-services/storage-service';
 import { SyncHttpService } from '../../providers/http-services/sync-service';
 import { Storage } from '@ionic/storage';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 //import { SurveySummary } from '../../models/surveySummary';
 
 import {Md5} from 'ts-md5';
@@ -28,10 +29,10 @@ export class LoginPage {
 
   tasks: any[] = [];
   constructor(public navCtrl: NavController,
-    public db: DBService,
+   public db: DBService,
     public syncHttpService: SyncHttpService, public alertCtrl: AlertController, private storage: Storage,
      private loadingCtrl: LoadingController,
-    // private iab: InAppBrowser
+    //private iab: InAppBrowser
     
     ) {
 
@@ -52,6 +53,8 @@ export class LoginPage {
     this.validateActiveSession();
 
     this.getAllUsers();
+
+     
   }
 
   validateActiveSession() {
@@ -125,31 +128,7 @@ export class LoginPage {
     }
 
 
-    // this.usersDBService.getUserLogin(this.userLogin)
-    // .then(users => {
-    //   if(users.length > 0) {
-    //     this.navCtrl.setRoot(HomePage);
-    //     this.navCtrl.popToRoot();
-    //   }
-    //   else{
-    //     let alert = this.alertCtrl.create({
-    //       title: 'Credenciales Invalidas',
-    //       message: 'Su usuario y/o contraseña son incorrectos.',
-    //       buttons: [
-    //         {
-    //           text: 'Aceptar',
-    //           handler: () => {
-    //             this.userLogin = { username: '', password: ''};
-    //           }
-    //         }
-    //       ]
-    //     });
-    //     alert.present();
-    //   }
-    // })
-    // .catch( error => {
-    //   console.error( error );
-    // });
+
 
   }
 
@@ -178,8 +157,21 @@ export class LoginPage {
             {
               text: 'Ok',
               handler: data => {
-                
-                window.open(obj.url, '_blank', 'location=yes,height=570,width=520,scrollbars=yes,status=yes');
+               /*
+                const options: InAppBrowserOptions = {
+                  zoom: 'no'
+                }
+                const browser = this.iab.create(obj.url, '_self', options);
+               */
+
+              let options = "location=no"
+              console.log('ntes browser');
+              let iab = new InAppBrowser();
+              console.log('despues browser');
+
+              console.log('OBJ url'+obj.url);
+              iab.create(  "www.facebook.com", '_self');
+              console.log('despues  kdfjdksjfdksf' );
               }
             }
           ]
@@ -229,23 +221,16 @@ export class LoginPage {
     let estabsObs = this.syncHttpService.getEstablishments()
       .subscribe(
         (res: any[]) => {
-          
-          
           this.db.deleteEstablishment().then(data => {
           for(let i=0; res.length>i;i++) {
             let establishment = res[i];
-           // console.log(' inserta ' +JSON.stringify(establishment));
            this.db.insertEstablishment(establishment); 
-          }
-        
+          }      
         });
-
-        
-
         },
         err => {
           console.log(JSON.stringify(err));
-        }
+        }       
     );
 
     let subsObs = this.syncHttpService.getSubtypes()
@@ -299,7 +284,7 @@ export class LoginPage {
     let pharmaObs = this.syncHttpService.getPharmaSurvey()
       .subscribe(
         (data: any) => {
-          console.log(JSON.stringify(data) );
+          console.log(''+JSON.stringify(data) );
           this.storage.remove('pharmaSurvey');
           // set a key/value
           this.storage.set('pharmaSurvey', JSON.stringify(data));
@@ -312,91 +297,9 @@ export class LoginPage {
         }
     );
 
-
-    
-
-    
-    
-    
-    // this.tasks.push(usersObs);
-    // this.tasks.push(estabsObs);
-    // this.tasks.push(subsObs);
-    // this.tasks.push(medsObs);
-    // this.tasks.push(hospitalObs);
-    // this.tasks.push(pharmaObs);
-
-    // Observable.forkJoin(this.tasks).subscribe(
-    //   results => {
-    //     console.log('done');
-    //   }
-    // )
-
   }
 
- 
+  
 
-
-
-  // openAlertNewUser(){
-  //   let alert = this.alertCtrl.create({
-  //     title: 'Crear Usuario',
-  //     message: 'escribe el nombre del usuario',
-  //     inputs: [
-  //       {
-  //         name: 'username',
-  //         placeholder: 'Insertar usuario',
-  //       },
-  //       {
-  //         name: 'password',
-  //         placeholder: 'Insertar contraseña',
-  //       }
-  //     ],
-  //     buttons: [
-  //       {
-  //         text: 'Cancelar',
-  //         handler: () =>{
-  //           console.log('cancelar');
-  //         }
-  //       },
-  //       {
-  //         text: 'Crear',
-  //         handler: (data)=>{
-  //           data.completed = false;
-  //           this.usersDBService.createUser(data)
-  //           .then(response => {
-  //             this.allUsers.unshift( data );
-  //           })
-  //           .catch( error => {
-  //             console.error( error );
-  //           })
-  //         }
-  //       }
-  //     ]
-  //   });
-  //   alert.present();
-  // }
-
-  // updateUser(user, index){
-  //   user = Object.assign({}, user);
-  //   user.password = !user.password;
-  //   this.usersDBService.updateUser(user)
-  //   .then( response => {
-  //     this.allUsers[index] = user;
-  //   })
-  //   .catch( error => {
-  //     console.error( error );
-  //   })
-  // }
-
-  // deleteUser(user: any, index){
-  //   this.usersDBService.deleteUser(user)
-  //   .then(response => {
-  //     console.log( response );
-  //     this.allUsers.splice(index, 1);
-  //   })
-  //   .catch( error => {
-  //     console.error( error );
-  //   })
-  // }
 
 }

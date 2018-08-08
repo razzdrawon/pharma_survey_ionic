@@ -14,7 +14,7 @@ import { SurveyPage } from '../pages/survey/survey';
 import { FinCuestPage } from '../pages/finCuest/finCuest';
 import { SyncHttpService } from '../providers/http-services/sync-service';
 import { DBService } from '../providers/db-services/storage-service';
-
+//
 
 
 @NgModule({
