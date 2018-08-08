@@ -28,7 +28,7 @@ export class LoginPage {
 
   tasks: any[] = [];
   constructor(public navCtrl: NavController,
-    public db: DBService,
+   public db: DBService,
     public syncHttpService: SyncHttpService, public alertCtrl: AlertController, private storage: Storage,
      private loadingCtrl: LoadingController,
     // private iab: InAppBrowser
@@ -125,31 +125,7 @@ export class LoginPage {
     }
 
 
-    // this.usersDBService.getUserLogin(this.userLogin)
-    // .then(users => {
-    //   if(users.length > 0) {
-    //     this.navCtrl.setRoot(HomePage);
-    //     this.navCtrl.popToRoot();
-    //   }
-    //   else{
-    //     let alert = this.alertCtrl.create({
-    //       title: 'Credenciales Invalidas',
-    //       message: 'Su usuario y/o contraseña son incorrectos.',
-    //       buttons: [
-    //         {
-    //           text: 'Aceptar',
-    //           handler: () => {
-    //             this.userLogin = { username: '', password: ''};
-    //           }
-    //         }
-    //       ]
-    //     });
-    //     alert.present();
-    //   }
-    // })
-    // .catch( error => {
-    //   console.error( error );
-    // });
+
 
   }
 
@@ -229,23 +205,16 @@ export class LoginPage {
     let estabsObs = this.syncHttpService.getEstablishments()
       .subscribe(
         (res: any[]) => {
-          
-          
           this.db.deleteEstablishment().then(data => {
           for(let i=0; res.length>i;i++) {
             let establishment = res[i];
-           // console.log(' inserta ' +JSON.stringify(establishment));
            this.db.insertEstablishment(establishment); 
-          }
-        
+          }      
         });
-
-        
-
         },
         err => {
           console.log(JSON.stringify(err));
-        }
+        }       
     );
 
     let subsObs = this.syncHttpService.getSubtypes()
@@ -312,91 +281,6 @@ export class LoginPage {
         }
     );
 
-
-    
-
-    
-    
-    
-    // this.tasks.push(usersObs);
-    // this.tasks.push(estabsObs);
-    // this.tasks.push(subsObs);
-    // this.tasks.push(medsObs);
-    // this.tasks.push(hospitalObs);
-    // this.tasks.push(pharmaObs);
-
-    // Observable.forkJoin(this.tasks).subscribe(
-    //   results => {
-    //     console.log('done');
-    //   }
-    // )
-
   }
-
- 
-
-
-
-  // openAlertNewUser(){
-  //   let alert = this.alertCtrl.create({
-  //     title: 'Crear Usuario',
-  //     message: 'escribe el nombre del usuario',
-  //     inputs: [
-  //       {
-  //         name: 'username',
-  //         placeholder: 'Insertar usuario',
-  //       },
-  //       {
-  //         name: 'password',
-  //         placeholder: 'Insertar contraseña',
-  //       }
-  //     ],
-  //     buttons: [
-  //       {
-  //         text: 'Cancelar',
-  //         handler: () =>{
-  //           console.log('cancelar');
-  //         }
-  //       },
-  //       {
-  //         text: 'Crear',
-  //         handler: (data)=>{
-  //           data.completed = false;
-  //           this.usersDBService.createUser(data)
-  //           .then(response => {
-  //             this.allUsers.unshift( data );
-  //           })
-  //           .catch( error => {
-  //             console.error( error );
-  //           })
-  //         }
-  //       }
-  //     ]
-  //   });
-  //   alert.present();
-  // }
-
-  // updateUser(user, index){
-  //   user = Object.assign({}, user);
-  //   user.password = !user.password;
-  //   this.usersDBService.updateUser(user)
-  //   .then( response => {
-  //     this.allUsers[index] = user;
-  //   })
-  //   .catch( error => {
-  //     console.error( error );
-  //   })
-  // }
-
-  // deleteUser(user: any, index){
-  //   this.usersDBService.deleteUser(user)
-  //   .then(response => {
-  //     console.log( response );
-  //     this.allUsers.splice(index, 1);
-  //   })
-  //   .catch( error => {
-  //     console.error( error );
-  //   })
-  // }
 
 }
