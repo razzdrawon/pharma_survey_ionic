@@ -32,34 +32,21 @@
             Seleccione establecimiento
           </ion-list-header>
       
-          <ion-item *ngFor="let est of establishmentsList">
+          <ion-item *ngFor="let est of establishmentsList" (click)="selectEstablishment(est)" >
             <ion-label>{{est.nombre}}</ion-label>
-            <button ion-button outline item-end (click)="selectEstablishment(est)" >seleccionar</button>
           </ion-item>
-         
-         
         </ion-list>
-      
-     
-
-
-
-
   <ion-list>
 
 
     <ion-item *ngIf="establishmentSelected.tipo_establecimiento_id == 1">
       <ion-label>Seleccione Subtipo</ion-label>
-      <ion-select [(ngModel)]="subtypeSelected" cancelText="Cancel" okText="Okay" (ionChange)="subtypeChanged()">
+      <ion-select [(ngModel)]="subtypeSelected" cancelText="Cancel" okText="Okay" >
         <ion-option *ngFor="let sub of subtypesArray" [value]="sub">{{sub.descripcion}}</ion-option>
       </ion-select>
     </ion-item>
 
   </ion-list>
-
-
-
-
 
   <button style="margin-top:60px;" ion-button block (click)="startSurvey()">Iniciar Cuestionario</button>
 

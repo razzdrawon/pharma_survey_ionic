@@ -104,12 +104,13 @@ export class HomePage {
         this.subtypes = JSON.parse(data);
         console.log(this.subtypes);
          let varType =this.establishmentSelected.tipo_establecimiento_id;
+
           var subtypesArray = this.subtypes.filter(function(subtype, i) {
             return (subtype.tipo_establecimiento_id == varType);
           })
-          console.log(subtypesArray);
+      
           this.subtypesArray  = subtypesArray ;
-          console.log(this.subtypesArray);
+       
       },
       err => {
         console.log(err);
@@ -122,36 +123,17 @@ export class HomePage {
   subtypeChanged() {
 
    // let item = this.establishmentSelected; // Just did this in order to avoid changing the next lines of code :P
-    console.log(this.subtypeSelected);
+    console.log("Subtipo seleccionado"+JSON.stringify( this.subtypeSelected));
   }
 
   startSurvey() {
 
-    // if( JSON.stringify(this.establishmentSelected) == '{}'   || this.establishmentSelected.tipo_establecimiento_id == 1)  {
-    //   let alert = this.alertCtrl.create({
-    //     title: 'Ingrese los campos requeridos',
-    //     subTitle: 'Aseguresé de que ha introducido un establecimiento',
-    //     buttons: ['Ok']
-    //   });
-    //   alert.present();
-    // }
 
-    // else if( JSON.stringify(this.establishmentSelected) != '{}' && JSON.stringify(this.subtypeSelected) == '{}') {
-    //   let alert = this.alertCtrl.create({
-    //     title: 'Ingrese los campos requeridos',
-    //     subTitle: 'Aseguresé de que ha introducido un subtipo',
-    //     buttons: ['Ok']
-    //   });
-    //   alert.present();
-    // }
+    // console.log("subtype selected"+JSON.stringify(this.subtypeSelected));
+    // console.log("establishment"+JSON.stringify(this.establishmentSelected));
 
-    // else{
-
-    console.log(this.subtypeSelected);
-
-
-      let params = Object.assign({}, this.subtypeSelected,this.establishmentSelected,this.loggedUser);
-      console.log(params);
+      let params = Object.assign({}, this.subtypeSelected,this.establishmentSelected) ;
+     
       this.navCtrl.push(SurveyPage, params );
 
   }
