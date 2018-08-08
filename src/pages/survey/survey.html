@@ -156,15 +156,15 @@
 
                       <!-- 5.- opcion multiple con pondereaciones -->
                       <ion-grid *ngSwitchCase=5>
-                        <ion-row *ngFor="let opt of question.respuestas">
+                        <ion-row *ngFor="let optChild of opt.respuestas">
                           <ion-col>
                             <ion-item>
-                              <ion-label class="sentence">{{opt.enunciado}}</ion-label>
+                              <ion-label class="sentence">{{optChild.enunciado}}</ion-label>
                             </ion-item>
                           </ion-col>
                           <ion-col>
                             <div>
-                              <ion-input placeholder="0" type="number" [(ngModel)]="answer.childMap[opt.id]" (change)="childMapChanged()"></ion-input>
+                              <ion-input placeholder="0" type="number" [(ngModel)]="answer.childMap[optChild.id]" (change)="childMapChanged()"></ion-input>
                             </div>
                           </ion-col>
                         </ion-row>
