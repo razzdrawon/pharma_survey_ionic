@@ -167,13 +167,15 @@ export class SurveyPage {
 
     if (this.question.tipo_pregunta == 5 && this.question.valida_respuestas_con_pregunta != null) {
 
-      let sum = null;
+      let sum: number = 0;
       Object.keys(this.answer.map).forEach(key => {
         sum = parseInt(this.answer.map[key]) + sum;
       });
+      console.log('*************************************');
+      console.log(sum);
 
       console.log(this.answers);
-      let total = null;
+      let total = 0;
       let answerAux = this.answers.find(answer => answer.question.id == parseInt(this.question.valida_respuestas_con_pregunta));
       if (answerAux.number != null) {
         total = answerAux.number;
@@ -184,13 +186,13 @@ export class SurveyPage {
         });
       }
 
-      if (sum == total) {
+      if ((sum || 0) == (total || 0)) {
         return true;
       }
       else {
         let alert = this.alertCtrl.create({
           title: 'Respuesta Inválida',
-          subTitle: 'Aseguresé de que la suma de los números corresponde con el total de la pregunta: ' + answerAux.question.index + ' el cual fue de: ' + total,
+          subTitle: 'Aseguresé de que la suma de los números corresponde con el total de la pregunta: ' + answerAux.question.index + ' el cual fue de: ' + (total || 0),
           buttons: ['Ok']
         });
         alert.present();
