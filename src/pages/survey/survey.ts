@@ -35,6 +35,7 @@ export class SurveyPage {
   public image: string = null;
 
   public survey = new Survey();
+  public objParam : any;
 
   constructor(
     public navCtrl: NavController, 
@@ -47,23 +48,25 @@ export class SurveyPage {
   }
 
   ionViewDidLoad() {
-
-    console.log('ionViewDidLoad SurveyPage');
-    console.log(this.navParams);
-    this.loadSurvey();
     this.survey.start_date = new Date().toISOString();
-    this.survey.establishment_id = this.navParams['tipo_establecimiento_id'];
-
+    this.objParam= this.navParams['data'];
+    this.survey.establishment_id =  this.objParam.establecimiento_id;
+    this.loadSurvey();
   }
 
   loadSurvey() {
 
-    let tipo=this.navParams['tipo_establecimiento_id'];
-    let sub_tipo=this.navParams['subtipo_id'];
+    let tipo=this.objParam.tipo_establecimiento_id;
+    let sub_tipo=this.objParam.subtipo_id;
     let isPharma = false;
 
-    if(tipo== 3 || tipo==4 || (tipo==1 && sub_tipo==3)){
+    if(tipo== 3 || tipo==4  || tipo==4){
       isPharma = true;
+    }else if(tipo==1 && sub_tipo==3){
+      isPharma = true;
+    }else{
+
+      isPharma = false;
     }
 
     if(isPharma){

@@ -34,7 +34,7 @@ export class SyncHttpService {
 
   public apiUrl  = 'http://www.accesosinexceso.org/';
 
-  public version   ="0.0.1";
+  public version   ="0.9.1";
 
   getUsers() {
     return this.http.get('../assets/raw/usuarios.json')
@@ -47,12 +47,17 @@ export class SyncHttpService {
   }
 
   getHospitalSurvey() {
-    return this.http.get('../assets/raw/questionarioHospital.json')
+    let url =this.apiUrl +this.getCCuestionarioHospital;
+    console.log("33333333333333333333333***********---"+url);
+    return this.http.get(url)
     .map((res: any) => res);
   }
 
   getPharmaSurvey() {
-    return this.http.get('../assets/raw/questionarioFarmacias.json')
+    let url =this.apiUrl +this.getCCuestionarioFarmacia;
+
+    console.log("33333333333333333333333***********---"+url);
+    return this.http.get(url)
     .map((res: any) => res);
   }
 

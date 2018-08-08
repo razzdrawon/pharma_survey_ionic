@@ -24,7 +24,7 @@ import { Survey } from '../../models/survey';
 
   configureDatabase() {
     this.createEstablishmentTable();
-    this.createSurveyTable();
+    //this.createSurveyTable();
   }
 
   query(query: string, params: any[] = []) {
