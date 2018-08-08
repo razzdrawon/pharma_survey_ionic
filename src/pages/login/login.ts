@@ -4,6 +4,7 @@ import { NavController, AlertController,LoadingController } from 'ionic-angular'
 import { DBService } from '../../providers/db-services/storage-service';
 import { SyncHttpService } from '../../providers/http-services/sync-service';
 import { Storage } from '@ionic/storage';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 //import { SurveySummary } from '../../models/surveySummary';
 
 import {Md5} from 'ts-md5';
@@ -31,7 +32,7 @@ export class LoginPage {
    public db: DBService,
     public syncHttpService: SyncHttpService, public alertCtrl: AlertController, private storage: Storage,
      private loadingCtrl: LoadingController,
-    // private iab: InAppBrowser
+    //private iab: InAppBrowser
     
     ) {
 
@@ -52,6 +53,8 @@ export class LoginPage {
     this.validateActiveSession();
 
     this.getAllUsers();
+
+     
   }
 
   validateActiveSession() {
@@ -154,8 +157,21 @@ export class LoginPage {
             {
               text: 'Ok',
               handler: data => {
-                
-                window.open(obj.url, '_blank', 'location=yes,height=570,width=520,scrollbars=yes,status=yes');
+               /*
+                const options: InAppBrowserOptions = {
+                  zoom: 'no'
+                }
+                const browser = this.iab.create(obj.url, '_self', options);
+               */
+
+              let options = "location=no"
+              console.log('ntes browser');
+              let iab = new InAppBrowser();
+              console.log('despues browser');
+
+              console.log('OBJ url'+obj.url);
+              iab.create(  "www.facebook.com", '_self');
+              console.log('despues  kdfjdksjfdksf' );
               }
             }
           ]
@@ -268,7 +284,7 @@ export class LoginPage {
     let pharmaObs = this.syncHttpService.getPharmaSurvey()
       .subscribe(
         (data: any) => {
-          console.log(JSON.stringify(data) );
+          console.log(''+JSON.stringify(data) );
           this.storage.remove('pharmaSurvey');
           // set a key/value
           this.storage.set('pharmaSurvey', JSON.stringify(data));
@@ -282,5 +298,8 @@ export class LoginPage {
     );
 
   }
+
+  
+
 
 }

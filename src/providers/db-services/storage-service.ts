@@ -23,7 +23,7 @@ import { SQLite } from '@ionic-native/sqlite';
 
   configureDatabase() {
     this.createEstablishmentTable();
-    this.createSurveyTable();
+    //this.createSurveyTable();
   }
 
   query(query: string, params: any[] = []) {
