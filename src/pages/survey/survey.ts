@@ -162,7 +162,7 @@ export class SurveyPage {
   }
 
   secondChildTextChanged() {
-    if (this.answer.secondChildText != null) {
+    if (this.answer.secondChildText != null && this.answer.secondChildText != '') {
       this.isAnswered = true;
     }
   }
@@ -196,11 +196,6 @@ export class SurveyPage {
     if(this.answer.childOptions.length > 0) {
       this.isAnswered = true;
     }
-
-  }
-
-  comboTextChanged() {
-    
   }
 
   childTextChanged() {
@@ -211,6 +206,12 @@ export class SurveyPage {
 
   childMapChanged() {
     if (JSON.stringify(this.answer.childMap) != '{}') {
+      this.isAnswered = true;
+    }
+  }
+
+  imageTextChanged() {
+    if(this.answer.imageText != null && this.answer.imageText != '') {
       this.isAnswered = true;
     }
   }
