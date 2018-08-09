@@ -86,7 +86,7 @@
       <ion-grid>
         <ion-row *ngFor="let opt of question.respuestas">
           <ion-col>
-            <ion-list radio-group ngDefaultControl [(ngModel)]="answer.option" (ionChange)="radioOptionChanged()">
+            <ion-list radio-group [(ngModel)]="answer.option" (ionChange)="radioOptionChanged()">
               <ion-item-group>
                 <ion-item>
                   <ion-label class="sentence">{{opt.enunciado}}</ion-label>
@@ -101,7 +101,7 @@
                       <!-- 1.- texto number -->
                       <ion-item *ngSwitchCase=1>
                         <ion-label floating>Escriba su respuesta (Número)</ion-label>
-                        <ion-input type="number" [(ngModel)]="answer.childNumber" (change)="childNumberChanged()"></ion-input>
+                        <ion-input type="number" [(ngModel)]="answer.childNumber" (input)="childNumberChanged()"></ion-input>
                       </ion-item>
 
                       <!-- 2.- radio button  -->
@@ -125,7 +125,7 @@
                                       <!-- 4.- texto abierto -->
                                       <ion-item *ngSwitchCase=4>
                                         <ion-label floating>Escriba su respuesta (Texto)</ion-label>
-                                        <ion-textarea type="text" [(ngModel)]="answer.secondChildText" (change)="secondChildTextChanged()"></ion-textarea>
+                                        <ion-textarea type="text" [(ngModel)]="answer.secondChildText" (input)="secondChildTextChanged()"></ion-textarea>
                                       </ion-item>
                                     </div>
                                   </ion-col>
@@ -141,7 +141,7 @@
                       <!-- 3.- combo box  -->
                       <!-- <ion-item *ngSwitchCase=3>
                         <ion-label>Seleccione Opciones</ion-label>
-                        <ion-select [(ngModel)]="answer.childOptions" multiple="true" cancelText="Cancel" okText="Okay" (ionChange)="childOptionsChanged()">
+                        <ion-select [(ngModel)]="answer.childOptions" interface="popover" multiple="true" cancelText="Cancel" okText="Okay" (ionChange)="childOptionsChanged()">
                           <ion-option *ngFor="let optChild of opt.respuestas" [value]="optChild">{{optChild.enunciado}}</ion-option>
                         </ion-select>
                       </ion-item> -->
@@ -153,12 +153,12 @@
                             <ion-col>
                               <ion-item>
                                   <ion-label class="sentence">{{optChild.enunciado}}</ion-label>
-                                <ion-checkbox></ion-checkbox>
+                                  <ion-checkbox (ionChange)="optionChecked(optChild)" [(ngModel)]="optChild.checked"></ion-checkbox>
                               </ion-item>
                             </ion-col>
                             <ion-col>
                               <div>
-                                <ion-input placeholder="Cantidad" type="number"></ion-input>
+                                <ion-input placeholder="Cantidad" type="number" [(ngModel)]="optChild.text" [disabled]="!optChild.checked"></ion-input>
                               </div>
                             </ion-col>
                           </ion-row>
@@ -168,7 +168,7 @@
                       <!-- 4.- texto abierto -->
                       <ion-item *ngSwitchCase=4>
                         <ion-label floating>Escriba su respuesta (Texto)</ion-label>
-                        <ion-textarea type="text" [(ngModel)]="answer.childText" (change)="childTextChanged()"></ion-textarea>
+                        <ion-textarea type="text" [(ngModel)]="answer.childText" (input)="childTextChanged()"></ion-textarea>
                       </ion-item>
 
                       <!-- 5.- opcion multiple con pondereaciones -->
@@ -181,7 +181,7 @@
                           </ion-col>
                           <ion-col>
                             <div>
-                              <ion-input placeholder="0" type="number" [(ngModel)]="answer.childMap[optChild.id]" (change)="childMapChanged()"></ion-input>
+                              <ion-input placeholder="0" type="number" [(ngModel)]="answer.childMap[optChild.id]" (input)="childMapChanged()"></ion-input>
                             </div>
                           </ion-col>
                         </ion-row>

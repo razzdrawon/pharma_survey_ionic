@@ -36,89 +36,96 @@ export class SyncHttpService {
 
   public version   ="0.9.1";
 
-  // getUsers() {
-  //   return this.http.get('../assets/raw/usuarios.json')
-  //   .map((res: any[]) => res);
-  // }
-
-  // getEstablishments() {
-  //   return this.http.get('../assets/raw/establecimientos.json')
-  //   .map((res: any[]) => res);
-  // }
-
-  // getHospitalSurvey() {
-  //   // let url =this.apiUrl +this.getCCuestionarioHospital;
-  //   // console.log("33333333333333333333333***********---"+url);
-  //   return this.http.get('../assets/raw/cuestionarioHospital.json')
-  //   .map((res: any) => res);
-  // }
-
-  // getPharmaSurvey() {
-  //   // let url =this.apiUrl +this.getCCuestionarioFarmacia;
-
-  //   // console.log("33333333333333333333333***********---"+url);
-  //   return this.http.get('../assets/raw/cuestionarioFarmacias.json')
-  //   .map((res: any) => res);
-  // }
-
-  // getMedicines() {
-  //   return this.http.get('../assets/raw/medicamentos.json')
-  //   .map((res: any[]) => res);
-  // }
-
-  // getSubtypes() {
-  //   return this.http.get('../assets/raw/subtipos.json')
-  //   .map((res: any[]) => res);
-  // }
-  
-
-
-
-getUsers() {
-  return this.http.get(this.apiUrl + this.getCUsuario )
-  .map((res: any[]) => res);
-}
-
-getEstablishments() {
-  return this.http.get(this.apiUrl + this.getCEstablecimiento )
-  .map((res: any[]) => res);
-}
-
-getHospitalSurvey() {
-  return this.http.get(this.apiUrl + this.getCCuestionarioHospital )
-  .map((res: any[]) => res);
-}
-
-getPharmaSurvey() {
-  return this.http.get(this.apiUrl + this.getCCuestionarioFarmacia)
-  .map((res: any[]) => res);
-}
-
-getMedicines() {
-  return this.http.get(this.apiUrl + this.getCMedicamento)
-  .map((res: any[]) => res);
-}
-
-getSubtypes() {
-  return this.http.get(this.apiUrl + this.getSubtypes) 
-  .map((res: any[]) => res);
-}
-
-
-  getSaveSurvey(cuestionarios:any[]) {
-    return this.http.post(this.apiUrl + this.saveDCuestionario ,cuestionarios,{
-      headers: { 'Content-Type': 'application/json' }
-    })
+  getUsers() {
+    return this.http.get('../assets/raw/usuarios.json')
     .map((res: any[]) => res);
   }
 
-  
+  getEstablishments() {
+    return this.http.get('../assets/raw/establecimientos.json')
+    .map((res: any[]) => res);
+  }
+
+  getHospitalSurvey() {
+    // let url =this.apiUrl +this.getCCuestionarioHospital;
+    // console.log("33333333333333333333333***********---"+url);
+    return this.http.get('../assets/raw/cuestionarioHospital.json')
+    .map((res: any) => res);
+  }
+
+  getPharmaSurvey() {
+    // let url =this.apiUrl +this.getCCuestionarioFarmacia;
+
+    // console.log("33333333333333333333333***********---"+url);
+    return this.http.get('../assets/raw/cuestionarioFarmacias.json')
+    .map((res: any) => res);
+  }
+
+  getMedicines() {
+    return this.http.get('../assets/raw/medicamentos.json')
+    .map((res: any[]) => res);
+  }
+
+  getSubtypes() {
+    return this.http.get('../assets/raw/subtipos.json')
+    .map((res: any[]) => res);
+  }
 
   getVersionApp() {
-    let url =this.apiUrl + this.getCVersionApp+"/"+this.version;
-    console.log("URL    ..................."+url);
-    return this.http.get(url) 
+    // let url =this.apiUrl + this.getCVersionApp+"/"+this.version;
+    // console.log("URL    ..................."+url);
+    return this.http.get('../assets/raw/version.json')
     .map((res: any[]) => res);
   }
+  
+
+
+
+// getUsers() {
+//   return this.http.get(this.apiUrl + this.getCUsuario )
+//   .map((res: any[]) => res);
+// }
+
+// getEstablishments() {
+//   return this.http.get(this.apiUrl + this.getCEstablecimiento )
+//   .map((res: any[]) => res);
+// }
+
+// getHospitalSurvey() {
+//   return this.http.get(this.apiUrl + this.getCCuestionarioHospital )
+//   .map((res: any[]) => res);
+// }
+
+// getPharmaSurvey() {
+//   return this.http.get(this.apiUrl + this.getCCuestionarioFarmacia)
+//   .map((res: any[]) => res);
+// }
+
+// getMedicines() {
+//   return this.http.get(this.apiUrl + this.getCMedicamento)
+//   .map((res: any[]) => res);
+// }
+
+// getSubtypes() {
+//   return this.http.get(this.apiUrl + this.getSubtypes) 
+//   .map((res: any[]) => res);
+// }
+
+
+//   getSaveSurvey(cuestionarios:any[]) {
+//     return this.http.post(this.apiUrl + this.saveDCuestionario ,cuestionarios,{
+//       headers: { 'Content-Type': 'application/json' }
+//     })
+//     .map((res: any[]) => res);
+//   }
+
+  
+
+//   getVersionApp() {
+//     let url =this.apiUrl + this.getCVersionApp+"/"+this.version;
+//     console.log("URL    ..................."+url);
+//     return this.http.get(url) 
+//     .map((res: any[]) => res);
+//   }
   
 }
