@@ -36,42 +36,42 @@ export class SyncHttpService {
 
   public version   ="0.9.1";
 
-  getUsers() {
-    return this.http.get('../assets/raw/usuarios.json')
-    .map((res: any[]) => res);
-  }
+  // getUsers() {
+  //   return this.http.get('../assets/raw/usuarios.json')
+  //   .map((res: any[]) => res);
+  // }
 
-  getEstablishments() {
-    return this.http.get('../assets/raw/establecimientos.json')
-    .map((res: any[]) => res);
-  }
+  // getEstablishments() {
+  //   return this.http.get('../assets/raw/establecimientos.json')
+  //   .map((res: any[]) => res);
+  // }
 
-  getHospitalSurvey() {
-    let url =this.apiUrl +this.getCCuestionarioHospital;
-    console.log("33333333333333333333333***********---"+url);
-    return this.http.get(url)
-    .map((res: any) => res);
-  }
+  // getHospitalSurvey() {
+  //   // let url =this.apiUrl +this.getCCuestionarioHospital;
+  //   // console.log("33333333333333333333333***********---"+url);
+  //   return this.http.get('../assets/raw/cuestionarioHospital.json')
+  //   .map((res: any) => res);
+  // }
 
-  getPharmaSurvey() {
-    let url =this.apiUrl +this.getCCuestionarioFarmacia;
+  // getPharmaSurvey() {
+  //   // let url =this.apiUrl +this.getCCuestionarioFarmacia;
 
-    console.log("33333333333333333333333***********---"+url);
-    return this.http.get(url)
-    .map((res: any) => res);
-  }
+  //   // console.log("33333333333333333333333***********---"+url);
+  //   return this.http.get('../assets/raw/cuestionarioFarmacias.json')
+  //   .map((res: any) => res);
+  // }
 
-  getMedicines() {
-    return this.http.get('../assets/raw/medicamentos.json')
-    .map((res: any[]) => res);
-  }
+  // getMedicines() {
+  //   return this.http.get('../assets/raw/medicamentos.json')
+  //   .map((res: any[]) => res);
+  // }
 
-  getSubtypes() {
-    return this.http.get('../assets/raw/subtipos.json')
-    .map((res: any[]) => res);
-  }
+  // getSubtypes() {
+  //   return this.http.get('../assets/raw/subtipos.json')
+  //   .map((res: any[]) => res);
+  // }
   
-/*
+
 
 
 getUsers() {
@@ -112,7 +112,7 @@ getSubtypes() {
     .map((res: any[]) => res);
   }
 
-  */
+  
 
   getVersionApp() {
     let url =this.apiUrl + this.getCVersionApp+"/"+this.version;
