@@ -86,24 +86,22 @@
       <ion-grid>
         <ion-row *ngFor="let opt of question.respuestas">
           <ion-col>
-            <ion-list radio-group ngDefaultControl [(ngModel)]="answer.option" (ionChange)="radioOptionChanged()">
+            <ion-list radio-group [(ngModel)]="answer.option" (ionChange)="radioOptionChanged()">
               <ion-item-group>
                 <ion-item>
                   <ion-label class="sentence">{{opt.enunciado}}</ion-label>
                   <ion-radio [value]="opt"></ion-radio>
                 </ion-item>
                 <ion-row *ngIf="hasChilds">
-                  <ion-col>
-
-                  </ion-col>
-                  <ion-col col-10>
-
-                    <div [ngSwitch]="opt.tipo_pregunta">
-
+                  
+                    <ion-col col-1>
+                    </ion-col>
+                    <ion-col col-35>
+                        <div [ngSwitch]="opt.tipo_pregunta">
                       <!-- 1.- texto number -->
                       <ion-item *ngSwitchCase=1>
                         <ion-label floating>Escriba su respuesta (Número)</ion-label>
-                        <ion-input type="number" [(ngModel)]="answer.childNumber"></ion-input>
+                        <ion-input type="number" [(ngModel)]="answer.childNumber" (input)="childNumberChanged()"></ion-input>
                       </ion-item>
 
                       <!-- 2.- radio button  -->
@@ -127,7 +125,7 @@
                                       <!-- 4.- texto abierto -->
                                       <ion-item *ngSwitchCase=4>
                                         <ion-label floating>Escriba su respuesta (Texto)</ion-label>
-                                        <ion-textarea type="text" [(ngModel)]="answer.secondChildText"></ion-textarea>
+                                        <ion-textarea type="text" [(ngModel)]="answer.secondChildText" (input)="secondChildTextChanged()"></ion-textarea>
                                       </ion-item>
                                     </div>
                                   </ion-col>
@@ -141,47 +139,59 @@
 
 
                       <!-- 3.- combo box  -->
-                      <ion-item *ngSwitchCase=3>
+                      <!-- <ion-item *ngSwitchCase=3>
                         <ion-label>Seleccione Opciones</ion-label>
-                        <ion-select [(ngModel)]="answer.childOptions" multiple="true" cancelText="Cancel" okText="Okay" (ionChange)="optionChanged()">
+                        <ion-select [(ngModel)]="answer.childOptions" interface="popover" multiple="true" cancelText="Cancel" okText="Okay" (ionChange)="childOptionsChanged()">
                           <ion-option *ngFor="let optChild of opt.respuestas" [value]="optChild">{{optChild.enunciado}}</ion-option>
                         </ion-select>
-                      </ion-item>
+                      </ion-item> -->
+
+                      <!-- 3.- combo box  -->
+                      <div *ngSwitchCase=3>
+                        <ion-grid>
+                          <ion-row *ngFor="let optChild of opt.respuestas">
+                            <ion-col>
+                              <ion-item>
+                                  <ion-label class="sentence">{{optChild.enunciado}}</ion-label>
+                                  <ion-checkbox (ionChange)="optionChecked(optChild)" [(ngModel)]="optChild.checked"></ion-checkbox>
+                              </ion-item>
+                            </ion-col>
+                            <ion-col>
+                              <div>
+                                <ion-input placeholder="Cantidad" type="number" [(ngModel)]="optChild.text" [disabled]="!optChild.checked"></ion-input>
+                              </div>
+                            </ion-col>
+                          </ion-row>
+                        </ion-grid>
+                      </div>
 
                       <!-- 4.- texto abierto -->
                       <ion-item *ngSwitchCase=4>
                         <ion-label floating>Escriba su respuesta (Texto)</ion-label>
-                        <ion-textarea type="text" [(ngModel)]="answer.childText"></ion-textarea>
+                        <ion-textarea type="text" [(ngModel)]="answer.childText" (input)="childTextChanged()"></ion-textarea>
                       </ion-item>
 
                       <!-- 5.- opcion multiple con pondereaciones -->
                       <ion-grid *ngSwitchCase=5>
-                        <ion-row *ngFor="let opt of question.respuestas">
+                        <ion-row *ngFor="let optChild of opt.respuestas">
                           <ion-col>
                             <ion-item>
-                              <ion-label class="sentence">{{opt.enunciado}}</ion-label>
+                              <ion-label class="sentence">{{optChild.enunciado}}</ion-label>
                             </ion-item>
                           </ion-col>
                           <ion-col>
                             <div>
-                              <ion-input placeholder="0" [(ngModel)]="answer.childMap[opt.id]"></ion-input>
+                              <ion-input placeholder="0" type="number" [(ngModel)]="answer.childMap[optChild.id]" (input)="childMapChanged()"></ion-input>
                             </div>
                           </ion-col>
                         </ion-row>
                       </ion-grid>
 
                       <!-- 6.- Texto con foto -->
-                      <!-- <ion-row  *ngSwitchCase=6>
-                      <ion-label floating>Escriba su respuesta (Texto)</ion-label>
-                      <ion-textarea elastic autosize type="text" [(ngModel)]="answer.txtChild"></ion-textarea>
-                      <button class="siguiente" ion-button block (click)="getPicture()" disabled="true">Tomar Foto</button>
-                      <img [src]="image" *ngIf="image" />
-                    </ion-row> -->
-
                       <ion-item-group *ngSwitchCase=6>
                         <ion-item>
                           <ion-label floating>Escriba su respuesta (Texto)</ion-label>
-                          <ion-textarea type="text" [(ngModel)]="answer.imageText"></ion-textarea>
+                          <ion-textarea type="text" [(ngModel)]="answer.imageText" (input)="imageTextChanged()"></ion-textarea>
                         </ion-item>
                         <ion-item>
                           <button class="siguiente" ion-button block (click)="getPicture()">Tomar Foto</button>
@@ -192,7 +202,8 @@
                       </ion-item-group>
 
                     </div>
-                  </ion-col>
+                    </ion-col>
+
                 </ion-row>
               </ion-item-group>
             </ion-list>
@@ -220,7 +231,7 @@
         <ion-label floating>Escriba su respuesta (Texto)</ion-label>
         <ion-textarea elastic autosize type="text" [(ngModel)]="answer.text"></ion-textarea>
       </ion-item>
-      <button class="siguiente" ion-button block (click)="nextQuestion()" *ngIf="answer.text != null && answer.number != ''">Siguiente</button>
+      <button class="siguiente" ion-button block (click)="nextQuestion()" *ngIf="answer.text != null && answer.text != ''">Siguiente</button>
     </div>
 
     <!-- 5.- opcion multiple con pondereaciones -->

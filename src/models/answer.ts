@@ -10,7 +10,7 @@ export class Answer {
 
     // Childs (level 2)
     public childNumber?: number;
-    public childText?: string = '';
+    public childText?: string;
     public childOption?: any = {};
     public childMap?: any = {};
     public childOptions?: Array<any> = new Array<any>();
@@ -20,6 +20,6 @@ export class Answer {
     public image?: string;
 
     // Childs (level 3)
-    public secondChildText?: string = '';
+    public secondChildText?: string;
 
 }

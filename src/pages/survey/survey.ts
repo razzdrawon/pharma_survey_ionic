@@ -35,82 +35,83 @@ export class SurveyPage {
   public image: string = null;
 
   public survey = new Survey();
-  public objParam : any;
+  public objParam: any;
 
   constructor(
-    public navCtrl: NavController, 
-    public navParams: NavParams, 
-    public syncHttpService: SyncHttpService, 
-    private storage: Storage, 
-    private camera: Camera, 
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public syncHttpService: SyncHttpService,
+    private storage: Storage,
+    private camera: Camera,
     public alertCtrl: AlertController,
-    private dbService:DBService) {
+    private dbService: DBService) {
   }
 
   ionViewDidLoad() {
     this.survey.start_date = new Date().toISOString();
-    this.objParam= this.navParams['data'];
-    this.survey.establishment_id =  this.objParam.establecimiento_id;
+    this.objParam = this.navParams['data'];
+    this.survey.establishment_id = this.objParam.establecimiento_id;
     this.loadSurvey();
   }
 
   loadSurvey() {
 
-    let tipo=this.objParam.tipo_establecimiento_id;
-    let sub_tipo=this.objParam.subtipo_id;
+    let tipo = this.objParam.tipo_establecimiento_id;
+    let sub_tipo = this.objParam.subtipo_id;
     let isPharma = false;
 
-    if(tipo== 3 || tipo==4  || tipo==4){
+    if (tipo == 3 || tipo == 4 || tipo == 4) {
       isPharma = true;
-    }else if(tipo==1 && sub_tipo==3){
+    } else if (tipo == 1 && sub_tipo == 3) {
       isPharma = true;
-    }else{
+    } else {
 
       isPharma = false;
     }
 
-    if(isPharma){
+    if (isPharma) {
       this.survey.type = 2;
       this.storage.get('pharmaSurvey').then(
-      (data) => {
-        //console.log(data);
-        this.questions = JSON.parse(data).cuestionario;
-        this.question = this.questions[0];
-        this.survey.version = JSON.parse(data).version;
-        console.log(this.question);
-      },
-      err => {
-        console.log(err);
-      }
-    );
-  } else {
-    this.survey.type = 1;
-    console.log('hospital');
-    this.storage.get('hospitalSurvey').then(
-      (data) => {
-        //console.log(data);
-        this.questions = JSON.parse(data).cuestionario;
-        this.question = this.questions[0];
-        this.survey.version = JSON.parse(data).version;
-        console.log(this.question);
-      },
-      err => {
-        console.log(err);
-      }
-    );
+        (data) => {
+          //console.log(data);
+          this.questions = JSON.parse(data).cuestionario;
+          this.question = this.questions[0];
+          this.survey.version = JSON.parse(data).version;
+          console.log(this.question);
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    } else {
+      this.survey.type = 1;
+      console.log('hospital');
+      this.storage.get('hospitalSurvey').then(
+        (data) => {
+          //console.log(data);
+          this.questions = JSON.parse(data).cuestionario;
+          this.question = this.questions[0];
+          this.survey.version = JSON.parse(data).version;
+          console.log(this.question);
+        },
+        err => {
+          console.log(err);
+        }
+      );
+    }
   }
-  }
+
 
   radioOptionChanged() {
 
-    console.log(this.answer.option);
+    console.log(this.answer.option.enunciado);
 
     if (this.answer.option.tipo_pregunta != null) {
       // Display first level of childs
       this.hasChilds = true;
       this.isAnswered = false;
     }
-    else if((JSON.stringify(this.answer.option)) == '{}') {
+    else if ((JSON.stringify(this.answer.option)) == '{}') {
       this.hasChilds = false;
       this.isAnswered = false;
     }
@@ -121,24 +122,31 @@ export class SurveyPage {
       this.isAnswered = true;
 
       this.hasSecondChilds = false;
-      this.answer.childText = '';
+      this.answer.childText = null;
       this.answer.childNumber = null;
       this.answer.childOption = {};
       this.answer.childOptions = [];
+      this.answer.childMap = {};
     }
 
+  }
+
+  childNumberChanged() {
+    if (this.answer.childNumber != null) {
+      this.isAnswered = true;
+    }
   }
 
   radioChildOptionChanged() {
 
     console.log(this.answer.childOption);
-    
+
     if (this.answer.childOption.tipo_pregunta != null) {
       // Display first level of childs
       this.hasSecondChilds = true;
       this.isAnswered = false;
     }
-    else if((JSON.stringify(this.answer.option)) == '{}') {
+    else if ((JSON.stringify(this.answer.option)) == '{}') {
       this.hasSecondChilds = false;
       this.isAnswered = false;
     }
@@ -147,16 +155,65 @@ export class SurveyPage {
       this.hasSecondChilds = false;
       this.isAnswered = true;
 
-      this.answer.secondChildText = '';
+      this.answer.secondChildText = null;
       this.answer.image = null;
       this.answer.imageText = null;
     }
   }
 
-  optionChanged() {
+  secondChildTextChanged() {
+    if (this.answer.secondChildText != null && this.answer.secondChildText != '') {
+      this.isAnswered = true;
+    }
+  }
 
-    console.log(this.answer);
+  childOptionsChanged() {
+    if (this.answer.childOptions.length > 0) {
+      this.isAnswered = true;
+    }
+  }
 
+  optionChecked(childOptionChecked) {
+    // console.log("checked changed");
+    // console.log(childOptionChecked.enunciado);
+
+    if (childOptionChecked.checked) {
+      this.answer.childOptions.push(childOptionChecked);
+      console.log("Element added");
+      console.log(childOptionChecked.enunciado);
+    }
+    else {
+      let index = this.answer.childOptions.indexOf(childOptionChecked);
+      console.log("Element to remove: " + this.answer.childOptions[index].enunciado);
+      // console.log(this.answer.childOptions[index].enunciado);
+      if (index !== -1) {
+        this.answer.childOptions.splice(index, 1);
+        console.log("Element removed");
+      }
+    }
+    console.log(this.answer.childOptions);
+
+    if(this.answer.childOptions.length > 0) {
+      this.isAnswered = true;
+    }
+  }
+
+  childTextChanged() {
+    if (this.answer.childText != null) {
+      this.isAnswered = true;
+    }
+  }
+
+  childMapChanged() {
+    if (JSON.stringify(this.answer.childMap) != '{}') {
+      this.isAnswered = true;
+    }
+  }
+
+  imageTextChanged() {
+    if(this.answer.imageText != null && this.answer.imageText != '') {
+      this.isAnswered = true;
+    }
   }
 
   getPicture() {
@@ -313,27 +370,27 @@ export class SurveyPage {
 
 
 
-    
-    if (this.question== undefined) {
+
+    if (this.question == undefined) {
       console.log('entra a final ');
-      this.question={tipo_pregunta:0,tipo_cuestionario_id:0,seccion:0};
+      this.question = { tipo_pregunta: 0, tipo_cuestionario_id: 0, seccion: 0 };
 
       this.saveAnswers();
 
       this.navCtrl.setRoot(FinCuestPage);
       this.navCtrl.popToRoot();
-    }else{
+    } else {
 
       if (this.question.tipo_pregunta == 2) {
         this.answer = new Answer();
-      }else  {
+      } else {
         this.answer = new Answer();
         this.answer.number = null;
         this.answer.text = null;
       }
 
     }
-    
+
   }
 
   saveAnswers(): any {
@@ -348,7 +405,7 @@ export class SurveyPage {
 
     debugger;
     console.log(this.dbService.getSurveys());
-    
+
   }
 
 }
