@@ -78,7 +78,7 @@
         <ion-label floating>Escriba su respuesta (Número)</ion-label>
         <ion-input type="number" [(ngModel)]="answer.number"></ion-input>
       </ion-item>
-      <button class="siguiente" ion-button block (click)="nextQuestion()" *ngIf="answer.number != null && answer.number != ''">Siguiente</button>
+      <button class="siguiente" ion-button block (click)="nextQuestion()" [disabled]="!(answer.number != null && answer.number != '')">Siguiente</button>
     </div>
 
     <!-- 2.- radio button  -->
@@ -211,7 +211,7 @@
         </ion-row>
       </ion-grid>
 
-      <button class="siguiente" ion-button block (click)="nextQuestion()" *ngIf="isAnswered">Siguiente</button>
+      <button class="siguiente" ion-button block (click)="nextQuestion()" [disabled]="!isAnswered">Siguiente</button>
     </div>
 
     <!-- 3.- combo box  -->
@@ -222,7 +222,7 @@
           <ion-checkbox [(ngModel)]="answer.opts"></ion-checkbox>
         </ion-item>
       </ion-list>
-      <button class="siguiente" ion-button block (click)="nextQuestion()" *ngIf="(answer.options | json) != '[]'">Siguiente</button>
+      <button class="siguiente" ion-button block (click)="nextQuestion()" [disabled]="!((answer.options | json) != '[]')">Siguiente</button>
     </div>
 
     <!-- 4.- texto abierto -->
@@ -231,7 +231,7 @@
         <ion-label floating>Escriba su respuesta (Texto)</ion-label>
         <ion-textarea elastic autosize type="text" [(ngModel)]="answer.text"></ion-textarea>
       </ion-item>
-      <button class="siguiente" ion-button block (click)="nextQuestion()" *ngIf="answer.text != null && answer.text != ''">Siguiente</button>
+      <button class="siguiente" ion-button block (click)="nextQuestion()" [disabled]="!(answer.text != null && answer.text != '')">Siguiente</button>
     </div>
 
     <!-- 5.- opcion multiple con pondereaciones -->
