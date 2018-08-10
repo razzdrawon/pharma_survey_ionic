@@ -52,13 +52,11 @@ export class HomePage {
 
 
   selectEstablishment(est){
-    console.log('entra establishment');
-    console.log(est);
+   
      this.establishmentSelected =est;
      this.establishmentsList= [];
      this.establishmentsList.push(est);
-     console.log("++++++++++++++++++++++++++++++");    
-     console.log(JSON.stringify(est));
+  
 
      this.loadSubtypes();
 
@@ -102,6 +100,8 @@ export class HomePage {
     this.storage.get('subtypes').then(
       (data) => {
         this.subtypes = JSON.parse(data);
+        
+        console.log("JKson sfringyfy  "+JSON.stringify(this.subtypes));
         console.log(this.subtypes);
          let varType =this.establishmentSelected.tipo_establecimiento_id;
 

@@ -34,7 +34,7 @@ export class SyncHttpService {
 
   public apiUrl  = 'http://www.accesosinexceso.org/';
 
-  public version   ="0.9.1";
+  public version   ="0.9.9";
 
   // getUsers() {
   //   return this.http.get('../assets/raw/usuarios.json')
@@ -66,10 +66,10 @@ export class SyncHttpService {
   //   .map((res: any[]) => res);
   // }
 
-  // getSubtypes() {
+  //getSubtypes() {
   //   return this.http.get('../assets/raw/subtipos.json')
   //   .map((res: any[]) => res);
-  // }
+ // }
 
   // getVersionApp() {
   //   // let url =this.apiUrl + this.getCVersionApp+"/"+this.version;
@@ -107,12 +107,12 @@ getMedicines() {
 }
 
 getSubtypes() {
-  return this.http.get(this.apiUrl + this.getSubtypes) 
+  return this.http.get(this.apiUrl + this.getCSubtipo) 
   .map((res: any[]) => res);
 }
 
 
-  getSaveSurvey(cuestionarios:any[]) {
+  setSaveSurvey(cuestionarios:any[]) {
     return this.http.post(this.apiUrl + this.saveDCuestionario ,cuestionarios,{
       headers: { 'Content-Type': 'application/json' }
     })

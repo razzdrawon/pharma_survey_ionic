@@ -4,6 +4,7 @@ import { SQLiteObject } from '@ionic-native/sqlite';
 //import { SurveySummary } from '../../models/surveySummary';
 import { SQLite } from '@ionic-native/sqlite';
 import { Survey } from '../../models/survey';
+import { JsonpCallbackContext } from '../../../node_modules/@angular/common/http/src/jsonp';
 // /*
 //   Generated class for the DBServiceProvider provider.
 
@@ -24,7 +25,7 @@ import { Survey } from '../../models/survey';
 
   configureDatabase() {
     this.createEstablishmentTable();
-    //this.createSurveyTable();
+    this.createSurveyTable();
   }
 
   query(query: string, params: any[] = []) {
@@ -59,16 +60,15 @@ import { Survey } from '../../models/survey';
  
    private DELETE_ESTABLISHMENT=" DELETE FROM establishment  ;";
    private INSERT_ESTABLISHMENT="INSERT INTO establishment (id,name,type)values(?,?,?) ;";
-   private INSERT_SURVEY="INSERT INTO survey (establishment_id,type,user,save_date,"+ 
-   +" start_date,end_date,survey,version,latitude,longitude,evidence,sync,response_code) "
-   +" values(?,?,?,?,?,?,?,?,?,?,?,?,?) ;";
-   private SELECT_SURVEY_STATUS=" SELECT COUNT(*) AS tot ,CASE WHEN sync =1 THEN 1 ELSE 0 END AS sync,CASE WHEN sync !=1 THEN 1 ELSE 0 END AS notSync FROM survey ;";
-   private GET_SURVEYS="SELECT * FROM survey";
 
-  
+
+   private INSERT_SURVEY="INSERT INTO survey (establishment_id,type,user,save_date, start_date,end_date,survey,version,latitude,longitude,evidence,sync,response_code)  values(?,?,?,?,?,?,?,?,?,?,?,?,?) ;";
+   private SELECT_SURVEY_STATUS=" SELECT COUNT(*) AS tot ,CASE WHEN sync =1 THEN 1 ELSE 0 END AS sync,CASE WHEN sync !=1 THEN 1 ELSE 0 END AS notSync FROM survey ;";
+   private SELECT_SURVEY_BY_ESTABLISHMENT_AND_TYPE="SELECT * FROM survey WHERE establishment_id  = ? AND type = ? ";
+   private SELECT_SURVEY_TO_SYNC=" SELECT * FROM survey WHERE sync!= 1";
+   private MARK_SYNC_SURVEY=" UPDATE  survey   SET sync=1 WHERE establishment_id  = ? AND type = ? ";
 
    
-
    createEstablishmentTable(){
      let sql = this.CREATE_TABLE_ESTABLISHMENT;
      return this.query(sql, []);
@@ -79,34 +79,10 @@ import { Survey } from '../../models/survey';
     return this.query(sql, []);
   }
 
-
-
    selectEstablishmentByName(name){
     let sql = "SELECT id, name, type FROM establishment where name LIKE '%"+name+"%'  ;"
     return this.query(sql,[] );
   }
-
-/*
-  selectSurveyStatus(){
-    
-    return this.query(this.SELECT_SURVEY_STATUS,[] ).then(response => {
-      let surveyStatus = new SurveySummary();
-      for (let index = 0; index < response.rows.length; index++) {
-        let obj = response.rows.item(index);
-        surveyStatus.tot=obj.tot;
-        surveyStatus.sync= obj.sync;
-        surveyStatus.notSync= obj.notSync;
-      }
-      
-      return Promise.resolve( surveyStatus );
-    });
-
-
-
-    
-  }
-
-*/
 
   insertEstablishment(establishment:any){
     let sql = this.INSERT_ESTABLISHMENT;
@@ -114,7 +90,7 @@ import { Survey } from '../../models/survey';
   }
 
   insertSurvey(survey: Survey){
-    let sql = this.INSERT_SURVEY;
+    let sql = this.INSERT_SURVEY;   
     return this.query(sql, 
       [
         survey.establishment_id,
@@ -133,68 +109,35 @@ import { Survey } from '../../models/survey';
       ]);
   }
 
+
+  markSurveySync(survey: Survey){
+    let sql = this.MARK_SYNC_SURVEY;   
+    return this.query(sql, 
+      [
+        survey.establishment_id,
+        survey.type
+      ]);
+  }
+
   getSurveys() {
-    let sql = this.GET_SURVEYS;
+    let sql = this.SELECT_SURVEY_STATUS;
     return this.query(sql, []);
   }
 
+  getSurveyToSync() {
+    let sql = this.SELECT_SURVEY_TO_SYNC;
+    return this.query(sql, []);
+  }
+
+  getSurveyByTypeAndEstablishment(establishment_id,type) {
+    let sql = this.SELECT_SURVEY_BY_ESTABLISHMENT_AND_TYPE;
+    return this.query(sql, [establishment_id,type]);
+  }
 
   deleteEstablishment( ){
     let sql = this.DELETE_ESTABLISHMENT;
     return this.query(sql, []);
 
   }
-
-
-  
-
-//   dropTable(){
-//     let sql = 'DROP TABLE IF EXISTS users';
-//     return this.db.executeSql(sql, []);
-//   }
-
-//   getAllUsers(){
-//     let sql = 'SELECT * FROM users';
-//     return this.db.executeSql(sql, [])
-//     .then(response => {
-//       let users = [];
-//       for (let index = 0; index < response.rows.length; index++) {
-//         users.push( response.rows.item(index) );
-//       }
-//       return Promise.resolve( users );
-//     })
-//     .catch(error => Promise.reject(error));
-//   }
-
-//   getUserLogin(user: any){
-//     console.log('user sent to the query: ' + user.username + ' ' + user.username);
-//     let sql = 'SELECT * FROM users WHERE username=? AND password=?';
-//     return this.db.executeSql(sql, [user.username, user.password])
-//     .then(response => {
-//       console.log('db response: ' + response);
-//       let users = [];
-//       for (let index = 0; index < response.rows.length; index++) {
-//         users.push( response.rows.item(index) );
-//       }
-//       console.log('db users: ' + users);
-//       return Promise.resolve( users );
-//     })
-//     .catch(error => Promise.reject(error));
-//   }
-
-//   createUser(user: any){
-//     let sql = 'INSERT INTO users(username, password, completed) VALUES(?,?,?)';
-//     return this.db.executeSql(sql, [user.username, user.password, user.completed]);
-//   }
-
-//   updateUser(user: any){
-//     let sql = 'UPDATE users SET username=?, password=?, completed=? WHERE id=?';
-//     return this.db.executeSql(sql, [user.username, user.password, user.completed, user.id]);
-//   }
-
-//   deleteUser(user: any){
-//     let sql = 'DELETE FROM users WHERE id=?';
-//     return this.db.executeSql(sql, [user.id]);
-//   }
 
  }

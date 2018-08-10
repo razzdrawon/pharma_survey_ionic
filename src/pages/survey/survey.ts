@@ -7,6 +7,7 @@ import { Camera, CameraOptions } from '@ionic-native/camera';
 import { Answer } from '../../models/answer';
 import { FinCuestPage } from '../finCuest/finCuest';
 import { DBService } from '../../providers/db-services/storage-service';
+import { Geolocation } from '@ionic-native/geolocation';
 
 /**
  * Generated class for the SurveyPage page.
@@ -36,6 +37,7 @@ export class SurveyPage {
 
   public survey = new Survey();
   public objParam: any;
+  private loggedUser :any;
 
   constructor(
     public navCtrl: NavController,
@@ -44,7 +46,9 @@ export class SurveyPage {
     private storage: Storage,
     private camera: Camera,
     public alertCtrl: AlertController,
-    private dbService: DBService) {
+    private dbService: DBService,
+    private geolocation: Geolocation
+  ) {
   }
 
   ionViewDidLoad() {
@@ -52,6 +56,7 @@ export class SurveyPage {
     this.objParam = this.navParams['data'];
     this.survey.establishment_id = this.objParam.establecimiento_id;
     this.loadSurvey();
+    this.validateLoggedUser();
   }
 
   loadSurvey() {
@@ -393,17 +398,43 @@ export class SurveyPage {
 
   }
 
+
+
+
+  validateLoggedUser() {
+    this.storage.get('LoggedUser').then(
+      (user) => {
+        if (user) {
+          this.loggedUser = user;
+         
+        }
+        
+      }
+    );
+  }
+
   saveAnswers(): any {
     this.survey.survey = JSON.stringify(this.answers);
     this.survey.save_date = new Date().toISOString();
     this.survey.end_date = new Date().toISOString();
     this.survey.sync = 0;
+    this.survey.user = this.loggedUser.usuario;
 
-    this.dbService.insertSurvey(this.survey);
 
-    this.dbService.getSurveys();
+    this.geolocation.getCurrentPosition().then((resp) => {
+      this.survey.latitude = resp.coords.latitude+"";
+      this.survey.longitude =resp.coords.longitude+"";
+      this.dbService.insertSurvey(this.survey);
+     }).catch((error) => {
+      console.log('Error getting location', error);
+      this.dbService.insertSurvey(this.survey);
+     });
 
-    debugger;
+    
+
+    
+
+   
     console.log(this.dbService.getSurveys());
 
   }
