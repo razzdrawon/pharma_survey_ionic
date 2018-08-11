@@ -8,6 +8,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
 //import { SurveySummary } from '../../models/surveySummary';
 
 import {Md5} from 'ts-md5';
+import { JsonpCallbackContext } from '../../../node_modules/@angular/common/http/src/jsonp';
 
 
 
@@ -25,6 +26,9 @@ export class LoginPage {
   user: any;
   pass_hashed:any;
   public loading:any;
+  public cuesTotal=0;
+  public cuesSync=0;
+  public cuesPen=0;
   //public summary:SurveySummary;
 
   tasks: any[] = [];
@@ -54,8 +58,26 @@ export class LoginPage {
 
     this.getAllUsers();
 
-     
+     this.obtieneSumatoriaCuestionarios();
   }
+
+
+obtieneSumatoriaCuestionarios(){
+
+
+
+  this.db.getSurveys().then(response => {
+      
+    for (let index = 0; index < response.rows.length; index++) {
+      let obj = response.rows.item(index);
+      console.log("Objeto base de datos"+ JSON.stringify( obj ) );
+          this.cuesSync = obj.sync;
+          this.cuesTotal = obj.tot;
+          this.cuesPen = obj.notSync;       
+    }
+    });
+}
+
 
   validateActiveSession() {
     this.storage.get('LoggedUser').then(user => {
@@ -111,7 +133,7 @@ export class LoginPage {
       this.navCtrl.popToRoot();
     }
     else {
-      console.log('user invalid: ' + this.userLogin.username);
+   
       let alert = this.alertCtrl.create({
         title: 'Credenciales Invalidas',
         message: 'Su usuario y/o contraseña son incorrectos.',
@@ -157,21 +179,11 @@ export class LoginPage {
             {
               text: 'Ok',
               handler: data => {
-               /*
-                const options: InAppBrowserOptions = {
-                  zoom: 'no'
-                }
-                const browser = this.iab.create(obj.url, '_self', options);
-               */
+               
+              let options = "location=yes"
+              let iab = new InAppBrowser();              
+              iab.create(  obj.url, '_system',options);
 
-              let options = "location=no"
-              console.log('ntes browser');
-              let iab = new InAppBrowser();
-              console.log('despues browser');
-
-              console.log('OBJ url'+obj.url);
-              iab.create(  "www.facebook.com", '_self');
-              console.log('despues  kdfjdksjfdksf' );
               }
             }
           ]
@@ -194,6 +206,45 @@ export class LoginPage {
 
 
   syncInfo() {
+
+
+    this.db.getSurveyToSync().then(response => {
+      let cuesToSync=[];
+      for (let index = 0; index < response.rows.length; index++) 
+      {
+        cuesToSync.push(response.rows.item(index));
+      }
+
+
+
+      this.syncHttpService.setSaveSurvey(cuesToSync).subscribe(
+        (data: any[]) => {
+
+          for (let index = 0; index < data.length; index++) 
+          {
+          
+            if(data[index].response_code==0){
+              this.db.markSurveySync(data[index]);
+            }
+            
+          }
+
+          
+          this.obtieneSumatoriaCuestionarios();
+        },
+        err => {
+          this.obtieneSumatoriaCuestionarios();
+          console.log(JSON.stringify(err));
+        }
+    );
+
+      
+
+    });
+
+
+
+
     this.showLoading('Sincronizando información ...');
     setTimeout(() => {
       this.loading.dismiss();
@@ -236,12 +287,11 @@ export class LoginPage {
     let subsObs = this.syncHttpService.getSubtypes()
       .subscribe(
         (data: any[]) => {
-          console.log(JSON.stringify(data) );
+          console.log(JSON.stringify("Subtypes --------------------*******-----"+data) );
           this.storage.remove('subtypes');
           // set a key/value
           this.storage.set('subtypes', JSON.stringify(data));
-          console.log('subtypes syncronized');
-          console.log('storage: ' + this.storage.get('subtypes'));
+         
 
         },
         err => {
