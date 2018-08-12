@@ -256,7 +256,7 @@ export class SurveyPage {
 
       let sum: number = 0;
       Object.keys(this.answer.map).forEach(key => {
-        sum = parseInt(this.answer.map[key]) + sum;
+        sum = (parseInt(this.answer.map[key]) || 0) + sum;
       });
       console.log('*************************************');
       console.log(sum);
@@ -269,7 +269,7 @@ export class SurveyPage {
       }
       else {
         Object.keys(answerAux.map).forEach(key => {
-          total = parseInt(answerAux.map[key]) + total;
+          total = (parseInt(answerAux.map[key]) || 0) + total;
         });
       }
 
