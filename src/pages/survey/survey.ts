@@ -295,7 +295,7 @@ export class SurveyPage {
 
   fillAnswerAndPush() {
 
-    this.answer.question = { id: this.question.id, sentense: this.question.enunciado, section: this.question.seccion, section_question: this.question.seccion_pregunta_id, type: this.question.tipo_pregunta, index: this.question.indice, level: this.question.level };
+    this.answer.question = { id: this.question.id, sentense: this.question.enunciado, section: this.question.seccion, section_question: this.question.seccion_pregunta_id, type: this.question.tipo_pregunta, index: this.question.indice, level: this.question.level};
 
     // fill with useful question info in the answer
 
@@ -314,10 +314,6 @@ export class SurveyPage {
 
       case 1: { // question type 1 (Open answer)
         if (isFinal == 1) {
-
-          let params = {'answers': this.answers, 'questions': this.questions, 'section': this.answer.question.section};
-          this.navCtrl.push(RevisionPage, params);
-
           nextSection = this.question.seccion + 1;
           nextQuestion = 1;
         }
@@ -352,10 +348,6 @@ export class SurveyPage {
 
       case 4: { // question type 4 (Text Area)
         if (isFinal == 1) {
-
-          let params = {'answers': this.answers, 'questions': this.questions, 'section': this.answer.question.section};
-          this.navCtrl.push(RevisionPage, params);
-
           nextSection = this.question.seccion + 1;
           nextQuestion = 1;
         }
@@ -378,7 +370,11 @@ export class SurveyPage {
         break;
       }
     }
-
+    if(nextSection > this.question.seccion) {
+      let params = {'answers': this.answers, 'questions': this.questions, 'section': this.answer.question.section};
+      this.navCtrl.push(RevisionPage, params);
+    } 
+    
     console.log('next section: ' + nextSection + ' next question: ' + nextQuestion);
     this.question = this.questions.find(question => (question.seccion == nextSection) && (question.seccion_pregunta_id == nextQuestion));
 

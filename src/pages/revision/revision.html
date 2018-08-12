@@ -84,7 +84,12 @@
 				</div>
 	
 				<!-- Question Type 5 -->
-	
+				<div *ngSwitchCase=5 >
+					<div *ngFor="let opt of getOptions(answer)" >
+					<p>{{opt.enunciado}} {{getNumber(opt, answer)}}</p> 
+					</div>
+				</div>
+				
 			</div>
 		</div>
 	

@@ -1,5 +1,4 @@
 import { Answer } from './../../models/answer';
-import { Question } from './../../models/question';
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
@@ -37,12 +36,15 @@ export class RevisionPage {
 
   cambiar_pagina() {
     //this.navCtrl.setRoot(FinCuestPage);
+      this.navCtrl.pop();
   }
 
   getOptions(answer: Answer){
     let question = this.questionsRevision.find(question => question.id === answer.question.id);
     return question.respuestas;
-
   }
 
+  getNumber(option, answer: Answer){
+    return (answer.map[option.id] | 0);
+  }
 }
