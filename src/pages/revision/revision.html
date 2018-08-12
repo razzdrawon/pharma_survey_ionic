@@ -6,69 +6,94 @@
 -->
 <ion-header>
 
-  <ion-navbar hideBackButton>
-  	<ion-buttons left>
-		<button ion-button navPop>
-			<ion-icon name="play"></ion-icon >
-		</button>
-    </ion-buttons>
-
-    <ion-title>Revisión</ion-title>
-  </ion-navbar>
-
-</ion-header>
-
-
-<ion-content padding>
-
-
-		<h1 class="titulo">Seccion IV</h1>
-
-		<h1 class="subtitulo">Lights systemic Shibuya shrine DIY narrative refrigerator shoes BASE jump urban smart-network office rain fluidity computer.</h1>
-
-		<div class="radios">
-			<div class="control-group">
-				<label class="control control-radio">
-					<input type="radio" name="radio1" disabled="disabled" checked="checked"/>
-					<p>Morfina</p>
-			        <div class="control_indicator"></div>
-			    </label>
-			    <label class="control control-radio">
-			        
-					<input type="radio" name="radio2" disabled="disabled" checked="checked" />
-					<p>Metadona</p>
-			        <div class="control_indicator"></div>
-			    </label>
-			    <label class="control control-radio">
-					<input type="radio" name="radio3" disabled="disabled" checked="checked" />
-					<p>Tramadol</p>
-			        <div class="control_indicator"></div>
-			    </label>
-			    <label class="control control-radio">
-					<input type="radio" name="radio4" checked="checked" />
-					<p>Brupenorfina</p>
-					<div class="control_indicator"></div>
-					<div class="respuestas">
-						<ul>
-							<li>Si</li>
-							<li>Tableta</li>
-						</ul>
+		<ion-navbar hideBackButton>
+			<ion-buttons left>
+				<button ion-button navPop>
+					<ion-icon name="play"></ion-icon>
+				</button>
+			</ion-buttons>
+	
+			<ion-title>Revisión</ion-title>
+		</ion-navbar>
+	
+	</ion-header>
+	
+	
+	<ion-content padding>
+	
+	
+		<h1 class="titulo">Seccion {{sectionRevision}}</h1>
+	
+	
+		<div *ngFor="let answer of answersRevision">
+	
+			<h1 class="subtitulo">{{answer.question.sentense}}</h1>
+	
+			<div [ngSwitch]="answer.question.type">
+	
+				<!-- Question Type 1 -->
+				<div *ngSwitchCase=1>
+					<ion-label>{{answer.number}}</ion-label>
+				</div>
+	
+				<!-- Question Type 2 -->
+				<div class="radios" *ngSwitchCase=2>
+					<div class="control-group" *ngFor="let opt of getOptions(answer)" >
+	
+						<label class="control control-radio">
+							<input type="radio" name="radio1" [checked]="answer.option == opt" disabled="true"/>
+							<p>{{opt.enunciado}}</p>
+							<div class="control_indicator"></div>
+						</label>
+	
+	
+						<!-- <label class="control control-radio">
+							<input type="radio" name="radio2" disabled="disabled" checked="checked" />
+							<p>Metadona</p>
+							<div class="control_indicator"></div>
+						</label>
+						<label class="control control-radio">
+							<input type="radio" name="radio3" disabled="disabled" checked="checked" />
+							<p>Tramadol</p>
+							<div class="control_indicator"></div>
+						</label>
+						<label class="control control-radio">
+							<input type="radio" name="radio4" checked="checked" />
+							<p>Brupenorfina</p>
+							<div class="control_indicator"></div>
+							<div class="respuestas">
+								<ul>
+									<li>Si</li>
+									<li>Tableta</li>
+								</ul>
+							</div>
+						</label>
+						<label class="control control-radio">
+							<input type="radio" name="radio5" disabled="disabled" checked="checked" />
+							<p>Disabled & checked</p>
+							<div class="control_indicator"></div>
+						</label> -->
+	
+	
 					</div>
-			    </label>
-			    <label class="control control-radio">
-			            <input type="radio" name="radio5" disabled="disabled" checked="checked" />
-			            <p>Disabled & checked</p>
-			        <div class="control_indicator"></div>
-			    </label>
+				</div>
+	
+				<!-- Question Type 4 -->
+				<div *ngSwitchCase=4>
+					<ion-label>{{answer.text}}</ion-label>
+				</div>
+	
+				<!-- Question Type 5 -->
+	
 			</div>
 		</div>
-
+	
 		<button ion-button float-right icon-only outline class="flecha_abajo">
-		<ion-icon name="arrow-round-down" ></ion-icon>
+			<ion-icon name="arrow-round-down"></ion-icon>
 		</button>
-
+	
 		<button ion-button float-right class="boton_chico" (click)="cambiar_pagina()">Siguiente Sección</button>
-
-
-
-</ion-content>
+	
+	
+	
+	</ion-content>

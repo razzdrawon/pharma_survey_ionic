@@ -8,6 +8,7 @@ import { Answer } from '../../models/answer';
 import { FinCuestPage } from '../finCuest/finCuest';
 import { DBService } from '../../providers/db-services/storage-service';
 import { Geolocation } from '@ionic-native/geolocation';
+import { RevisionPage } from '../revision/revision';
 
 /**
  * Generated class for the SurveyPage page.
@@ -294,7 +295,7 @@ export class SurveyPage {
 
   fillAnswerAndPush() {
 
-    this.answer.question = { id: this.question.id, section: this.question.seccion, section_question: this.question.seccion_pregunta_id, type: this.question.tipo_pregunta, index: this.question.indice, level: this.question.level };
+    this.answer.question = { id: this.question.id, sentense: this.question.enunciado, section: this.question.seccion, section_question: this.question.seccion_pregunta_id, type: this.question.tipo_pregunta, index: this.question.indice, level: this.question.level };
 
     // fill with useful question info in the answer
 
@@ -313,6 +314,10 @@ export class SurveyPage {
 
       case 1: { // question type 1 (Open answer)
         if (isFinal == 1) {
+
+          let params = {'answers': this.answers, 'questions': this.questions, 'section': this.answer.question.section};
+          this.navCtrl.push(RevisionPage, params);
+
           nextSection = this.question.seccion + 1;
           nextQuestion = 1;
         }
@@ -347,6 +352,10 @@ export class SurveyPage {
 
       case 4: { // question type 4 (Text Area)
         if (isFinal == 1) {
+
+          let params = {'answers': this.answers, 'questions': this.questions, 'section': this.answer.question.section};
+          this.navCtrl.push(RevisionPage, params);
+
           nextSection = this.question.seccion + 1;
           nextQuestion = 1;
         }
