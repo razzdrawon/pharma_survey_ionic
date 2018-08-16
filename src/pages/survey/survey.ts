@@ -9,6 +9,7 @@ import { FinCuestPage } from '../finCuest/finCuest';
 import { DBService } from '../../providers/db-services/storage-service';
 import { Geolocation } from '@ionic-native/geolocation';
 import { RevisionPage } from '../revision/revision';
+import { THROW_IF_NOT_FOUND } from '@angular/core/src/di/injector';
 
 /**
  * Generated class for the SurveyPage page.
@@ -26,19 +27,24 @@ export class SurveyPage {
   public questions: any[] = [];
   public question: any = {}; // current question (displayed in screen)
 
-  public answers: any[] = [];
-  public answer: Answer = new Answer();
-
   public hasChilds: boolean = false;
   public hasSecondChilds: boolean = false;
 
   public isAnswered: boolean = false;
 
+
+  public answers: any[] = [];
+  public answer: Answer = new Answer();
   public image: string = null;
 
-  public survey = new Survey();
-  public objParam: any;
-  private loggedUser :any;
+  public survey: Survey;
+
+  public establishmentId: number;
+  public type: number;
+  public isPharma: any;
+  public version: any;
+
+  private loggedUser: any;
 
   constructor(
     public navCtrl: NavController,
@@ -53,58 +59,109 @@ export class SurveyPage {
   }
 
   ionViewDidLoad() {
-    this.survey.start_date = new Date().toISOString();
-    this.objParam = this.navParams['data'];
-    this.survey.establishment_id = this.objParam.establecimiento_id;
-    this.loadSurvey();
     this.validateLoggedUser();
+    this.initializeVars();
+    this.loadSurvey();
+    
+  }
+
+  initializeVars() {
+
+    this.establishmentId = this.navParams['data'].tipo_establecimiento_id;
+    let sub_tipo = this.navParams['data'].subtipo_id;
+    this.isPharma = false;
+
+    if (this.establishmentId == 3 || this.establishmentId == 4 || this.establishmentId == 4) {
+      this.isPharma = true;
+      this.type = 2; //survey property type
+    } else if (this.establishmentId == 1 && sub_tipo == 3) {
+      this.isPharma = true;
+      this.type = 2; //survey property type
+    } else {
+      this.isPharma = false;
+      this.type = 1; //survey property type
+    }
+
   }
 
   loadSurvey() {
-
-    let tipo = this.objParam.tipo_establecimiento_id;
-    let sub_tipo = this.objParam.subtipo_id;
-    let isPharma = false;
-
-    if (tipo == 3 || tipo == 4 || tipo == 4) {
-      isPharma = true;
-    } else if (tipo == 1 && sub_tipo == 3) {
-      isPharma = true;
-    } else {
-
-      isPharma = false;
-    }
-
-    if (isPharma) {
-      this.survey.type = 2;
+    console.log('loading survey to display');
+    if (this.isPharma) {
       this.storage.get('pharmaSurvey').then(
         (data) => {
           //console.log(data);
           this.questions = JSON.parse(data).cuestionario;
-          this.question = this.questions[0];
-          this.survey.version = JSON.parse(data).version;
-          console.log(this.question);
+          this.version = JSON.parse(data).version; //survey property version
+          this.loadPreviousAnwsers();
         },
         err => {
           console.log(err);
         }
       );
     } else {
-      this.survey.type = 1;
       console.log('hospital');
       this.storage.get('hospitalSurvey').then(
         (data) => {
           //console.log(data);
           this.questions = JSON.parse(data).cuestionario;
-          this.question = this.questions[0];
-          this.survey.version = JSON.parse(data).version;
-          console.log(this.question);
+          this.version = JSON.parse(data).version; //survey property version
+          this.loadPreviousAnwsers();
         },
         err => {
           console.log(err);
         }
       );
     }
+  }
+
+  loadPreviousAnwsers() {
+    console.log('loading previuos answers');
+    this.dbService.getSurveyByTypeAndEstablishment(this.establishmentId, this.type)
+      .then((response) => {
+        console.log('**************** This is the sql response  *****************');
+        console.log(JSON.stringify(response.rows.item(0)));
+        if (!response.rows.item(0)) {    // New Survey to save. Never saved before.
+          this.survey = new Survey();
+          this.survey.establishment_id = this.establishmentId;
+          this.survey.type = this.type;
+          this.survey.user = this.loggedUser.usuario;
+          //this.survey.save_date   This shouldnt be assigned yet                                 **
+          this.survey.start_date = new Date().toISOString(); //survey property startDate
+          // this.survey.end_date   This shouldnt be assigned yet                                 **
+          // this.survey.survey    This should be populated whe we want to save a new section     **
+          // this.survey.version    This should be populated whe we want to save a new section    
+          // this.survey.latitude    This should be populated whe we want to save a new section
+          // this.survey.longitude    This should be populated whe we want to save a new section
+          // this.survey.evidence    This should be populated whe we want to save a new section
+          // this.survey.sync    This should be populated whe we want to save a new section
+          this.survey.next_section = 1;
+          this.survey.completed = 0;
+          this.survey.response_code = null;
+        }
+        else {
+          this.survey = response.rows.item(0);
+          this.answers = JSON.parse(this.survey.survey);
+        }
+
+        console.log('**************** This is the survey  *****************');
+        console.log(JSON.stringify(this.survey));
+
+        console.log('**************** This are the answers  *****************');
+        console.log(JSON.stringify(this.answers));
+        if (this.answers.length < 1) {
+          console.log('**************** From section 1.1  *****************');
+          console.log(JSON.stringify(this.questions[0]));
+          this.question = this.questions[0];
+        }
+        else {
+          console.log('**************** From section ' + this.survey.next_section + '  *****************');
+          console.log(JSON.stringify(this.questions));
+          this.question = this.questions.find(question => (question.seccion == this.survey.next_section && question.seccion_pregunta_id==1));
+        }
+
+        console.log('**************** This is the initial question  *****************');
+        console.log(JSON.stringify(this.question));
+      });
   }
 
 
@@ -199,7 +256,7 @@ export class SurveyPage {
     }
     console.log(this.answer.childOptions);
 
-    if(this.answer.childOptions.length > 0) {
+    if (this.answer.childOptions.length > 0) {
       this.isAnswered = true;
     }
   }
@@ -217,7 +274,7 @@ export class SurveyPage {
   }
 
   imageTextChanged() {
-    if(this.answer.imageText != null && this.answer.imageText != '') {
+    if (this.answer.imageText != null && this.answer.imageText != '') {
       this.isAnswered = true;
     }
   }
@@ -295,7 +352,7 @@ export class SurveyPage {
 
   fillAnswerAndPush() {
 
-    this.answer.question = { id: this.question.id, sentense: this.question.enunciado, section: this.question.seccion, section_question: this.question.seccion_pregunta_id, type: this.question.tipo_pregunta, index: this.question.indice, level: this.question.level};
+    this.answer.question = { id: this.question.id, sentense: this.question.enunciado, section: this.question.seccion, section_question: this.question.seccion_pregunta_id, type: this.question.tipo_pregunta, index: this.question.indice, level: this.question.level };
 
     // fill with useful question info in the answer
 
@@ -370,22 +427,28 @@ export class SurveyPage {
         break;
       }
     }
-    if(nextSection > this.question.seccion) {
-      let params = {'answers': this.answers, 'questions': this.questions, 'section': this.answer.question.section};
+
+
+    // check if a revision of section is needed
+    if (nextSection > this.question.seccion) {
+      let params = { 'answers': this.answers, 'questions': this.questions, 'section': this.answer.question.section };
       this.navCtrl.push(RevisionPage, params);
-    } 
-    
+      if(this.question.seccion == 1) {
+        this.saveAnswersForTheFirstTime(nextSection);
+      }
+      else {
+        this.updateAnswersbySection(nextSection);
+      }
+    }    
+
     console.log('next section: ' + nextSection + ' next question: ' + nextQuestion);
     this.question = this.questions.find(question => (question.seccion == nextSection) && (question.seccion_pregunta_id == nextQuestion));
-
-
-
 
     if (this.question == undefined) {
       console.log('entra a final ');
       this.question = { tipo_pregunta: 0, tipo_cuestionario_id: 0, seccion: 0 };
 
-      this.saveAnswers();
+      this.markSurveyAsCompleted();
 
       this.navCtrl.setRoot(FinCuestPage);
       this.navCtrl.popToRoot();
@@ -403,45 +466,51 @@ export class SurveyPage {
 
   }
 
-
-
-
   validateLoggedUser() {
     this.storage.get('LoggedUser').then(
       (user) => {
         if (user) {
           this.loggedUser = user;
-         
         }
-        
       }
     );
   }
 
-  saveAnswers(): any {
+  saveAnswersForTheFirstTime(nextSection): any {
+
     this.survey.survey = JSON.stringify(this.answers);
+    this.survey.version = this.version;
     this.survey.save_date = new Date().toISOString();
     this.survey.end_date = new Date().toISOString();
     this.survey.sync = 0;
-    this.survey.user = this.loggedUser.usuario;
-
+    this.survey.next_section = nextSection;
 
     this.geolocation.getCurrentPosition().then((resp) => {
-      this.survey.latitude = resp.coords.latitude+"";
-      this.survey.longitude =resp.coords.longitude+"";
+      this.survey.latitude = resp.coords.latitude + "";
+      this.survey.longitude = resp.coords.longitude + "";
       this.dbService.insertSurvey(this.survey);
-     }).catch((error) => {
+    }).catch((error) => {
       console.log('Error getting location', error);
-      this.dbService.insertSurvey(this.survey);
-     });
+      this.dbService.insertSurvey(this.survey).then( resp => 
+        console.log('survey saved for the first time for establishment ' + this.survey.establishment_id + ' type ' + this.survey.type)
+      );
+    });
+  }
 
-    
+  updateAnswersbySection(nextSection): any {
+    this.survey.version = this.version;
+    this.survey.save_date = new Date().toISOString();
+    this.survey.survey = JSON.stringify(this.answers);
+    this.survey.next_section = nextSection;
+    this.dbService.updateAnswersSurvey(this.survey).then( resp => 
+      console.log('survey saved for the section  ' + this.question.seccion)
+    );
+  }
 
-    
-
-   
-    console.log(this.dbService.getSurveys());
-
+  markSurveyAsCompleted(): any {
+    this.dbService.markSurveyCopmleted(this.survey).then( resp => 
+      console.log('survey saved as completed for establishment ' + this.survey.establishment_id + ' type ' + this.survey.type)
+    );
   }
 
 }

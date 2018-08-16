@@ -33,7 +33,7 @@ import { JsonpCallbackContext } from '../../../node_modules/@angular/common/http
     name: this.DB_NAME,
     location: 'default'
     }).then((db: SQLiteObject) => {
-      return db.executeSql(query, params).catch(e => console.log('error DB'+e));
+      return db.executeSql(query, params).catch(e => console.log('Error DB '+ JSON.stringify(e)));
     });
   }
 
@@ -53,6 +53,8 @@ import { JsonpCallbackContext } from '../../../node_modules/@angular/common/http
     +" longitude TEXT,"
     +" evidence TEXT,"
     +" sync INTEGER NULL, "
+    +" next_section INTEGER NULL, "
+    +" completed INTEGER, "
     +" response_code INTEGER NULL, "
     +" PRIMARY KEY (establishment_id, type) "
     +");";
@@ -62,11 +64,14 @@ import { JsonpCallbackContext } from '../../../node_modules/@angular/common/http
    private INSERT_ESTABLISHMENT="INSERT INTO establishment (id,name,type)values(?,?,?) ;";
 
 
-   private INSERT_SURVEY="INSERT INTO survey (establishment_id,type,user,save_date, start_date,end_date,survey,version,latitude,longitude,evidence,sync,response_code)  values(?,?,?,?,?,?,?,?,?,?,?,?,?) ;";
+   private INSERT_SURVEY="INSERT INTO survey (establishment_id, type, user, save_date, start_date, end_date, survey, version, latitude, longitude, evidence, sync, next_section, completed, response_code)  values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ;";
+   private UPDATE_SURVEY="UPDATE survey SET survey = ?, next_section = ?, version = ?, save_date = ? WHERE establishment_id  = ? AND type = ?;";
+
    private SELECT_SURVEY_STATUS=" SELECT COUNT(*) AS tot ,CASE WHEN sync =1 THEN 1 ELSE 0 END AS sync,CASE WHEN sync !=1 THEN 1 ELSE 0 END AS notSync FROM survey ;";
    private SELECT_SURVEY_BY_ESTABLISHMENT_AND_TYPE="SELECT * FROM survey WHERE establishment_id  = ? AND type = ? ";
    private SELECT_SURVEY_TO_SYNC=" SELECT * FROM survey WHERE sync!= 1";
    private MARK_SYNC_SURVEY=" UPDATE  survey   SET sync=1 WHERE establishment_id  = ? AND type = ? ";
+   private MARK_COMPLETED_SURVEY=" UPDATE survey SET completed=1, next_section=null WHERE establishment_id  = ? AND type = ? ";
 
    
    createEstablishmentTable(){
@@ -105,13 +110,38 @@ import { JsonpCallbackContext } from '../../../node_modules/@angular/common/http
         survey.longitude,
         survey.evidence,
         survey.sync,
+        survey.next_section,
+        survey.completed,
         survey.response_code
       ]);
+  }
+
+  updateAnswersSurvey(survey: Survey) {
+    let sql = this.UPDATE_SURVEY;
+    return this.query(sql,
+      [
+        survey.survey,
+        survey.next_section,
+        survey.version,
+        survey.save_date,
+        survey.establishment_id,
+        survey.type
+      ]
+    );
   }
 
 
   markSurveySync(survey: Survey){
     let sql = this.MARK_SYNC_SURVEY;   
+    return this.query(sql, 
+      [
+        survey.establishment_id,
+        survey.type
+      ]);
+  }
+
+  markSurveyCopmleted(survey: Survey){
+    let sql = this.MARK_COMPLETED_SURVEY;   
     return this.query(sql, 
       [
         survey.establishment_id,
@@ -129,9 +159,9 @@ import { JsonpCallbackContext } from '../../../node_modules/@angular/common/http
     return this.query(sql, []);
   }
 
-  getSurveyByTypeAndEstablishment(establishment_id,type) {
+  getSurveyByTypeAndEstablishment(establishment_id, type) {
     let sql = this.SELECT_SURVEY_BY_ESTABLISHMENT_AND_TYPE;
-    return this.query(sql, [establishment_id,type]);
+    return this.query(sql, [establishment_id, type]);
   }
 
   deleteEstablishment( ){
