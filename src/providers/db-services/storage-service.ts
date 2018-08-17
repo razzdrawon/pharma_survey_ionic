@@ -4,7 +4,7 @@ import { SQLiteObject } from '@ionic-native/sqlite';
 //import { SurveySummary } from '../../models/surveySummary';
 import { SQLite } from '@ionic-native/sqlite';
 import { Survey } from '../../models/survey';
-import { JsonpCallbackContext } from '../../../node_modules/@angular/common/http/src/jsonp';
+
 // /*
 //   Generated class for the DBServiceProvider provider.
 
@@ -63,7 +63,7 @@ import { JsonpCallbackContext } from '../../../node_modules/@angular/common/http
 
 
    private INSERT_SURVEY="INSERT INTO survey (establishment_id,type,user,save_date, start_date,end_date,survey,version,latitude,longitude,evidence,sync,response_code)  values(?,?,?,?,?,?,?,?,?,?,?,?,?) ;";
-   private SELECT_SURVEY_STATUS=" SELECT COUNT(*) AS tot ,CASE WHEN sync =1 THEN 1 ELSE 0 END AS sync,CASE WHEN sync !=1 THEN 1 ELSE 0 END AS notSync FROM survey ;";
+   private SELECT_SURVEY_STATUS=" SELECT COALESCE( SUM(CASE WHEN 1=1 THEN 1 ELSE 0 END ),0) AS tot , COALESCE( SUM(CASE WHEN sync =1 THEN 1 ELSE 0 END ),0)  AS sync,COALESCE( SUM(CASE WHEN sync =0 THEN 1 ELSE 0 END ) ,0)  AS notSync  FROM survey ;";
    private SELECT_SURVEY_BY_ESTABLISHMENT_AND_TYPE="SELECT * FROM survey WHERE establishment_id  = ? AND type = ? ";
    private SELECT_SURVEY_TO_SYNC=" SELECT * FROM survey WHERE sync!= 1";
    private MARK_SYNC_SURVEY=" UPDATE  survey   SET sync=1 WHERE establishment_id  = ? AND type = ? ";
@@ -91,6 +91,7 @@ import { JsonpCallbackContext } from '../../../node_modules/@angular/common/http
 
   insertSurvey(survey: Survey){
     let sql = this.INSERT_SURVEY;   
+    console.log(sql);
     return this.query(sql, 
       [
         survey.establishment_id,

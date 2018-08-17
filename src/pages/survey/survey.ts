@@ -1,4 +1,5 @@
 import { Survey } from './../../models/survey';
+import { LoginPage } from './../login/login';
 import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { SyncHttpService } from '../../providers/http-services/sync-service';
@@ -39,6 +40,10 @@ export class SurveyPage {
   public objParam: any;
   private loggedUser :any;
 
+
+  private latitude :any;
+  private longitude :any;
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -49,6 +54,15 @@ export class SurveyPage {
     private dbService: DBService,
     private geolocation: Geolocation
   ) {
+    
+    this.geolocation.getCurrentPosition().then((resp) => {
+      this.latitude = resp.coords.latitude;
+      this.longitude.lng = resp.coords.longitude;
+      //Call to your logic HERE
+   }).catch((error) => {
+     console.log('************************ Geolocation error'+error);
+      this.lanzaAlerta("No se puede obtener la geolocalicación por favor revise que loes servicios de ubicación están activados");
+   });
   }
 
   ionViewDidLoad() {
@@ -414,28 +428,40 @@ export class SurveyPage {
   }
 
   saveAnswers(): any {
+
+    console.log('Entra a gaurdar cuestionario');
     this.survey.survey = JSON.stringify(this.answers);
     this.survey.save_date = new Date().toISOString();
     this.survey.end_date = new Date().toISOString();
     this.survey.sync = 0;
     this.survey.user = this.loggedUser.usuario;
+    this.survey.latitude = this.latitude;
+    this.survey.longitude = this.longitude;
 
+    console.log('Termina de setear valores');
 
-    this.geolocation.getCurrentPosition().then((resp) => {
-      this.survey.latitude = resp.coords.latitude+"";
-      this.survey.longitude =resp.coords.longitude+"";
-      this.dbService.insertSurvey(this.survey);
-     }).catch((error) => {
-      console.log('Error getting location', error);
-      this.dbService.insertSurvey(this.survey);
-     });
+  
 
+  this.dbService.insertSurvey(this.survey).catch(error=>{
+    this.lanzaAlerta('No fue posible guardar el cuestionario : '+JSON.stringify(error));
+
+  });
     
 
     
 
    
     console.log(this.dbService.getSurveys());
+
+  }
+
+  public lanzaAlerta(mensaje:string){
+    let alert = this.alertCtrl.create({
+      title: '',
+      subTitle: mensaje,
+      buttons: ['OK']
+    });
+    alert.present();
 
   }
 

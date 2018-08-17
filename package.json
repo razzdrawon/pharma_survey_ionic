@@ -70,7 +70,7 @@
       "cordova-plugin-themeablebrowser": {},
       "cordova-plugin-camera": {},
       "cordova-plugin-geolocation": {
-        "GEOLOCATION_USAGE_DESCRIPTION": "Obtener la geolocalización de los estabecimeintos"
+        "GEOLOCATION_USAGE_DESCRIPTION": "localizar establecimientosu"
       },
       "cordova-plugin-inappbrowser": {}
     },

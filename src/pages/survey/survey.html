@@ -156,9 +156,9 @@
                                   <ion-checkbox (ionChange)="optionChecked(optChild)" [(ngModel)]="optChild.checked"></ion-checkbox>
                               </ion-item>
                             </ion-col>
-                            <ion-col>
+                            <ion-col *ngIf="survey.type== 2"  >
                               <div>
-                                <ion-input placeholder="Cantidad" type="number" [(ngModel)]="optChild.text" [disabled]="!optChild.checked"></ion-input>
+                                <ion-input placeholder="Ingrese cantidad en gr" type="number" [(ngModel)]="optChild.text" [disabled]="!optChild.checked"></ion-input>
                               </div>
                             </ion-col>
                           </ion-row>
