@@ -154,6 +154,20 @@ export class SurveyPage {
         }
         else {
           this.survey = response.rows.item(0);
+
+          if (this.survey.completed == 1) {
+            this.alertCtrl.create({
+              title: 'Cuestionario ya capturado',
+              subTitle: 'No se puede continuar contestando este cuestionario ya que ha sido contestado y guardado anteriormente',
+              buttons: [{
+                text: 'Aceptar',
+                handler: () => {
+                  this.navCtrl.pop();
+                }
+              }]
+            }).present();
+          }
+
           this.answers = JSON.parse(this.survey.survey);
         }
 
@@ -447,11 +461,11 @@ export class SurveyPage {
     if (nextSection > this.question.seccion) {
       let params = { 'answers': this.answers, 'questions': this.questions, 'section': this.answer.question.section };
       this.navCtrl.push(RevisionPage, params);
-      if (this.question.seccion == 1) {
-        this.saveAnswersForTheFirstTime(nextSection);
+      if ((this.question.seccion == 1 && !this.isPharma) || (this.question.seccion == 0 && this.isPharma)) {
+        this.saveAnswersForTheFirstTime(nextSection, this.question.seccion);
       }
       else  {
-        this.updateAnswersbySection(nextSection);
+        this.updateAnswersbySection(nextSection, this.question.seccion);
       }
     }
 
@@ -491,7 +505,7 @@ export class SurveyPage {
   }
 
 
-  saveAnswersForTheFirstTime(nextSection): any {
+  saveAnswersForTheFirstTime(nextSection, currentSection): any {
     this.survey.survey = JSON.stringify(this.answers);
     this.survey.version = this.version;
     this.survey.save_date = new Date().toISOString();
@@ -504,28 +518,32 @@ export class SurveyPage {
 
     console.log('Termina de setear valores');
 
-
-    this.dbService.insertSurvey(this.survey).catch(error => {
+    this.dbService.insertSurvey(this.survey).then(resp =>
+      this.lanzaAlerta('survey saved for the first time section  ' + currentSection)
+    ).catch(error => {
       this.lanzaAlerta('No fue posible guardar el cuestionario : ' + JSON.stringify(error));
-
     });
   }
 
 
-  updateAnswersbySection(nextSection): any {
+  updateAnswersbySection(nextSection, currentSection): any {
     this.survey.version = this.version;
     this.survey.save_date = new Date().toISOString();
     this.survey.survey = JSON.stringify(this.answers);
     this.survey.next_section = nextSection;
     this.dbService.updateAnswersSurvey(this.survey).then(resp =>
-      console.log('survey saved for the section  ' + this.question.seccion)
-    );
+      this.lanzaAlerta('survey saved for the section  ' + currentSection)
+    ).catch(error => {
+      this.lanzaAlerta('No fue posible guardar el cuestionario : ' + JSON.stringify(error));
+    });
   }
 
   markSurveyAsCompleted(): any {
     this.dbService.markSurveyCopmleted(this.survey).then(resp =>
-      console.log('survey saved as completed for establishment ' + this.survey.establishment_id + ' type ' + this.survey.type)
-    );
+      this.lanzaAlerta('survey saved as completed for establishment ' + this.survey.establishment_id + ' type ' + this.survey.type)
+    ).catch(error => {
+      this.lanzaAlerta('No fue posible marcar el cuestionario como completo : ' + JSON.stringify(error));
+    });
   }
 
   public lanzaAlerta(mensaje: string) {
