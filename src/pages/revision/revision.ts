@@ -8,7 +8,7 @@ import { NavController, NavParams } from 'ionic-angular';
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
- //import { FinCuestPage} from '../index.paginas';
+//import { FinCuestPage} from '../index.paginas';
 
 @Component({
   selector: 'page-revision',
@@ -36,15 +36,26 @@ export class RevisionPage {
 
   cambiar_pagina() {
     //this.navCtrl.setRoot(FinCuestPage);
-      this.navCtrl.pop();
+    this.navCtrl.pop();
   }
 
-  getOptions(answer: Answer){
+  getOptions(answer: Answer) {
     let question = this.questionsRevision.find(question => question.id === answer.question.id);
     return question.respuestas;
   }
 
-  getNumber(option, answer: Answer){
+  getNumber(option, answer: Answer) {
     return (answer.map[option.id] | 0);
+  }
+
+  getArrayValues(object) {
+    if (object) {
+      let keys = Object.keys(object);
+      let array = [];
+      keys.forEach(key => {
+        array.push(object[key]);
+      });
+    }
+
   }
 }

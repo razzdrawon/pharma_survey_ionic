@@ -183,7 +183,12 @@
                             </ion-col>
                             <ion-col *ngIf="survey.type== 2"  >
                               <div>
-                                <ion-input placeholder="Ingrese cantidad en gr" type="number" [(ngModel)]="optChild.text" [disabled]="!optChild.checked"></ion-input>
+                                <ion-input placeholder="Ingrese cantidad en gr" type="number" [(ngModel)]="answer.childMap[optChild.id]" (input)="childMapChanged()"></ion-input>
+                              </div>
+                            </ion-col>
+                            <ion-col *ngIf="survey.type== 1"  >
+                              <div>
+                                <ion-input placeholder="Escriba un número" type="number" [(ngModel)]="answer.childMap[optChild.id]" (input)="childMapChanged()"></ion-input>
                               </div>
                             </ion-col>
                           </ion-row>

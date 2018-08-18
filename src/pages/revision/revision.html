@@ -45,6 +45,23 @@
 							<input type="radio" name="radio1" [checked]="answer.option == opt" disabled="true" />
 							<p>{{opt.enunciado}}</p>
 							<div class="control_indicator"></div>
+							<div class="respuestas" *ngIf="opt.childNumber || opt.childText || opt.childOption" >
+								<ul>
+									<li>{{opt.childNumber}}</li>
+									<li>{{opt.childText}}</li>
+									<li>{{opt.childOption}}</li>
+								</ul>
+							</div>
+							<div class="respuestas" *ngIf="(opt.childMap | json) != '{}'" >
+								<ul *ngFor="let item of getArrayValues(opt.childMap)" >
+									<li>{{item}}</li>
+								</ul>
+							</div>
+							<div class="respuestas" *ngIf="(opt.childOptions | json) != '[]'" >
+								<ul *ngFor="let childOption of opt.childOptions" >
+									<li>{{childOption}}</li>
+								</ul>
+							</div>
 						</label>
 
 
