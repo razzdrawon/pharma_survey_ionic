@@ -6,47 +6,48 @@
 -->
 <ion-header>
 
-		<ion-navbar hideBackButton>
-			<ion-buttons left>
-				<button ion-button navPop>
-					<ion-icon name="play"></ion-icon>
-				</button>
-			</ion-buttons>
-	
-			<ion-title>Revisión</ion-title>
-		</ion-navbar>
-	
-	</ion-header>
-	
-	
-	<ion-content padding>
-	
-	
-		<h1 class="titulo">Seccion {{sectionRevision}}</h1>
-	
-	
-		<div *ngFor="let answer of answersRevision">
-	
+	<ion-navbar hideBackButton>
+		<ion-buttons left>
+			<button ion-button navPop>
+				<ion-icon name="play"></ion-icon>
+			</button>
+		</ion-buttons>
+
+		<ion-title>Revisión</ion-title>
+	</ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+
+	<h1 class="titulo">Seccion {{sectionRevision}}</h1>
+
+
+	<div *ngFor="let answer of answersRevision">
+
+		<div *ngIf="answer.question.section == sectionRevision">
 			<h1 class="subtitulo">{{answer.question.sentense}}</h1>
-	
+
 			<div [ngSwitch]="answer.question.type">
-	
+
 				<!-- Question Type 1 -->
 				<div *ngSwitchCase=1>
 					<ion-label>{{answer.number}}</ion-label>
 				</div>
-	
+
 				<!-- Question Type 2 -->
 				<div class="radios" *ngSwitchCase=2>
-					<div class="control-group" *ngFor="let opt of getOptions(answer)" >
-	
+					<div class="control-group" *ngFor="let opt of getOptions(answer)">
+
 						<label class="control control-radio">
-							<input type="radio" name="radio1" [checked]="answer.option == opt" disabled="true"/>
+							<input type="radio" name="radio1" [checked]="answer.option == opt" disabled="true" />
 							<p>{{opt.enunciado}}</p>
 							<div class="control_indicator"></div>
 						</label>
-	
-	
+
+
 						<!-- <label class="control control-radio">
 							<input type="radio" name="radio2" disabled="disabled" checked="checked" />
 							<p>Metadona</p>
@@ -73,32 +74,33 @@
 							<p>Disabled & checked</p>
 							<div class="control_indicator"></div>
 						</label> -->
-	
-	
+
+
 					</div>
 				</div>
-	
+
 				<!-- Question Type 4 -->
 				<div *ngSwitchCase=4>
 					<ion-label>{{answer.text}}</ion-label>
 				</div>
-	
+
 				<!-- Question Type 5 -->
-				<div *ngSwitchCase=5 >
-					<div *ngFor="let opt of getOptions(answer)" >
-					<p>{{opt.enunciado}} {{getNumber(opt, answer)}}</p> 
+				<div *ngSwitchCase=5>
+					<div *ngFor="let opt of getOptions(answer)">
+						<p>{{opt.enunciado}} {{getNumber(opt, answer)}}</p>
 					</div>
 				</div>
-				
+
 			</div>
 		</div>
-	
-		<button ion-button float-right icon-only outline class="flecha_abajo">
-			<ion-icon name="arrow-round-down"></ion-icon>
-		</button>
-	
-		<button ion-button float-right class="boton_chico" (click)="cambiar_pagina()">Siguiente Sección</button>
-	
-	
-	
-	</ion-content>
+	</div>
+
+	<button ion-button float-right icon-only outline class="flecha_abajo">
+		<ion-icon name="arrow-round-down"></ion-icon>
+	</button>
+
+	<button ion-button float-right class="boton_chico" (click)="cambiar_pagina()">Siguiente Sección</button>
+
+
+
+</ion-content>
