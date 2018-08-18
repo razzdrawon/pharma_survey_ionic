@@ -13,7 +13,6 @@ import { HomePage } from '../pages/home/home';
 import { SurveyPage } from '../pages/survey/survey';
 import { RevisionPage } from './../pages/revision/revision';
 import { FinCuestPage } from '../pages/finCuest/finCuest';
-import { RevisionPage } from '../pages/revision/revision';
 import { SyncHttpService } from '../providers/http-services/sync-service';
 import { DBService } from '../providers/db-services/storage-service';
 import { Geolocation } from '@ionic-native/geolocation';
