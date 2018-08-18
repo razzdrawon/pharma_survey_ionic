@@ -1,4 +1,5 @@
 import { Survey } from './../../models/survey';
+import { LoginPage } from './../login/login';
 import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { SyncHttpService } from '../../providers/http-services/sync-service';
@@ -46,6 +47,10 @@ export class SurveyPage {
 
   private loggedUser: any;
 
+
+  private latitude: any;
+  private longitude: any;
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -56,13 +61,22 @@ export class SurveyPage {
     private dbService: DBService,
     private geolocation: Geolocation
   ) {
+
+    this.geolocation.getCurrentPosition().then((resp) => {
+      this.latitude = resp.coords.latitude;
+      this.longitude.lng = resp.coords.longitude;
+      //Call to your logic HERE
+    }).catch((error) => {
+      console.log('************************ Geolocation error' + error);
+      this.lanzaAlerta("No se puede obtener la geolocalicación por favor revise que loes servicios de ubicación están activados");
+    });
   }
 
   ionViewDidLoad() {
     this.validateLoggedUser();
     this.initializeVars();
     this.loadSurvey();
-    
+
   }
 
   initializeVars() {
@@ -156,7 +170,7 @@ export class SurveyPage {
         else {
           console.log('**************** From section ' + this.survey.next_section + '  *****************');
           console.log(JSON.stringify(this.questions));
-          this.question = this.questions.find(question => (question.seccion == this.survey.next_section && question.seccion_pregunta_id==1));
+          this.question = this.questions.find(question => (question.seccion == this.survey.next_section && question.seccion_pregunta_id == 1));
         }
 
         console.log('**************** This is the initial question  *****************');
@@ -433,13 +447,13 @@ export class SurveyPage {
     if (nextSection > this.question.seccion) {
       let params = { 'answers': this.answers, 'questions': this.questions, 'section': this.answer.question.section };
       this.navCtrl.push(RevisionPage, params);
-      if(this.question.seccion == 1) {
+      if (this.question.seccion == 1) {
         this.saveAnswersForTheFirstTime(nextSection);
       }
-      else {
+      else  {
         this.updateAnswersbySection(nextSection);
       }
-    }    
+    }
 
     console.log('next section: ' + nextSection + ' next question: ' + nextQuestion);
     this.question = this.questions.find(question => (question.seccion == nextSection) && (question.seccion_pregunta_id == nextQuestion));
@@ -476,8 +490,8 @@ export class SurveyPage {
     );
   }
 
-  saveAnswersForTheFirstTime(nextSection): any {
 
+  saveAnswersForTheFirstTime(nextSection): any {
     this.survey.survey = JSON.stringify(this.answers);
     this.survey.version = this.version;
     this.survey.save_date = new Date().toISOString();
@@ -485,32 +499,43 @@ export class SurveyPage {
     this.survey.sync = 0;
     this.survey.next_section = nextSection;
 
-    this.geolocation.getCurrentPosition().then((resp) => {
-      this.survey.latitude = resp.coords.latitude + "";
-      this.survey.longitude = resp.coords.longitude + "";
-      this.dbService.insertSurvey(this.survey);
-    }).catch((error) => {
-      console.log('Error getting location', error);
-      this.dbService.insertSurvey(this.survey).then( resp => 
-        console.log('survey saved for the first time for establishment ' + this.survey.establishment_id + ' type ' + this.survey.type)
-      );
+    this.survey.latitude = this.latitude;
+    this.survey.longitude = this.longitude;
+
+    console.log('Termina de setear valores');
+
+
+    this.dbService.insertSurvey(this.survey).catch(error => {
+      this.lanzaAlerta('No fue posible guardar el cuestionario : ' + JSON.stringify(error));
+
     });
   }
+
 
   updateAnswersbySection(nextSection): any {
     this.survey.version = this.version;
     this.survey.save_date = new Date().toISOString();
     this.survey.survey = JSON.stringify(this.answers);
     this.survey.next_section = nextSection;
-    this.dbService.updateAnswersSurvey(this.survey).then( resp => 
+    this.dbService.updateAnswersSurvey(this.survey).then(resp =>
       console.log('survey saved for the section  ' + this.question.seccion)
     );
   }
 
   markSurveyAsCompleted(): any {
-    this.dbService.markSurveyCopmleted(this.survey).then( resp => 
+    this.dbService.markSurveyCopmleted(this.survey).then(resp =>
       console.log('survey saved as completed for establishment ' + this.survey.establishment_id + ' type ' + this.survey.type)
     );
+  }
+
+  public lanzaAlerta(mensaje: string) {
+    let alert = this.alertCtrl.create({
+      title: '',
+      subTitle: mensaje,
+      buttons: ['OK']
+    });
+    alert.present();
+
   }
 
 }

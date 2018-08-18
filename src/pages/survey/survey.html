@@ -181,9 +181,9 @@
                                 <ion-label class="sentence">{{optChild.enunciado}}</ion-label>
                               </ion-item>
                             </ion-col>
-                            <ion-col>
+                            <ion-col *ngIf="survey.type== 2"  >
                               <div>
-                                <ion-input placeholder="0" type="number" [(ngModel)]="answer.childMap[optChild.id]" (input)="childMapChanged()"></ion-input>
+                                <ion-input placeholder="Ingrese cantidad en gr" type="number" [(ngModel)]="optChild.text" [disabled]="!optChild.checked"></ion-input>
                               </div>
                             </ion-col>
                           </ion-row>

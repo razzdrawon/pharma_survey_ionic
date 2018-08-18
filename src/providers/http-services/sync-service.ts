@@ -34,7 +34,7 @@ export class SyncHttpService {
 
   public apiUrl  = 'http://www.accesosinexceso.org/';
 
-  public version   ="0.9.9";
+  public version   ="1.0.2";
 
   // getUsers() {
   //   return this.http.get('../assets/raw/usuarios.json')
@@ -125,7 +125,8 @@ getSubtypes() {
     let url =this.apiUrl + this.getCVersionApp+"/"+this.version;
     console.log("URL    ..................."+url);
     return this.http.get(url) 
-    .map((res: any[]) => res);
+    .map((res: any[]) => res)
+    ;
   }
   
 }
