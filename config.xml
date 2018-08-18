@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="mx.com.braveit.unodc.accesosinexceso" version="1.0.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="mx.com.braveit.unodc.accesosinexceso" version="1.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>AccesoSinExceso</name>
     <description>Proyecto para el control de acceso a medicamentos controlados</description>
     <author email="daniel.correa@braveit.com.mx" href="http://braveit.com.mx">Brave IT Team</author>
@@ -21,6 +21,8 @@
     <preference name="SplashScreenDelay" value="6000" />
     <platform name="android">
         <allow-intent href="market:*" />
+        <preference name="android-minSdkVersion" value="22" />
+        <preference name="android-targetSdkVersion" value="22" />
         <icon density="ldpi" src="resources/android/icon/drawable-ldpi-icon.png" />
         <icon density="mdpi" src="resources/android/icon/drawable-mdpi-icon.png" />
         <icon density="hdpi" src="resources/android/icon/drawable-hdpi-icon.png" />
@@ -94,7 +96,8 @@
     <plugin name="cordova-plugin-geolocation" spec="^4.0.1">
         <variable name="GEOLOCATION_USAGE_DESCRIPTION" value="localizar establecimientosu" />
     </plugin>
+    <allow-navigation href="http://192.168.15.5:8100" />
     <engine name="ios" spec="4.5.5" />
-    <engine name="android" spec="7.0.0" />
+    <engine name="android" spec="^5.1.1" />
     <engine name="browser" spec="5.0.3" />
 </widget>

@@ -25,7 +25,7 @@
 	<h1 class="titulo">Seccion {{sectionRevision}}</h1>
 
 
-	<div *ngFor="let answer of answersRevision">
+	<div *ngFor="let answer of answersRevision;  let answerIndex = index">
 
 		<div *ngIf="answer.question.section == sectionRevision">
 			<h1 class="subtitulo">{{answer.question.sentense}}</h1>
@@ -42,7 +42,7 @@
 					<div class="control-group" *ngFor="let opt of getOptions(answer)">
 
 						<label class="control control-radio">
-							<input type="radio" name="radio1" [checked]="answer.option == opt" disabled="true" />
+							<input type="radio" name="radio{{answerIndex}}" [checked]="answer.option == opt" disabled="true" />
 							<p>{{opt.enunciado}}</p>
 							<div class="control_indicator"></div>
 							<div class="respuestas" *ngIf="opt.childNumber || opt.childText || opt.childOption" >
@@ -111,10 +111,6 @@
 			</div>
 		</div>
 	</div>
-
-	<button ion-button float-right icon-only outline class="flecha_abajo">
-		<ion-icon name="arrow-round-down"></ion-icon>
-	</button>
 
 	<button ion-button float-right class="boton_chico" (click)="cambiar_pagina()">Siguiente Sección</button>
 

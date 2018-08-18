@@ -62,20 +62,34 @@ export class SurveyPage {
     private geolocation: Geolocation
   ) {
 
-    this.geolocation.getCurrentPosition().then((resp) => {
-      this.latitude = resp.coords.latitude;
-      this.longitude.lng = resp.coords.longitude;
-      //Call to your logic HERE
-    }).catch((error) => {
-      console.log('************************ Geolocation error' + error);
-      this.lanzaAlerta("No se puede obtener la geolocalicación por favor revise que loes servicios de ubicación están activados");
-    });
+
+   
+
   }
 
   ionViewDidLoad() {
+
     this.validateLoggedUser();
     this.initializeVars();
     this.loadSurvey();
+
+  }
+
+
+  ionViewDidEnter(){
+
+    var options = {
+      timeout: 10000 //sorry I use this much milliseconds
+    }
+          //use the geolocation 
+    this.geolocation.getCurrentPosition(options).then(data=>{
+      console.log('++++++++++++++++++GEO LOCALIZACIón');
+      this.latitude = data.coords.longitude;
+      this.longitude = data.coords.latitude;
+    }).catch((err)=>{
+      this.lanzaAlerta("No se puede obtener la geolocalicación por favor revise que los servicios de ubicación están activados");
+      console.log("('++++++++++++++++++Error:", err);
+    });
 
   }
 
@@ -519,7 +533,7 @@ export class SurveyPage {
     console.log('Termina de setear valores');
 
     this.dbService.insertSurvey(this.survey).then(resp =>
-      this.lanzaAlerta('survey saved for the first time section  ' + currentSection)
+     console.log('survey saved for the first time section  ' + currentSection)
     ).catch(error => {
       this.lanzaAlerta('No fue posible guardar el cuestionario : ' + JSON.stringify(error));
     });
@@ -532,7 +546,7 @@ export class SurveyPage {
     this.survey.survey = JSON.stringify(this.answers);
     this.survey.next_section = nextSection;
     this.dbService.updateAnswersSurvey(this.survey).then(resp =>
-      this.lanzaAlerta('survey saved for the section  ' + currentSection)
+      console.log('survey saved for the section  ' + currentSection)
     ).catch(error => {
       this.lanzaAlerta('No fue posible guardar el cuestionario : ' + JSON.stringify(error));
     });
@@ -540,7 +554,7 @@ export class SurveyPage {
 
   markSurveyAsCompleted(): any {
     this.dbService.markSurveyCopmleted(this.survey).then(resp =>
-      this.lanzaAlerta('survey saved as completed for establishment ' + this.survey.establishment_id + ' type ' + this.survey.type)
+      console.log('survey saved as completed for establishment ' + this.survey.establishment_id + ' type ' + this.survey.type)
     ).catch(error => {
       this.lanzaAlerta('No fue posible marcar el cuestionario como completo : ' + JSON.stringify(error));
     });

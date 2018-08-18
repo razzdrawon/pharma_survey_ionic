@@ -29,7 +29,9 @@ export class LoginPage {
   public cuesTotal=0;
   public cuesSync=0;
   public cuesPen=0;
+  public notCompleted =0;
   public mensajeSincro='';
+  public fechaSync :any;
   //public summary:SurveySummary;
 
   tasks: any[] = [];
@@ -53,12 +55,27 @@ export class LoginPage {
 
     ionViewWillEnter() {
 
-   
+      
     this.validateActiveSession();
 
     this.getAllUsers();
 
      this.obtieneSumatoriaCuestionarios();
+
+    this.getLastSync();
+
+     var options = {
+      timeout: 10000 //sorry I use this much milliseconds
+    }
+          //use the geolocation 
+    this.geolocation.getCurrentPosition(options).then(data=>{
+      console.log('++++++++++++++++++GEO LOCALIZACIón');
+      console.log( data.coords.longitude);
+        console.log(data.coords.latitude);
+    }).catch((err)=>{
+      this.lanzaAlerta("No se puede obtener la geolocalicación por favor revise que los servicios de ubicación están activados");
+    
+    });
   }
 
 
@@ -73,7 +90,8 @@ obtieneSumatoriaCuestionarios(){
       console.log("Objeto base de datos"+ JSON.stringify( obj ) );
           this.cuesSync = obj.sync;
           this.cuesTotal = obj.tot;
-          this.cuesPen = obj.notSync;       
+          this.cuesPen = obj.notSync; 
+          this.notCompleted = obj.notCompleted ;     
     }
     });
 }
@@ -220,18 +238,22 @@ obtieneSumatoriaCuestionarios(){
 
       this.syncHttpService.setSaveSurvey(cuesToSync).subscribe(
         (data: any[]) => {
-
+          this.setFechaUltimaSincronizacion();
           for (let index = 0; index < data.length; index++) 
           {
     
             if(data[index].response_code==0){
-              this.db.markSurveySync(data[index]);
+              this.db.markSurveySync(data[index]).then(response=>{
+                this.getLastSync();
+                this.obtieneSumatoriaCuestionarios();
+              }
+              );
             }
             
           }
 
           
-          this.obtieneSumatoriaCuestionarios();
+          
         },
         err => {
           this.lanzaAlerta('No se logró sincronizar las encuestas capturadas en este dispositivo, verifique su conexión a internet');
@@ -249,9 +271,10 @@ obtieneSumatoriaCuestionarios(){
 
     this.showLoading(this.mensajeSincro);
     setTimeout(() => {
+      this.getLastSync();
       this.loading.dismiss();
       this.showPrompt();
-    },10000);
+    },15000);
      this.syncHttpService.getUsers()
       .subscribe(
         (data: any[]) => {
@@ -260,7 +283,7 @@ obtieneSumatoriaCuestionarios(){
           this.allUsers = data;
           // set a key/value
           this.storage.set('users', JSON.stringify(data));
-         
+          this.setFechaUltimaSincronizacion();
           this.mensajeSincro='Usuarios sincronizados';
         },
         err => {
@@ -278,7 +301,8 @@ obtieneSumatoriaCuestionarios(){
             let establishment = res[i];
            this.db.insertEstablishment(establishment); 
           }  
-          this.mensajeSincro='Establecimientos sincronizados';    
+          this.mensajeSincro='Establecimientos sincronizados';   
+          this.setFechaUltimaSincronizacion(); 
         });
 
         },
@@ -294,7 +318,7 @@ obtieneSumatoriaCuestionarios(){
           this.storage.remove('subtypes');
           // set a key/value
           this.storage.set('subtypes', JSON.stringify(data));
-         
+          this.setFechaUltimaSincronizacion();
 
         },
         err => {
@@ -313,6 +337,7 @@ obtieneSumatoriaCuestionarios(){
           // set a key/value
           this.storage.set('hospitalSurvey', JSON.stringify(data));
           this.mensajeSincro='Encuesta Hospital sincronizada';   
+          this.setFechaUltimaSincronizacion();
 
         },
         err => {
@@ -330,6 +355,7 @@ obtieneSumatoriaCuestionarios(){
           this.storage.set('pharmaSurvey', JSON.stringify(data));
          
           this.mensajeSincro='Encuesta Farmacia sincronizada'; 
+          this.setFechaUltimaSincronizacion();
         },
         err => {
           this.lanzaAlerta('No se logró sincronizar el cuestionario de Farmacias, verifique su conexión a internet');
@@ -337,7 +363,7 @@ obtieneSumatoriaCuestionarios(){
         }
    
       );
-      
+      this.obtieneSumatoriaCuestionarios(); 
   }
 
   public lanzaAlerta(mensaje:string){
@@ -349,6 +375,25 @@ obtieneSumatoriaCuestionarios(){
     alert.present();
 
   }
+  
 
+  public setFechaUltimaSincronizacion(){
+    
+
+    
+    this.storage.set('lastSync',new Date().toISOString());
+
+  }
+
+
+  public getLastSync(){
+
+    this.storage.get('lastSync').then(data => {
+      this.fechaSync = data;
+    }).catch(err=>{
+
+      this.fechaSync='- Nunca se ha sincronizado -';
+    });
+  }
 
 }
