@@ -134,7 +134,10 @@ export class HomePage {
 
       let params = Object.assign({}, this.subtypeSelected,this.establishmentSelected) ;
      
-      this.navCtrl.push(SurveyPage, params );
+      this.navCtrl.push(SurveyPage, params ).then(() => {
+        let index = this.navCtrl.length()-2;
+        this.navCtrl.remove(index);
+      });
 
   }
 

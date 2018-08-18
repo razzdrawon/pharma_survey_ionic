@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { LoginPage } from './../login/login';
+import { Storage } from '@ionic/storage';
 /**
  * Generated class for the FinCuestPage page.
  *
@@ -17,7 +18,7 @@ import { LoginPage } from './../login/login';
 })
 export class FinCuestPage {
 
-  constructor(public navCtrl: NavController) {
+  constructor(public navCtrl: NavController,  private storage: Storage) {
   }
 
   ionViewDidLoad() {
@@ -25,7 +26,7 @@ export class FinCuestPage {
   }
 
   cambiar_pagina() {
-    //this.navCtrl.setRoot(HomePage);
+    this.storage.remove('LoggedUser');
     this.navCtrl.setRoot(LoginPage);
     this.navCtrl.popToRoot();
   }

@@ -8,7 +8,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
 //import { SurveySummary } from '../../models/surveySummary';
 
 import {Md5} from 'ts-md5';
-import { JsonpCallbackContext } from '../../../node_modules/@angular/common/http/src/jsonp';
+import { Geolocation } from '@ionic-native/geolocation';
 
 
 
@@ -29,6 +29,7 @@ export class LoginPage {
   public cuesTotal=0;
   public cuesSync=0;
   public cuesPen=0;
+  public mensajeSincro='';
   //public summary:SurveySummary;
 
   tasks: any[] = [];
@@ -36,24 +37,23 @@ export class LoginPage {
    public db: DBService,
     public syncHttpService: SyncHttpService, public alertCtrl: AlertController, private storage: Storage,
      private loadingCtrl: LoadingController,
-    //private iab: InAppBrowser
+     private geolocation: Geolocation
     
     ) {
 
-      // this.storage.clear();
+      this.geolocation.getCurrentPosition().then((resp) => {
+        resp.coords.latitude+"";
+        resp.coords.longitude+"";
+        
+       }).catch((error) => {
+         this.lanzaAlerta('Recuerda activar el servicio de gps en la tableta por favor');
+        console.log('Error getting location', error);
+       });
     }
 
-  ionViewDidLoad() {
+    ionViewWillEnter() {
 
-    // this.storage.remove('LoggedUser');
-    /*this.db.selectSurveyStatus().then(summary => {
-      if(summary != null) {
-        console.log(summary);
-       this.summary = summary;
-      }
-      console.log(summary);
-    });
-*/
+   
     this.validateActiveSession();
 
     this.getAllUsers();
@@ -129,8 +129,8 @@ obtieneSumatoriaCuestionarios(){
 
     if (validUser != null) {
       this.storage.set('LoggedUser', validUser);
-      this.navCtrl.setRoot(HomePage);
-      this.navCtrl.popToRoot();
+      this.navCtrl.push(HomePage );
+      
     }
     else {
    
@@ -162,7 +162,7 @@ obtieneSumatoriaCuestionarios(){
     this.syncHttpService.getVersionApp( )
     .subscribe(
       (data: any[]) => {
-        console.log('getVersionApp'+JSON.stringify(data) );
+ 
 
         if(data != null &&   data.length>0) {
           let obj = data[0];
@@ -212,6 +212,7 @@ obtieneSumatoriaCuestionarios(){
       let cuesToSync=[];
       for (let index = 0; index < response.rows.length; index++) 
       {
+        
         cuesToSync.push(response.rows.item(index));
       }
 
@@ -222,7 +223,7 @@ obtieneSumatoriaCuestionarios(){
 
           for (let index = 0; index < data.length; index++) 
           {
-          
+    
             if(data[index].response_code==0){
               this.db.markSurveySync(data[index]);
             }
@@ -233,8 +234,9 @@ obtieneSumatoriaCuestionarios(){
           this.obtieneSumatoriaCuestionarios();
         },
         err => {
+          this.lanzaAlerta('No se logró sincronizar las encuestas capturadas en este dispositivo, verifique su conexión a internet');
           this.obtieneSumatoriaCuestionarios();
-          console.log(JSON.stringify(err));
+          
         }
     );
 
@@ -243,9 +245,9 @@ obtieneSumatoriaCuestionarios(){
     });
 
 
+    this.mensajeSincro='Sincronizando información ';
 
-
-    this.showLoading('Sincronizando información ...');
+    this.showLoading(this.mensajeSincro);
     setTimeout(() => {
       this.loading.dismiss();
       this.showPrompt();
@@ -253,17 +255,16 @@ obtieneSumatoriaCuestionarios(){
      this.syncHttpService.getUsers()
       .subscribe(
         (data: any[]) => {
-          console.log(JSON.stringify(data) );
+        
           this.storage.remove('users');
           this.allUsers = data;
           // set a key/value
           this.storage.set('users', JSON.stringify(data));
-          console.log('users syncronized');
-          console.log('storage: ' + this.storage.get('users'));
-          
+         
+          this.mensajeSincro='Usuarios sincronizados';
         },
         err => {
-          
+          this.lanzaAlerta('No se logró sincronizar los usuarios, verifique su conexión a internet');
           console.log(JSON.stringify(err));
         }
     );
@@ -276,10 +277,13 @@ obtieneSumatoriaCuestionarios(){
           for(let i=0; res.length>i;i++) {
             let establishment = res[i];
            this.db.insertEstablishment(establishment); 
-          }      
+          }  
+          this.mensajeSincro='Establecimientos sincronizados';    
         });
+
         },
         err => {
+          this.lanzaAlerta('No se logró sincronizar los establecimientos, verifique su conexión a internet');
           console.log(JSON.stringify(err));
         }       
     );
@@ -287,7 +291,6 @@ obtieneSumatoriaCuestionarios(){
     let subsObs = this.syncHttpService.getSubtypes()
       .subscribe(
         (data: any[]) => {
-          console.log(JSON.stringify("Subtypes --------------------*******-----"+data) );
           this.storage.remove('subtypes');
           // set a key/value
           this.storage.set('subtypes', JSON.stringify(data));
@@ -295,38 +298,25 @@ obtieneSumatoriaCuestionarios(){
 
         },
         err => {
+          this.lanzaAlerta('No se logró sincronizar los subtipos de establecimientos, verifique su conexión a internet');
           console.log(JSON.stringify(err));
         }
     );
 
-    let medsObs = this.syncHttpService.getMedicines()
-      .subscribe(
-        (data: any[]) => {
-          console.log(JSON.stringify(data) );
-          this.storage.remove('medicines');
-          // set a key/value
-          this.storage.set('medicines', JSON.stringify(data));
-          console.log('medicines syncronized');
-          console.log('storage: ' + this.storage.get('medicines'));
-
-        },
-        err => {
-          console.log(JSON.stringify(err));
-        }
-    );
+ 
 
     let hospitalObs = this.syncHttpService.getHospitalSurvey()
       .subscribe(
         (data: any) => {
-          console.log(JSON.stringify(data) );
+         
           this.storage.remove('hospitalSurvey');
           // set a key/value
           this.storage.set('hospitalSurvey', JSON.stringify(data));
-          console.log('hospitalSurvey syncronized');
-          console.log('storage: ' + this.storage.get('hospitalSurvey'));
+          this.mensajeSincro='Encuesta Hospital sincronizada';   
 
         },
         err => {
+          this.lanzaAlerta('No se logró sincronizar el cuestionario de Hospitales, verifique su conexión a internet');
           console.log(JSON.stringify(err));
         }
     );
@@ -334,22 +324,31 @@ obtieneSumatoriaCuestionarios(){
     let pharmaObs = this.syncHttpService.getPharmaSurvey()
       .subscribe(
         (data: any) => {
-          console.log(''+JSON.stringify(data) );
+          
           this.storage.remove('pharmaSurvey');
           // set a key/value
           this.storage.set('pharmaSurvey', JSON.stringify(data));
-          console.log('pharmaSurvey syncronized');
-          console.log('storage: ' + this.storage.get('pharmaSurvey'));
-
+         
+          this.mensajeSincro='Encuesta Farmacia sincronizada'; 
         },
         err => {
+          this.lanzaAlerta('No se logró sincronizar el cuestionario de Farmacias, verifique su conexión a internet');
           console.log(JSON.stringify(err));
         }
-    );
-
+   
+      );
+      
   }
 
-  
+  public lanzaAlerta(mensaje:string){
+    let alert = this.alertCtrl.create({
+      title: '',
+      subTitle: mensaje,
+      buttons: ['OK']
+    });
+    alert.present();
+
+  }
 
 
 }
