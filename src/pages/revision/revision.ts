@@ -1,3 +1,4 @@
+import { Answer } from './../../models/answer';
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
@@ -15,15 +16,35 @@ import { NavController, NavParams } from 'ionic-angular';
 })
 export class RevisionPage {
 
+  public answersRevision: any[];
+  public questionsRevision: any[];
+  public sectionRevision: any;
+
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad RevisionPage');
+    this.answersRevision = this.navParams.get('answers');
+    this.questionsRevision = this.navParams.get('questions');
+    this.sectionRevision = this.navParams.get('section');
+    console.log(JSON.stringify(this.answersRevision));
+    // console.log(JSON.stringify(this.questionsRevision));
+    console.log(JSON.stringify(this.sectionRevision));
+    console.log(JSON.stringify(this.answersRevision[0].question.sentense));
   }
 
   cambiar_pagina() {
     //this.navCtrl.setRoot(FinCuestPage);
+      this.navCtrl.pop();
   }
 
+  getOptions(answer: Answer){
+    let question = this.questionsRevision.find(question => question.id === answer.question.id);
+    return question.respuestas;
+  }
+
+  getNumber(option, answer: Answer){
+    return (answer.map[option.id] | 0);
+  }
 }

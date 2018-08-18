@@ -14,6 +14,8 @@ export class Survey {
     public longitude?: string;
     public evidence?: string;
     public sync?: number;
+    public next_section?: number;
+    public completed?: number;
     public response_code?: number;
 
 }
