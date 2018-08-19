@@ -95,14 +95,17 @@ export class SurveyPage {
 
   initializeVars() {
 
-    this.establishmentId = this.navParams['data'].tipo_establecimiento_id;
+    console.log('---------------------------------This is what we receive in the navParams: ');
+    console.log(JSON.stringify(this.navParams['data']));
+    let tipoEstablishmentId = this.navParams['data'].tipo_establecimiento_id;
+    this.establishmentId = this.navParams['data'].establecimiento_id;
     let sub_tipo = this.navParams['data'].subtipo_id;
     this.isPharma = false;
 
-    if (this.establishmentId == 3 || this.establishmentId == 4 || this.establishmentId == 4) {
+    if (tipoEstablishmentId == 3 || tipoEstablishmentId == 4 || tipoEstablishmentId == 5) {
       this.isPharma = true;
       this.type = 2; //survey property type
-    } else if (this.establishmentId == 1 && sub_tipo == 3) {
+    } else if (tipoEstablishmentId == 1 && sub_tipo == 3) {
       this.isPharma = true;
       this.type = 2; //survey property type
     } else {
