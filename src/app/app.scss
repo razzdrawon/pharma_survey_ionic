@@ -312,6 +312,14 @@ body {
 h1{
     font-size: 1.5em;
 }
+h3{
+    font-size: 1.3em;
+}
+textarea{
+    width: 100%;
+    border: $azul_default solid 2px;
+    margin: 8px 0px;
+}
 .header_logo:after {
     display: none;
 }
@@ -456,7 +464,110 @@ h1{
 	font-weight: normal;
 }
 
+.toolbar-background {
+background-color: $azul_default;
+}
+.toolbar-title-md,.bar-button-default-md{
+color: #fff;
+font-size: 1.4em;
+}
+ion-icon.icon.icon-md.ion-md-play {
+transform: rotate(180deg);
+font-size: 0.8em;
+}
 
+ion-buttons.bar-buttons.bar-buttons-md {
+margin-left: 3%;
+}
+
+.bar-button-default-md:hover:not(.disable-hover), .bar-button-clear-md-default:hover:not(.disable-hover), .bar-button-md-default:hover:not(.disable-hover) {
+    color: $azul_obscuro;
+}
+
+.content-md hr {
+    background-color: $azul_default;
+    height: 2px;
+        margin: 30px 0px;
+}
+
+.cuestionarios_num {
+    color: #a8a6a6;
+    b{
+        color: #000;
+    }
+}
+.icono_sync{
+        vertical-align: sub;
+}
+
+button.icono_sync.disable-hover.button.button-md.button-outline.button-outline-md:hover:not(.disable-hover),button.icono_sync.disable-hover.button.button-md.button-outline.button-outline-md.activated{
+       color: #fff !important;
+}
+
+select {
+    width: 100%;
+    font-size: 1em;
+    border: none;
+    background-color: $gris_input;
+    padding: 8px;
+    margin: 10px 0px;
+    option{
+        background-color: $gris_dropdown;
+        border: none;
+        
+    }
+
+    > :nth-child(1){
+        background-color: #fff;
+    }
+
+    > :nth-child(3){
+        background-color: #fff;
+    }
+
+}
+
+button.boton_chico.button.button-md.button-outline.button-outline-md {
+    color: #a8a6a6;
+    text-align: left;
+    padding: 0px;
+    font-size: 0.8em;
+    &:hover:not(.disable-hover){
+        color:#fff;
+    }
+    &.activated {
+        color:#fff;
+    }
+    span{
+        display: block;
+    }
+    &:hover:not(.disable-hover) > span{
+        color:#fff;
+    }
+    &.activated > span{
+        color:#fff;
+    }
+    .crear_cuenta{
+          color: $azul_default;
+          margin: 5px 0px;
+    }
+}
+
+
+.radios_secciones{
+    margin: 30px 0px;
+    & > *{
+        float: left;
+    }
+    h1{
+        width: 40%;
+    }
+}
+
+.nuevas_respuestas{
+    width: 50%;
+    margin: auto;
+}
 
 //************************Input-radio
 
@@ -562,7 +673,209 @@ transition: all 0.5s ease;
 
 
 
-//**************************Input -radio
+//**************************Input -radio */
+
+/********************************* Input checkbox */
+.checkbox_st{
+    .control {
+        font-family: arial;
+        display: block;
+        position: relative;
+        padding-left: 30px;
+        margin-bottom: 5px;
+        padding-top: 3px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+        .control input {
+            position: absolute;
+            z-index: -1;
+            opacity: 0;
+        }
+    .control_indicator {
+        position: absolute;
+        top: 2px;
+        left: 0;
+        height: 20px;
+        width: 20px;
+        background: #ffffff;
+        border: 2px solid #a8a6a6;
+    }
+    .control-radio .control_indicator {
+        border-radius: 0px;
+    }
+
+    .control:hover input ~ .control_indicator,
+    .control input:focus ~ .control_indicator {
+        background: #ffffff;
+    }
+
+    .control input:checked ~ .control_indicator {
+        background: #000000;
+    }
+    .control:hover input:not([disabled]):checked ~ .control_indicator,
+    .control input:checked:focus ~ .control_indicator {
+        background: #000000;
+    }
+    .control input:disabled ~ .control_indicator {
+        background: #e6e6e6;
+        opacity: 0.6;
+        pointer-events: none;
+    }
+    .control_indicator:after {
+        box-sizing: unset;
+        content: '';
+        position: absolute;
+        display: none;
+    }
+    .control input:checked ~ .control_indicator:after {
+        display: block;
+    }
+    .control-checkbox .control_indicator:after {
+        left: 5px;
+        top: 2px;
+        width: 4px;
+        height: 8px;
+        border: solid #ffffff;
+        border-width: 0 2px 2px 0;
+        transform: rotate(45deg);
+    }
+    .control-checkbox input:disabled ~ .control_indicator:after {
+        border-color: #7b7b7b;
+    }
+}
+
+/********************************* Input checkbox */
+
+
+/*################################# Flechas*/
+
+ul.flechas_sec{
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+    height: 35px;
+    margin-bottom: 18px;
+    position: relative;
+    margin-top: -0.5em;
+
+    &:after{
+        width: 35px;
+    height: 35px;
+        content: "";
+        position: absolute;
+        border-top: 17px solid transparent;
+        border-left: 23px solid #fff;
+        border-bottom: 18px solid transparent;
+        left: 0%;
+        top: 0;
+    }
+
+    &:before{
+        width: 35px;
+    height: 35px;
+        content: "";
+        position: absolute;
+        border-top: 17px solid transparent;
+        border-left: 23px solid $azul_fondo_numero;
+        border-bottom: 18px solid transparent;
+        right: -32%;
+        top: 0;
+    }
+
+    > :nth-child(1){
+        z-index: 6;
+        position: absolute !important;
+        left: -23%;
+        background-color: $azul_default !important;
+        &:before{
+                border-left: 23px solid $azul_default !important;
+        }
+    }
+
+    > :nth-child(2){
+        z-index: 5;
+    }
+
+    > :nth-child(3){
+        z-index: 4;
+    }
+
+    > :nth-child(4){
+        z-index: 3;
+    }
+    > :nth-child(5){
+        z-index: 2;
+    }
+
+    > :nth-child(6){
+        z-index: 1;
+        position: absolute !important;
+        right: -14%;
+        background-color: $azul_default !important;
+        &:before{
+                border-left: 23px solid $azul_default !important;
+        }
+    }
+
+    li.flechas_li {
+        padding: 2px;
+        width: 22%;
+        padding-left: 10%;
+        display: inline-block;
+        height: 35px;
+        background-color: $azul_fondo_numero;
+        text-align: center;
+        -webkit-box-align: center;
+        -webkit-align-items: center;
+        -ms-flex-align: center;
+        align-items: center;
+        -webkit-align-content: center;
+        -ms-flex-line-pack: center;
+        align-content: center;
+        font-size: 26px;
+        font-weight: bold;
+        position: relative;
+        color: $azul_numero;
+
+        &.activada{
+            background-color:$azul_default;
+            color: #fff;
+        }
+
+        &:after{
+            content: "";
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-top: 17px solid transparent;
+            border-left: 23px solid #fff;
+            border-bottom: 18px solid transparent;
+            left: 0%;
+            top: 0;
+        }
+
+        &:before{
+            content: "";
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-top: 17px solid transparent;
+            border-left: 23px solid $azul_fondo_numero;
+            border-bottom: 18px solid transparent;
+            right: -0.88em;
+            top: 0;
+        }
+
+        &.activada:before{
+            border-left: 23px solid $azul_default;
+        }
+    }
+}
+
+
+
+/*################################# Flechas*/
 
 
 

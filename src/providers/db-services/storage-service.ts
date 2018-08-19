@@ -74,7 +74,7 @@ import { Survey } from '../../models/survey';
    private MARK_SYNC_SURVEY=" UPDATE  survey   SET sync=1 WHERE establishment_id  = ? AND type = ? ";
    private MARK_COMPLETED_SURVEY=" UPDATE survey SET completed=1, next_section=null WHERE establishment_id  = ? AND type = ? ";
 
-   
+
    createEstablishmentTable(){
      let sql = this.CREATE_TABLE_ESTABLISHMENT;
      return this.query(sql, []);

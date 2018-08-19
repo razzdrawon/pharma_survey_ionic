@@ -87,7 +87,7 @@ export class SurveyPage {
       this.latitude = data.coords.longitude;
       this.longitude = data.coords.latitude;
     }).catch((err)=>{
-      this.lanzaAlerta("No se puede obtener la geolocalicación por favor revise que los servicios de ubicación están activados");
+      //this.lanzaAlerta("No se puede obtener la geolocalicación por favor revise que los servicios de ubicación están activados");
       console.log("('++++++++++++++++++Error:", err);
     });
 
@@ -571,6 +571,19 @@ export class SurveyPage {
     });
     alert.present();
 
+  }
+
+
+  public onKeyUp(event: any) {
+
+    let newValue = event.target.value;
+
+    
+    let regExp = new RegExp('([0-9]*\.[0-9]+|[0-9]+)');
+
+    if (! regExp.test(newValue)) {
+      event.target.value = newValue.slice(0, -1);
+    }
   }
 
 }

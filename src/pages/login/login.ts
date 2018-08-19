@@ -9,7 +9,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 import {Md5} from 'ts-md5';
 import { Geolocation } from '@ionic-native/geolocation';
-
+import moment from 'moment';
 
 
 
@@ -380,8 +380,10 @@ obtieneSumatoriaCuestionarios(){
   public setFechaUltimaSincronizacion(){
     
 
-    
-    this.storage.set('lastSync',new Date().toISOString());
+    let data = moment().format('YYYY-MM-DD');
+    let time = moment().format('HH:mm:ss');
+
+    this.storage.set('lastSync', data+" "+time);
 
   }
 
