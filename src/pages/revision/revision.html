@@ -22,13 +22,13 @@
 <ion-content padding>
 
 
-	<h1 class="titulo">Seccion {{sectionRevision}}</h1>
+	<h1 class="titulo">Sección {{sectionRevision}}</h1>
 
 
 	<div *ngFor="let answer of answersRevision;  let answerIndex = index">
 
 		<div *ngIf="answer.question.section == sectionRevision">
-			<h1 class="subtitulo">{{answer.question.sentense}}</h1>
+			<h1 class="subtitulo">{{answer.question.index}} {{answer.question.sentense}}</h1>
 
 			<div [ngSwitch]="answer.question.type">
 
@@ -45,7 +45,26 @@
 							<input type="radio" name="radio{{answerIndex}}" [checked]="answer.option == opt" disabled="true" />
 							<p>{{opt.enunciado}}</p>
 							<div class="control_indicator"></div>
-							<div class="respuestas" *ngIf="opt.childNumber || opt.childText || opt.childOption" >
+
+							<div class="respuestas" *ngIf="opt.childNumber" >
+								<ul>
+									<li>{{opt.childNumber}}</li>
+								</ul>
+							</div>
+
+							<div class="respuestas" *ngIf="opt.childText" >
+								<ul>
+									<li>{{opt.childText}}</li>
+								</ul>
+							</div>
+
+							<div class="respuestas" *ngIf="opt.childOption" >
+								<ul>
+									<li>{{opt.childOption}}</li>
+								</ul>
+							</div>
+
+							<!-- <div class="respuestas" *ngIf="opt.childNumber || opt.childText || opt.childOption" >
 								<ul>
 									<li>{{opt.childNumber}}</li>
 									<li>{{opt.childText}}</li>
@@ -61,7 +80,14 @@
 								<ul *ngFor="let childOption of opt.childOptions" >
 									<li>{{childOption}}</li>
 								</ul>
-							</div>
+							</div> -->
+
+							<!-- <div class="respuestas">
+								<ul>
+									<li>Si</li>
+									<li>Tableta</li>
+								</ul>
+							</div> -->
 						</label>
 
 
