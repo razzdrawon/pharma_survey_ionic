@@ -171,9 +171,11 @@
                         <ion-item *ngSwitchCase=4>
                           <ion-label floating>Escriba su respuesta (Texto)</ion-label>
 
-                          <textarea rows="3" type="text" [(ngModel)]="answer.childText" (input)="childTextChanged()"></textarea>
+                          <ion-textarea type="text" [(ngModel)]="answer.childText" (input)="childTextChanged()"></ion-textarea >
             
                         </ion-item>
+
+                       
 
                         <!-- 5.- opcion multiple con pondereaciones -->
                         <ion-grid *ngSwitchCase=5>
@@ -239,7 +241,7 @@
       <div *ngSwitchCase=4>
         <ion-item>
           <ion-label floating>Escriba su respuesta (Texto)</ion-label>
-          <ion-textarea elastic autosize type="text" [(ngModel)]="answer.text"></ion-textarea>
+          <ion-textarea  type="text" [(ngModel)]="answer.text"></ion-textarea>
         </ion-item>
         <button class="siguiente" ion-button block (click)="nextQuestion()" [disabled]="!(answer.text != null && answer.text != '')">Siguiente</button>
       </div>
