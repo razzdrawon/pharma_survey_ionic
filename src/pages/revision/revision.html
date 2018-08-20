@@ -46,34 +46,52 @@
 							<p>{{opt.enunciado}}</p>
 							<div class="control_indicator"></div>
 
-							<div class="respuestas" *ngIf="answer.childNumber && answer.option == opt" >
+							<div class="respuestas" *ngIf="answer.childNumber && answer.option == opt">
 								<ul>
 									<li>{{answer.childNumber}}</li>
 								</ul>
 							</div>
 
-							<div class="respuestas" *ngIf="answer.childText && answer.option == opt" >
+							<div class="respuestas" *ngIf="answer.childText && answer.option == opt">
 								<ul>
 									<li>{{answer.childText}}</li>
 								</ul>
 							</div>
 
-							<div class="respuestas" *ngIf="(answer.childOption | json) != '{}' && answer.option == opt" >
+							<div class="respuestas" *ngIf="(answer.childOption | json) != '{}' && answer.option == opt">
 								<ul>
 									<li>{{answer.childOption.enunciado}}</li>
 								</ul>
 							</div>
 
-							<div class="respuestas" *ngIf="(answer.childMap | json) != '{}' && answer.option == opt" >
-									<ul *ngFor="let item of getArrayValues(answer.childMap)" >
-										<li>{{item}}</li>
-									</ul>
-								</div>
-								<div class="respuestas" *ngIf="(answer.childOptions | json) != '[]' && answer.option == opt" >
-									<ul *ngFor="let childOption of answer.childOptions" >
-										<li>{{childOption.enunciado}}</li>
-									</ul>
+							<div class="respuestas" *ngIf="answer.secondChildText && answer.option == opt">
+								<ul>
+									<li>{{answer.secondChildText}}</li>
+								</ul>
 							</div>
+
+							<div class="respuestas" *ngIf="(answer.childMap | json) != '{}' && answer.option == opt">
+								<ul *ngFor="let item of getArrayValues(answer.childMap)">
+									<li>{{item}}</li>
+								</ul>
+							</div>
+							<div class="respuestas" *ngIf="(answer.childOptions | json) != '[]' && answer.option == opt">
+								<ul *ngFor="let childOption of answer.childOptions">
+									<li>{{childOption.enunciado}}</li>
+								</ul>
+							</div>
+
+
+							<div class="respuestas" *ngIf="answer.imageText && answer.option == opt">
+								<ul>
+									<li>No. Permiso: {{answer.imageText}}</li>
+								</ul>
+							</div>
+
+							<div class="respuestas" *ngIf="answer.image && answer.option == opt">
+								<img [src]="answer.image" />
+							</div>
+
 
 							<!-- <div class="respuestas" *ngIf="opt.childNumber || opt.childText || opt.childOption" >
 								<ul>
