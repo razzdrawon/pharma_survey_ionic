@@ -141,18 +141,23 @@
 
                         <!-- 3.- combo box  -->
                         <div *ngSwitchCase=3>
-                          <ion-grid>
-                            <ion-row *ngFor="let optChild of opt.respuestas">
+                          <ion-grid *ngFor="let optChild of opt.respuestas">
+                            <ion-row>
                               <ion-col>
                                 <ion-item>
                                   <ion-label class="sentence">{{optChild.enunciado}}</ion-label>
                                   <ion-checkbox (ionChange)="optionChecked(optChild)" [(ngModel)]="optChild.checked"></ion-checkbox>
                                 </ion-item>
                               </ion-col>
-                              <ion-col *ngIf="type == 2" >
+                            </ion-row>
+                            <ion-row *ngIf="type == 2">
+                              <ion-col>
                                 <div>
                                   <ion-input placeholder="Cantidad (gramos)" type="number" [(ngModel)]="optChild.text" [disabled]="!optChild.checked"></ion-input>
                                 </div>
+                              </ion-col>
+                              <ion-col>
+                                  gramos
                               </ion-col>
                             </ion-row>
                           </ion-grid>
@@ -162,11 +167,11 @@
                         <ion-item *ngSwitchCase=4>
                           <ion-label floating>Escriba su respuesta (Texto)</ion-label>
 
-                          <ion-textarea type="text" [(ngModel)]="answer.childText" (input)="childTextChanged()"></ion-textarea >
-            
+                          <ion-textarea type="text" [(ngModel)]="answer.childText" (input)="childTextChanged()"></ion-textarea>
+
                         </ion-item>
 
-                       
+
 
                         <!-- 5.- opcion multiple con pondereaciones -->
                         <ion-grid *ngSwitchCase=5>
@@ -176,13 +181,13 @@
                                 <ion-label class="sentence">{{optChild.enunciado}}</ion-label>
                               </ion-item>
                             </ion-col>
-                         
-                            <ion-col *ngIf="survey.type== 2"  >
+
+                            <ion-col *ngIf="survey.type== 2">
                               <div>
-                                <ion-input placeholder="Ingrese cantidad en gr"  type="number" [(ngModel)]="answer.childMap[optChild.id]" (input)="childMapChanged()"></ion-input>
+                                <ion-input placeholder="Ingrese cantidad en gr" type="number" [(ngModel)]="answer.childMap[optChild.id]" (input)="childMapChanged()"></ion-input>
                               </div>
                             </ion-col>
-                            <ion-col *ngIf="survey.type== 1"  >
+                            <ion-col *ngIf="survey.type== 1">
                               <div>
                                 <ion-input placeholder="Escriba un número" type="number" [(ngModel)]="answer.childMap[optChild.id]" (input)="childMapChanged()"></ion-input>
                               </div>
@@ -232,7 +237,7 @@
       <div *ngSwitchCase=4>
         <ion-item>
           <ion-label floating>Escriba su respuesta (Texto)</ion-label>
-          <ion-textarea  type="text" [(ngModel)]="answer.text"></ion-textarea>
+          <ion-textarea type="text" [(ngModel)]="answer.text"></ion-textarea>
         </ion-item>
         <button class="siguiente" ion-button block (click)="nextQuestion()" [disabled]="!(answer.text != null && answer.text != '')">Siguiente</button>
       </div>
