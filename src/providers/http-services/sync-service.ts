@@ -34,7 +34,7 @@ export class SyncHttpService {
 
   public apiUrl  = 'http://www.accesosinexceso.org/';
 
-  public version   ="1.0.2";
+  public version   ="1.1";
 
   // getUsers() {
   //   return this.http.get('../assets/raw/usuarios.json')

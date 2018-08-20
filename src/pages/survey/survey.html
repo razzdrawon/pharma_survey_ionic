@@ -170,8 +170,12 @@
                         <!-- 4.- texto abierto -->
                         <ion-item *ngSwitchCase=4>
                           <ion-label floating>Escriba su respuesta (Texto)</ion-label>
-                          <ion-textarea type="text" [(ngModel)]="answer.childText" (input)="childTextChanged()"></ion-textarea>
+
+                          <ion-textarea type="text" [(ngModel)]="answer.childText" (input)="childTextChanged()"></ion-textarea >
+            
                         </ion-item>
+
+                       
 
                         <!-- 5.- opcion multiple con pondereaciones -->
                         <ion-grid *ngSwitchCase=5>
@@ -181,9 +185,15 @@
                                 <ion-label class="sentence">{{optChild.enunciado}}</ion-label>
                               </ion-item>
                             </ion-col>
+                         
                             <ion-col *ngIf="survey.type== 2"  >
                               <div>
-                                <ion-input placeholder="Ingrese cantidad en gr" type="number" [(ngModel)]="optChild.text" [disabled]="!optChild.checked"></ion-input>
+                                <ion-input placeholder="Ingrese cantidad en gr"  type="number" [(ngModel)]="answer.childMap[optChild.id]" (input)="childMapChanged()"></ion-input>
+                              </div>
+                            </ion-col>
+                            <ion-col *ngIf="survey.type== 1"  >
+                              <div>
+                                <ion-input placeholder="Escriba un número" type="number" [(ngModel)]="answer.childMap[optChild.id]" (input)="childMapChanged()"></ion-input>
                               </div>
                             </ion-col>
                           </ion-row>
@@ -231,7 +241,7 @@
       <div *ngSwitchCase=4>
         <ion-item>
           <ion-label floating>Escriba su respuesta (Texto)</ion-label>
-          <ion-textarea elastic autosize type="text" [(ngModel)]="answer.text"></ion-textarea>
+          <ion-textarea  type="text" [(ngModel)]="answer.text"></ion-textarea>
         </ion-item>
         <button class="siguiente" ion-button block (click)="nextQuestion()" [disabled]="!(answer.text != null && answer.text != '')">Siguiente</button>
       </div>

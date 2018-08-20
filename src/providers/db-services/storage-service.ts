@@ -33,7 +33,7 @@ import { Survey } from '../../models/survey';
     name: this.DB_NAME,
     location: 'default'
     }).then((db: SQLiteObject) => {
-      return db.executeSql(query, params).catch(e => console.log('Error DB '+ JSON.stringify(e)));
+      return db.executeSql(query, params).catch(e => console.log(  query+ '    Error DB '+ JSON.stringify(e)));
     });
   }
 
@@ -67,14 +67,14 @@ import { Survey } from '../../models/survey';
    private INSERT_SURVEY="INSERT INTO survey (establishment_id, type, user, save_date, start_date, end_date, survey, version, latitude, longitude, evidence, sync, next_section, completed, response_code)  values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ;";
    private UPDATE_SURVEY="UPDATE survey SET survey = ?, next_section = ?, version = ?, save_date = ? WHERE establishment_id  = ? AND type = ?;";
 
-   private SELECT_SURVEY_STATUS=" SELECT COALESCE( SUM(CASE WHEN 1=1 THEN 1 ELSE 0 END ),0) AS tot , COALESCE( SUM(CASE WHEN sync =1 THEN 1 ELSE 0 END ),0)  AS sync,COALESCE( SUM(CASE WHEN sync =0 THEN 1 ELSE 0 END ) ,0)  AS notSync  FROM survey ;";
+   private SELECT_SURVEY_STATUS=" SELECT COALESCE( SUM( completed  ),0) AS tot , COALESCE( SUM(CASE WHEN sync =1  AND  completed =1  THEN 1 ELSE 0 END ),0)  AS sync,COALESCE( SUM(CASE WHEN sync =0 AND  completed =1 THEN 1 ELSE 0 END ) ,0)  AS notSync,COALESCE( SUM(CASE WHEN completed !=1 THEN 1 ELSE 0 END ) ,0)  AS notCompleted  FROM survey ;";
 
-   private SELECT_SURVEY_BY_ESTABLISHMENT_AND_TYPE="SELECT * FROM survey WHERE establishment_id  = ? AND type = ? ";
+   private SELECT_SURVEY_BY_ESTABLISHMENT_AND_TYPE="SELECT * FROM survey WHERE establishment_id  = ? AND type = ?  ";
    private SELECT_SURVEY_TO_SYNC=" SELECT * FROM survey WHERE sync!= 1 AND completed=1";
    private MARK_SYNC_SURVEY=" UPDATE  survey   SET sync=1 WHERE establishment_id  = ? AND type = ? ";
    private MARK_COMPLETED_SURVEY=" UPDATE survey SET completed=1, next_section=null WHERE establishment_id  = ? AND type = ? ";
 
-   
+
    createEstablishmentTable(){
      let sql = this.CREATE_TABLE_ESTABLISHMENT;
      return this.query(sql, []);
@@ -153,6 +153,7 @@ import { Survey } from '../../models/survey';
 
   getSurveys() {
     let sql = this.SELECT_SURVEY_STATUS;
+   
     return this.query(sql, []);
   }
 

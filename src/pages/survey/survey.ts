@@ -62,33 +62,50 @@ export class SurveyPage {
     private geolocation: Geolocation
   ) {
 
-    this.geolocation.getCurrentPosition().then((resp) => {
-      this.latitude = resp.coords.latitude;
-      this.longitude.lng = resp.coords.longitude;
-      //Call to your logic HERE
-    }).catch((error) => {
-      console.log('************************ Geolocation error' + error);
-      this.lanzaAlerta("No se puede obtener la geolocalicación por favor revise que loes servicios de ubicación están activados");
-    });
+
+   
+
   }
 
   ionViewDidLoad() {
+
     this.validateLoggedUser();
     this.initializeVars();
     this.loadSurvey();
 
   }
 
+
+  ionViewDidEnter(){
+
+    var options = {
+      timeout: 10000 //sorry I use this much milliseconds
+    }
+          //use the geolocation 
+    this.geolocation.getCurrentPosition(options).then(data=>{
+      console.log('++++++++++++++++++GEO LOCALIZACIón');
+      this.latitude = data.coords.longitude;
+      this.longitude = data.coords.latitude;
+    }).catch((err)=>{
+      //this.lanzaAlerta("No se puede obtener la geolocalicación por favor revise que los servicios de ubicación están activados");
+      console.log("('++++++++++++++++++Error:", err);
+    });
+
+  }
+
   initializeVars() {
 
-    this.establishmentId = this.navParams['data'].tipo_establecimiento_id;
+    console.log('---------------------------------This is what we receive in the navParams: ');
+    console.log(JSON.stringify(this.navParams['data']));
+    let tipoEstablishmentId = this.navParams['data'].tipo_establecimiento_id;
+    this.establishmentId = this.navParams['data'].establecimiento_id;
     let sub_tipo = this.navParams['data'].subtipo_id;
     this.isPharma = false;
 
-    if (this.establishmentId == 3 || this.establishmentId == 4 || this.establishmentId == 4) {
+    if (tipoEstablishmentId == 3 || tipoEstablishmentId == 4 || tipoEstablishmentId == 5) {
       this.isPharma = true;
       this.type = 2; //survey property type
-    } else if (this.establishmentId == 1 && sub_tipo == 3) {
+    } else if (tipoEstablishmentId == 1 && sub_tipo == 3) {
       this.isPharma = true;
       this.type = 2; //survey property type
     } else {
@@ -154,6 +171,20 @@ export class SurveyPage {
         }
         else {
           this.survey = response.rows.item(0);
+
+          if (this.survey.completed == 1) {
+            this.alertCtrl.create({
+              title: 'Cuestionario ya capturado',
+              subTitle: 'No se puede continuar contestando este cuestionario ya que ha sido contestado y guardado anteriormente',
+              buttons: [{
+                text: 'Aceptar',
+                handler: () => {
+                  this.navCtrl.pop();
+                }
+              }]
+            }).present();
+          }
+
           this.answers = JSON.parse(this.survey.survey);
         }
 
@@ -447,11 +478,11 @@ export class SurveyPage {
     if (nextSection > this.question.seccion) {
       let params = { 'answers': this.answers, 'questions': this.questions, 'section': this.answer.question.section };
       this.navCtrl.push(RevisionPage, params);
-      if (this.question.seccion == 1) {
-        this.saveAnswersForTheFirstTime(nextSection);
+      if ((this.question.seccion == 1 && !this.isPharma) || (this.question.seccion == 0 && this.isPharma)) {
+        this.saveAnswersForTheFirstTime(nextSection, this.question.seccion);
       }
       else  {
-        this.updateAnswersbySection(nextSection);
+        this.updateAnswersbySection(nextSection, this.question.seccion);
       }
     }
 
@@ -491,7 +522,7 @@ export class SurveyPage {
   }
 
 
-  saveAnswersForTheFirstTime(nextSection): any {
+  saveAnswersForTheFirstTime(nextSection, currentSection): any {
     this.survey.survey = JSON.stringify(this.answers);
     this.survey.version = this.version;
     this.survey.save_date = new Date().toISOString();
@@ -504,28 +535,32 @@ export class SurveyPage {
 
     console.log('Termina de setear valores');
 
-
-    this.dbService.insertSurvey(this.survey).catch(error => {
+    this.dbService.insertSurvey(this.survey).then(resp =>
+     console.log('survey saved for the first time section  ' + currentSection)
+    ).catch(error => {
       this.lanzaAlerta('No fue posible guardar el cuestionario : ' + JSON.stringify(error));
-
     });
   }
 
 
-  updateAnswersbySection(nextSection): any {
+  updateAnswersbySection(nextSection, currentSection): any {
     this.survey.version = this.version;
     this.survey.save_date = new Date().toISOString();
     this.survey.survey = JSON.stringify(this.answers);
     this.survey.next_section = nextSection;
     this.dbService.updateAnswersSurvey(this.survey).then(resp =>
-      console.log('survey saved for the section  ' + this.question.seccion)
-    );
+      console.log('survey saved for the section  ' + currentSection)
+    ).catch(error => {
+      this.lanzaAlerta('No fue posible guardar el cuestionario : ' + JSON.stringify(error));
+    });
   }
 
   markSurveyAsCompleted(): any {
     this.dbService.markSurveyCopmleted(this.survey).then(resp =>
       console.log('survey saved as completed for establishment ' + this.survey.establishment_id + ' type ' + this.survey.type)
-    );
+    ).catch(error => {
+      this.lanzaAlerta('No fue posible marcar el cuestionario como completo : ' + JSON.stringify(error));
+    });
   }
 
   public lanzaAlerta(mensaje: string) {
@@ -536,6 +571,19 @@ export class SurveyPage {
     });
     alert.present();
 
+  }
+
+
+  public onKeyUp(event: any) {
+
+    let newValue = event.target.value;
+
+    
+    let regExp = new RegExp('([0-9]*\.[0-9]+|[0-9]+)');
+
+    if (! regExp.test(newValue)) {
+      event.target.value = newValue.slice(0, -1);
+    }
   }
 
 }

@@ -28,9 +28,12 @@ export class MyApp {
       //console.log('Antes de configurar')
       this.db.configureDatabase();
       //set options.. 
-var options = {
-  timeout: 20000 //sorry I use this much milliseconds
-}
+
+
+    
+      var options = {
+        timeout: 10000 //sorry I use this much milliseconds
+      }
       //use the geolocation 
       this.geolocation.getCurrentPosition(options).then(data=>{
         console.log('++++++++++++++++++GEO LOCALIZACIón');

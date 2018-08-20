@@ -6,47 +6,102 @@
 -->
 <ion-header>
 
-		<ion-navbar hideBackButton>
-			<ion-buttons left>
-				<button ion-button navPop>
-					<ion-icon name="play"></ion-icon>
-				</button>
-			</ion-buttons>
-	
-			<ion-title>Revisión</ion-title>
-		</ion-navbar>
-	
-	</ion-header>
-	
-	
-	<ion-content padding>
-	
-	
-		<h1 class="titulo">Seccion {{sectionRevision}}</h1>
-	
-	
-		<div *ngFor="let answer of answersRevision">
-	
-			<h1 class="subtitulo">{{answer.question.sentense}}</h1>
-	
+	<ion-navbar hideBackButton>
+		<ion-buttons left>
+			<button ion-button navPop>
+				<ion-icon name="play"></ion-icon>
+			</button>
+		</ion-buttons>
+
+		<ion-title>Revisión</ion-title>
+	</ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+
+	<h1 class="titulo">Sección {{sectionRevision}}</h1>
+
+
+	<div *ngFor="let answer of answersRevision;  let answerIndex = index">
+
+		<div *ngIf="answer.question.section == sectionRevision">
+			<h1 class="subtitulo">{{answer.question.index}} {{answer.question.sentense}}</h1>
+
 			<div [ngSwitch]="answer.question.type">
-	
+
 				<!-- Question Type 1 -->
 				<div *ngSwitchCase=1>
 					<ion-label>{{answer.number}}</ion-label>
 				</div>
-	
+
 				<!-- Question Type 2 -->
 				<div class="radios" *ngSwitchCase=2>
-					<div class="control-group" *ngFor="let opt of getOptions(answer)" >
-	
+					<div class="control-group" *ngFor="let opt of getOptions(answer)">
+
 						<label class="control control-radio">
-							<input type="radio" name="radio1" [checked]="answer.option == opt" disabled="true"/>
+							<input type="radio" name="radio{{answerIndex}}" [checked]="answer.option == opt" disabled="true" />
 							<p>{{opt.enunciado}}</p>
 							<div class="control_indicator"></div>
+
+							<div class="respuestas" *ngIf="answer.childNumber && answer.option == opt" >
+								<ul>
+									<li>{{answer.childNumber}}</li>
+								</ul>
+							</div>
+
+							<div class="respuestas" *ngIf="answer.childText && answer.option == opt" >
+								<ul>
+									<li>{{answer.childText}}</li>
+								</ul>
+							</div>
+
+							<div class="respuestas" *ngIf="(answer.childOption | json) != '{}' && answer.option == opt" >
+								<ul>
+									<li>{{answer.childOption.enunciado}}</li>
+								</ul>
+							</div>
+
+							<div class="respuestas" *ngIf="(answer.childMap | json) != '{}' && answer.option == opt" >
+									<ul *ngFor="let item of getArrayValues(answer.childMap)" >
+										<li>{{item}}</li>
+									</ul>
+								</div>
+								<div class="respuestas" *ngIf="(answer.childOptions | json) != '[]' && answer.option == opt" >
+									<ul *ngFor="let childOption of answer.childOptions" >
+										<li>{{childOption.enunciado}}</li>
+									</ul>
+							</div>
+
+							<!-- <div class="respuestas" *ngIf="opt.childNumber || opt.childText || opt.childOption" >
+								<ul>
+									<li>{{opt.childNumber}}</li>
+									<li>{{opt.childText}}</li>
+									<li>{{opt.childOption}}</li>
+								</ul>
+							</div>
+							<div class="respuestas" *ngIf="(opt.childMap | json) != '{}'" >
+								<ul *ngFor="let item of getArrayValues(opt.childMap)" >
+									<li>{{item}}</li>
+								</ul>
+							</div>
+							<div class="respuestas" *ngIf="(opt.childOptions | json) != '[]'" >
+								<ul *ngFor="let childOption of opt.childOptions" >
+									<li>{{childOption}}</li>
+								</ul>
+							</div> -->
+
+							<!-- <div class="respuestas">
+								<ul>
+									<li>Si</li>
+									<li>Tableta</li>
+								</ul>
+							</div> -->
 						</label>
-	
-	
+
+
 						<!-- <label class="control control-radio">
 							<input type="radio" name="radio2" disabled="disabled" checked="checked" />
 							<p>Metadona</p>
@@ -73,32 +128,29 @@
 							<p>Disabled & checked</p>
 							<div class="control_indicator"></div>
 						</label> -->
-	
-	
+
+
 					</div>
 				</div>
-	
+
 				<!-- Question Type 4 -->
 				<div *ngSwitchCase=4>
 					<ion-label>{{answer.text}}</ion-label>
 				</div>
-	
+
 				<!-- Question Type 5 -->
-				<div *ngSwitchCase=5 >
-					<div *ngFor="let opt of getOptions(answer)" >
-					<p>{{opt.enunciado}} {{getNumber(opt, answer)}}</p> 
+				<div *ngSwitchCase=5>
+					<div *ngFor="let opt of getOptions(answer)">
+						<p>{{opt.enunciado}} {{getNumber(opt, answer)}}</p>
 					</div>
 				</div>
-				
+
 			</div>
 		</div>
-	
-		<button ion-button float-right icon-only outline class="flecha_abajo">
-			<ion-icon name="arrow-round-down"></ion-icon>
-		</button>
-	
-		<button ion-button float-right class="boton_chico" (click)="cambiar_pagina()">Siguiente Sección</button>
-	
-	
-	
-	</ion-content>
+	</div>
+
+	<button ion-button float-right class="boton_chico" (click)="cambiar_pagina()">Siguiente Sección</button>
+
+
+
+</ion-content>

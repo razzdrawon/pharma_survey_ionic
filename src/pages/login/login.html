@@ -34,28 +34,30 @@
   <ion-grid>
     <ion-row>
       <ion-col col-4> </ion-col>
-      <ion-col col-4><button ion-button class="submit sincronizar" block (click)="syncInfo()">Sincronizar</button></ion-col>
+      <ion-col col-4>
+          <button ion-button icon-only outline class="icono_sync" block (click)="syncInfo()">
+              Sincronizar <ion-icon name="ios-cloud-upload-outline" ></ion-icon>
+            </button>
+      </ion-col>
       <ion-col col-4></ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col col-12> </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col col-12>En el dispositivo se ha capturado un total de {{cuesTotal}} cuestionarios</ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col col-12>En el dispositivo se han sincronizado un total de  {{cuesTotal - cuesPen}} cuestionarios</ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col col-12>En el dispositivo faltan por sincronizar un total de  {{cuesPen}} cuestionarios</ion-col>
     </ion-row>
   </ion-grid>
 
-  <ion-label text-right>Version 1.0.2</ion-label>
+
+
+
+
+  <hr>
+  <p class="cuestionarios_num">En el dispositivo se encuentra un total de <b>{{notCompleted}} </b> cuestionarios sin finalizar  </p>
+  <p class="cuestionarios_num">En el dispositivo se ha capturado un total de <b>{{cuesTotal}} </b>cuestionarios</p>
+  <p class="cuestionarios_num">En el dispositivo se han sincronizado un total de  <b>{{cuesSync}}</b> cuestionarios</p>
+  <p class="cuestionarios_num">En el dispositivo faltan por sincronizar un total de <b> {{cuesPen}} </b>cuestionarios</p>
+  
+
+  <p class="cuestionarios_num">Fecha de última actualización de catalogos <b>{{fechaSync }} </b> </p>
+  <ion-label text-right> Version 1.1</ion-label>
 
 </ion-content>
-
-
 
 
 
