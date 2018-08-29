@@ -11,6 +11,7 @@ import { DBService } from '../../providers/db-services/storage-service';
 import { Geolocation } from '@ionic-native/geolocation';
 import { RevisionPage } from '../revision/revision';
 import { THROW_IF_NOT_FOUND } from '@angular/core/src/di/injector';
+import moment from 'moment';
 
 /**
  * Generated class for the SurveyPage page.
@@ -157,7 +158,7 @@ export class SurveyPage {
           this.survey.type = this.type;
           this.survey.user = this.loggedUser.usuario;
           //this.survey.save_date   This shouldnt be assigned yet                                 **
-          this.survey.start_date = new Date().toISOString(); //survey property startDate
+          this.survey.start_date = this.getCurrentDate(); //survey property startDate
           // this.survey.end_date   This shouldnt be assigned yet                                 **
           // this.survey.survey    This should be populated whe we want to save a new section     **
           // this.survey.version    This should be populated whe we want to save a new section    
@@ -525,8 +526,8 @@ export class SurveyPage {
   saveAnswersForTheFirstTime(nextSection, currentSection): any {
     this.survey.survey = JSON.stringify(this.answers);
     this.survey.version = this.version;
-    this.survey.save_date = new Date().toISOString();
-    this.survey.end_date = new Date().toISOString();
+    this.survey.save_date = this.getCurrentDate();
+    this.survey.end_date = this.getCurrentDate();
     this.survey.sync = 0;
     this.survey.next_section = nextSection;
 
@@ -545,7 +546,7 @@ export class SurveyPage {
 
   updateAnswersbySection(nextSection, currentSection): any {
     this.survey.version = this.version;
-    this.survey.save_date = new Date().toISOString();
+    this.survey.save_date = this.getCurrentDate();
     this.survey.survey = JSON.stringify(this.answers);
     this.survey.next_section = nextSection;
     this.dbService.updateAnswersSurvey(this.survey).then(resp =>
@@ -584,6 +585,16 @@ export class SurveyPage {
     if (! regExp.test(newValue)) {
       event.target.value = newValue.slice(0, -1);
     }
+  }
+
+  public getCurrentDate(){
+    
+
+    let data = moment().format('YYYY-MM-DD');
+    let time = moment().format('HH:mm:ss');
+
+    return data+" "+time;
+
   }
 
 }
