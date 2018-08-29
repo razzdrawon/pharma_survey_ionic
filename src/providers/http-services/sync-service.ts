@@ -32,8 +32,9 @@ export class SyncHttpService {
 
   }
 
-  public apiUrl  = 'http://www.accesosinexceso.org/';
-
+  //public apiUrl  = 'http://www.accesosinexceso.org/';
+  //test 
+  public apiUrl  = 'http://216.154.223.45/';
   public version   ="1.1";
 
   // getUsers() {
