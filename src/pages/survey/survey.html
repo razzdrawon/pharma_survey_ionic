@@ -91,7 +91,7 @@
         <ion-grid>
           <ion-row *ngFor="let opt of question.respuestas">
             <ion-col>
-              <ion-list radio-group [(ngModel)]="answer.option" (ngModelChange)="radioOptionChanged()">
+              <ion-list radio-group [(ngModel)]="answer.option" (ionChange)="radioOptionChanged()">
                 <ion-item-group>
                   <ion-item>
                     <ion-label class="sentence">{{opt.enunciado}}</ion-label>
