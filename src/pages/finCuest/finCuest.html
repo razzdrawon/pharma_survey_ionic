@@ -16,7 +16,10 @@
 	<h1 class="titulo_cuestionario">Cuestionario de Acesso a Medicamentos Controlados</h1>
 
 	<ion-icon name="checkbox-outline" class="icono_grande"></ion-icon>
-
+	<button class="siguiente" ion-button block (click)="getPicture()">Haga clic si desea guardar una foto del establecimeinto</button>
+	<ion-item>
+		<img [src]="image" *ngIf="image" />
+	</ion-item>
 	<h2 class="titulo_cuestionario">¡Muchas gracias!</h2>
 
 	<p>El cuestionario ha sido almacenado exitosamente en el dispositivo.

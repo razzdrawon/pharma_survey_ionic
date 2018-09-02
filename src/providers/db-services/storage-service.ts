@@ -67,6 +67,10 @@ import { Survey } from '../../models/survey';
    private INSERT_SURVEY="INSERT INTO survey (establishment_id, type, user, save_date, start_date, end_date, survey, version, latitude, longitude, evidence, sync, next_section, completed, response_code)  values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ;";
    private UPDATE_SURVEY="UPDATE survey SET survey = ?, next_section = ?, version = ?, save_date = ? WHERE establishment_id  = ? AND type = ?;";
 
+   
+
+   private UPDATE_SURVEY_IMAGE="UPDATE survey SET evidence = ?  WHERE establishment_id  = ? AND type = ?;";
+
    private SELECT_SURVEY_STATUS=" SELECT COALESCE( SUM( completed  ),0) AS tot , COALESCE( SUM(CASE WHEN sync =1  AND  completed =1  THEN 1 ELSE 0 END ),0)  AS sync,COALESCE( SUM(CASE WHEN sync =0 AND  completed =1 THEN 1 ELSE 0 END ) ,0)  AS notSync,COALESCE( SUM(CASE WHEN completed !=1 THEN 1 ELSE 0 END ) ,0)  AS notCompleted  FROM survey ;";
 
    private SELECT_SURVEY_BY_ESTABLISHMENT_AND_TYPE="SELECT * FROM survey WHERE establishment_id  = ? AND type = ?  ";
@@ -128,6 +132,18 @@ import { Survey } from '../../models/survey';
         survey.save_date,
         survey.establishment_id,
         survey.type
+      ]
+    );
+  }
+
+
+  updateAnswersSurveyImage(establishment_id: number,type:number,image :string) {
+    let sql = this.UPDATE_SURVEY_IMAGE;
+    return this.query(sql,
+      [
+        image,
+        establishment_id,
+        type
       ]
     );
   }

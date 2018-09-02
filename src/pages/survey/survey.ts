@@ -503,7 +503,9 @@ export class SurveyPage {
 
       this.markSurveyAsCompleted();
 
-      this.navCtrl.setRoot(FinCuestPage);
+
+      let params = {establishmentId:this.establishmentId,type:this.type};
+      this.navCtrl.setRoot(FinCuestPage,params);
       this.navCtrl.popToRoot();
     } else {
 

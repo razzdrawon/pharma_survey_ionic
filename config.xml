@@ -3,7 +3,7 @@
     <name>AccesoSinExceso</name>
     <description>Proyecto para el control de acceso a medicamentos controlados</description>
     <author email="daniel.correa@braveit.com.mx" href="http://braveit.com.mx">Brave IT Team</author>
-    <content original-src="index.html" src="http://192.168.100.4:8100" />
+    <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
