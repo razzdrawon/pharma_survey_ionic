@@ -91,13 +91,13 @@
         <ion-grid>
           <ion-row *ngFor="let opt of question.respuestas">
             <ion-col>
-              <ion-list radio-group [(ngModel)]="answer.option" (ionChange)="radioOptionChanged()">
+              <ion-list radio-group [(ngModel)]="answer.option" (ngModelChange)="radioOptionChanged()">
                 <ion-item-group>
                   <ion-item>
                     <ion-label class="sentence">{{opt.enunciado}}</ion-label>
                     <ion-radio [value]="opt"></ion-radio>
                   </ion-item>
-                  <ion-row *ngIf="hasChilds">
+                  <ion-row *ngIf="hasChilds && ((opt | json) === (answer.option | json))">
 
                     <ion-col col-1>
                     </ion-col>

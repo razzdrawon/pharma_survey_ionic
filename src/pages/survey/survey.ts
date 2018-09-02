@@ -230,13 +230,20 @@ export class SurveyPage {
       this.hasChilds = false;
       this.isAnswered = true;
 
-      this.hasSecondChilds = false;
+      // this.hasSecondChilds = false;
+      // this.answer.childText = null;
+      // this.answer.childNumber = null;
+      // this.answer.childOption = {};
+      // this.answer.childOptions = [];
+      // this.answer.childMap = {};
+    }
+
+    this.hasSecondChilds = false;
       this.answer.childText = null;
       this.answer.childNumber = null;
       this.answer.childOption = {};
       this.answer.childOptions = [];
       this.answer.childMap = {};
-    }
 
   }
 
