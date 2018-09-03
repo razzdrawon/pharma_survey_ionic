@@ -217,15 +217,17 @@ export class SurveyPage {
 
     if (this.answer.option.tipo_pregunta != null) {
       // Display first level of childs
+      // console.log('Primer IF de primer RG. Pregunta: ' + this.question.indice);
       this.hasChilds = true;
       this.isAnswered = false;
     }
     else if ((JSON.stringify(this.answer.option)) == '{}') {
+      // console.log('Else  IF de primer RG. Pregunta: ' + this.question.indice);
       this.hasChilds = false;
       this.isAnswered = false;
     }
     else {
-
+      // console.log('Else de primer RG. Pregunta: ' + this.question.indice);
       // Main question does not have childs... It is ready to be marked as answered
       this.hasChilds = false;
       this.isAnswered = true;
@@ -238,13 +240,16 @@ export class SurveyPage {
       this.answer.childMap = {};
     }
 
+    // console.log('default primer RG');
     // this.hasSecondChilds = false;
     this.answer.childText = null;
     this.answer.childNumber = null;
-    // this.answer.childOption = {};
-    // this.answer.childOptions = [];
-    // this.answer.childMap = {};
+    this.answer.childOption = {};
+    this.answer.childOptions = [];
+    this.answer.childMap = {};
 
+
+    // console.log('segundo RG isAnswered: ' + this.isAnswered);
   }
 
   childNumberChanged() {
@@ -259,14 +264,17 @@ export class SurveyPage {
 
     if (this.answer.childOption.tipo_pregunta != null) {
       // Display first level of childs
+      // console.log('primer IF de segundo RG. Pregunta: ' + this.question.indice);
       this.hasSecondChilds = true;
       this.isAnswered = false;
     }
-    else if ((JSON.stringify(this.answer.option)) == '{}') {
+    else if ((JSON.stringify(this.answer.childOption)) == '{}') {
+      // console.log('Else  IF de segundo RG. Pregunta: ' + this.question.indice);
       this.hasSecondChilds = false;
       this.isAnswered = false;
     }
     else {
+      // console.log('Else de segundo RG. Pregunta: ' + this.question.indice);
       // Main question does not have childs... It is ready to be marked as answered
       this.hasSecondChilds = false;
       this.isAnswered = true;
@@ -275,6 +283,7 @@ export class SurveyPage {
       this.answer.image = null;
       this.answer.imageText = null;
     }
+    // console.log('segundo RG isAnswered: ' + this.isAnswered);
   }
 
   secondChildTextChanged() {
